@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Yomna's Portfolio",
@@ -21,7 +23,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/girl-icon.png" sizes="any" />
       </head>
-      <body className={inter.className}>
+      <body className={jakarta.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
