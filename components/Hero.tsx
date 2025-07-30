@@ -57,7 +57,7 @@ const Hero = () => {
           />
 
           <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-            Hi! I&apos;m Yomna, a Full-Stack Web Developer based in Egypt.
+            Hi! I&apos;m Yomna, an IT Developer based in Egypt.
           </p>
 
           <a href="#about">
