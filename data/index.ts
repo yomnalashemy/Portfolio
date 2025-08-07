@@ -94,11 +94,11 @@ export const projects = [
   },
   {
     id: 4,
-    title: "SushiMania – E-Commerce Frontend",
+    title: "SushiMania – Sushi Ordering Website",
     des: "Built a user-friendly sushi restaurant website using HTML, CSS, and JavaScript, focused on responsive UI and clear UX.",
     img: "/sushi.png",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
-    link: "https://sushi-pearl.vercel.app/",
+    link: "https://sushi-zj20.onrender.com",
   },
 ];
 
