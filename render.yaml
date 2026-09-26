@@ -1,0 +1,8 @@
+# Next.js needs a running server (not a static site) because of the API
+# routes / SSR this template uses — hence "web" + a Node runtime, not "static".
+services:
+  - type: web
+    name: portfolio
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start -- -p $PORT
