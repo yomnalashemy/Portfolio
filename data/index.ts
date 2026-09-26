@@ -110,8 +110,8 @@ export const projects = [
   },
   {
     id: 6,
-    title: "Sentinel – Investigation Report Generator (mini demo)",
-    des: "A generic, sanitized miniature of an internal tool suite built at Ziina: fill in a case-style form and get a real, live-previewed PDF report — no real case data, illustration only.",
+    title: "Sentinel – Raw Data to Branded PDF Engine (mini demo)",
+    des: "A generic miniature of an internal tool suite built at Ziina: the same raw data, rendered live into a real PDF through three completely different brand templates — the engine, not any specific report.",
     img: "/sentinel.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg"],
     link: "https://claude.ai/artifact/U3hS6i8hvLSd8yCxpnijaq",
