@@ -1,0 +1,14 @@
+<svg width="640" height="480" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="480" fill="#0b0c0e"/>
+  <circle cx="320" cy="200" r="230" fill="none" stroke="#2b2f35" stroke-width="1"/>
+  <circle cx="320" cy="200" r="170" fill="none" stroke="#2b2f35" stroke-width="1"/>
+  <circle cx="320" cy="200" r="110" fill="none" stroke="#2b2f35" stroke-width="1"/>
+  <g transform="translate(230,150) scale(1.4)">
+    <g fill="none" stroke="#dcc68f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 6 L50 32.5 L94 6 L94 66 L50 94 L6 66 Z"/>
+      <path d="M50 32.5 L50 94"/>
+    </g>
+  </g>
+  <text x="320" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="15" letter-spacing="4" fill="#dcc68f" font-weight="600">ITQAN</text>
+  <text x="320" y="428" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#888e98">Cambridge IGCSE revision platform</text>
+</svg>
