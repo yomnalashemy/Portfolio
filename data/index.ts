@@ -108,6 +108,14 @@ export const projects = [
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
     link: "https://sushi-zj20.onrender.com",
   },
+  {
+    id: 6,
+    title: "Sentinel – Investigation Report Generator (mini demo)",
+    des: "A generic, sanitized miniature of an internal tool suite built at Ziina: fill in a case-style form and get a real, live-previewed PDF report — no real case data, illustration only.",
+    img: "/sentinel.svg",
+    iconLists: ["/next.svg", "/ts.svg", "/tail.svg"],
+    link: "https://claude.ai/artifact/U3hS6i8hvLSd8yCxpnijaq",
+  },
 ];
 
 export const testimonials = [
