@@ -74,7 +74,7 @@ export const projects = [
     des: "~61K lines of TypeScript, 147 API routes, 1,025 automated tests, serving students, tutors, and parents with assignments, marking, and progress tracking — used across the UAE and Egypt.",
     img: "/itqan.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg", "/c.svg"],
-    link: "https://itqan-web-dy2r.onrender.com",
+    link: "https://itqan-web-dy2r.onrender.com/welcome",
   },
   {
     id: 2,
@@ -99,6 +99,14 @@ export const projects = [
     img: "/horizon.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/c.svg"],
     link: "https://claude.ai/artifact/TALpCQwdvDFebsQNpca2vA",
+  },
+  {
+    id: 5,
+    title: "SushiMania – Sushi Ordering Website",
+    des: "A user-friendly sushi restaurant website built with HTML, CSS, and JavaScript, focused on responsive UI, an interactive cart, and clear UX.",
+    img: "/sushi.png",
+    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
+    link: "https://sushi-zj20.onrender.com",
   },
 ];
 
