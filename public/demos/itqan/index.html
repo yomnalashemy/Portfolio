@@ -1,0 +1,267 @@
+<title>ITQAN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --background:#ffffff; --surface:#ffffff; --surface-sunken:#f5f6f8;
+    --foreground:#0f1215; --foreground-muted:#4a515b; --foreground-subtle:#656d78;
+    --border:#d7dbe1; --border-strong:#a8b0ba; --border-subtle:#e8eaee;
+    --primary:#0f1215; --primary-foreground:#ffffff;
+    --gold:#856a22; --gold-soft:#f9f5ea;
+    --green:#216146;
+    --topic-motion:#a8500f; --topic-thermal:#a3342a; --topic-waves:#0f6478;
+    --topic-electricity:#7a5a06; --topic-nuclear:#2c6e33; --topic-space:#543aa0;
+    --shadow-md: 0 1px 3px rgba(15,18,21,.08), 0 1px 2px rgba(15,18,21,.04);
+    --shadow-lg: 0 8px 24px rgba(15,18,21,.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --background:#0b0c0e; --surface:#131518; --surface-sunken:#0b0c0e;
+      --foreground:#f5f6f8; --foreground-muted:#b6bbc3; --foreground-subtle:#888e98;
+      --border:#2f343b; --border-strong:#454b55; --border-subtle:#23272c;
+      --primary:#f5f6f8; --primary-foreground:#0b0c0e;
+      --gold:#dcc68f; --gold-soft:#171205;
+      --green:#4a9d76;
+      --topic-motion:#d3874a; --topic-thermal:#cc6259; --topic-waves:#4d97ac;
+      --topic-electricity:#b99433; --topic-nuclear:#6a9e57; --topic-space:#8f7bd4;
+      --shadow-md: 0 2px 8px rgba(0,0,0,.45);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --background:#0b0c0e; --surface:#131518; --surface-sunken:#0b0c0e;
+    --foreground:#f5f6f8; --foreground-muted:#b6bbc3; --foreground-subtle:#888e98;
+    --border:#2f343b; --border-strong:#454b55; --border-subtle:#23272c;
+    --primary:#f5f6f8; --primary-foreground:#0b0c0e;
+    --gold:#dcc68f; --gold-soft:#171205;
+    --green:#4a9d76;
+    --topic-motion:#d3874a; --topic-thermal:#cc6259; --topic-waves:#4d97ac;
+    --topic-electricity:#b99433; --topic-nuclear:#6a9e57; --topic-space:#8f7bd4;
+    --shadow-md: 0 2px 8px rgba(0,0,0,.45);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--background); color:var(--foreground);
+    font-family:"Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight:400; padding:0; padding-block:0;
+  }
+  h1,h2,h3{font-family:"Montserrat", sans-serif; font-weight:300; letter-spacing:-0.02em; text-wrap:balance; margin:0;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit;}
+  .ar{font-family:"Amiri", Georgia, serif;}
+
+  .wrap{max-width:1120px; margin:0 auto; padding-inline:24px;}
+  section{padding-block:64px;}
+
+  /* ── top bar ───────────────────────────── */
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding-block:22px;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-name{font-size:15px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;}
+  .badge-live{font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--green); border:1px solid var(--border); padding:3px 8px; border-radius:100px; display:inline-flex; align-items:center; gap:5px;}
+  .badge-live::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--green);}
+  .nav-cta{border:1px solid var(--border-strong); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600;}
+  .nav-cta:hover{border-color:var(--primary);}
+
+  /* ── hero ──────────────────────────────── */
+  .hero{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; padding-block:40px 60px;}
+  .eyebrow{font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); font-weight:600; display:flex; align-items:center; gap:8px;}
+  .eyebrow .ar{font-size:14px; letter-spacing:0; text-transform:none; color:var(--foreground-muted); font-weight:400;}
+  h1.hero-h{font-size:clamp(2.4rem, 5vw, 4.2rem); line-height:0.98; margin-top:14px;}
+  h1.hero-h em{font-style:normal; font-weight:500; color:var(--foreground);}
+  .hero p.lede{font-size:17px; line-height:1.6; color:var(--foreground-muted); margin-top:20px; max-width:46ch;}
+  .cta-row{display:flex; gap:12px; margin-top:30px; flex-wrap:wrap; align-items:center;}
+  .btn-primary{background:var(--primary); color:var(--primary-foreground); padding:13px 24px; border-radius:9px; font-size:14px; font-weight:600; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--primary);}
+  .btn-primary:hover{opacity:0.88;}
+  .fine{font-size:12.5px; color:var(--foreground-subtle);}
+  .roles{display:flex; gap:18px; margin-top:26px; flex-wrap:wrap;}
+  .role{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--foreground-muted);}
+  .role b{color:var(--foreground); font-weight:600;}
+
+  /* ── sky hero art ──────────────────────── */
+  .sky-wrap{position:relative; aspect-ratio:1/1; max-width:460px; margin-inline:auto; width:100%;}
+  .sky-wrap svg{width:100%; height:100%; overflow:visible;}
+  .orbit-ring{fill:none; stroke:var(--border); stroke-width:1;}
+  .planet-spin{transform-origin:500px 500px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .sky-coverage{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; pointer-events:none;}
+  .sky-coverage b{font-size:15px; font-weight:600; margin-top:2px;}
+  .sky-coverage span{font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--foreground-subtle); background:color-mix(in srgb, var(--background) 82%, transparent); padding:1px 6px; border-radius:100px;}
+  @media (prefers-reduced-motion: reduce){ .planet-spin{animation:none !important;} }
+
+  /* ── how it works ──────────────────────── */
+  .section-head{max-width:60ch;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.3rem);}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px;}
+  .card{border:1px solid var(--border); border-radius:14px; padding:22px; background:var(--surface); box-shadow:var(--shadow-md);}
+  .card .chip{display:inline-flex; align-items:center; gap:6px; font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--foreground-subtle); margin-bottom:14px;}
+  .card h3{font-size:17px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px;}
+  .card p{font-size:13.5px; line-height:1.6; color:var(--foreground-muted); margin:0;}
+  .topic-dots{display:flex; gap:5px; margin-top:16px;}
+  .topic-dots span{width:9px; height:9px; border-radius:2px; display:block;}
+
+  /* ── credibility strip ─────────────────── */
+  .strip{border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface-sunken);}
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .stat{padding-block:8px;}
+  .stat b{display:block; font-size:clamp(1.5rem,3vw,2.1rem); font-weight:300; letter-spacing:-0.02em;}
+  .stat span{font-size:12px; color:var(--foreground-muted); line-height:1.5; display:block; margin-top:4px;}
+
+  /* ── scope honesty ─────────────────────── */
+  .scope{display:flex; align-items:center; gap:16px; border:1px solid var(--border); border-radius:14px; padding:20px 24px; margin-top:36px;}
+  .scope .tag{font-size:11px; letter-spacing:0.05em; text-transform:uppercase; font-weight:600; color:var(--foreground); background:var(--gold-soft); border:1px solid var(--border); padding:5px 10px; border-radius:100px; flex:none;}
+  .scope p{font-size:13.5px; color:var(--foreground-muted); margin:0;}
+
+  /* ── final cta ──────────────────────────── */
+  .final{text-align:center; padding-block:80px;}
+  .final h2{font-size:clamp(1.8rem,4vw,2.8rem); max-width:20ch; margin-inline:auto;}
+  .final p{margin-top:14px; color:var(--foreground-muted); font-size:15px;}
+  .final .cta-row{justify-content:center;}
+
+  footer{border-top:1px solid var(--border); padding-block:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:12px; color:var(--foreground-subtle);}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;}
+    .sky-wrap{order:-1; max-width:320px;}
+    .cards{grid-template-columns:1fr;}
+    .stat-row{grid-template-columns:1fr 1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" width="26" height="26" aria-hidden="true"><g fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 L50 32.5 L94 6 L94 66 L50 94 L6 66 Z"/><path d="M50 32.5 L50 94"/></g></svg>
+      <span class="brand-name">ITQAN</span>
+      <span class="badge-live">Live now</span>
+    </div>
+    <a class="nav-cta" href="https://itqan-web-dy2r.onrender.com" target="_blank" rel="noopener">Enter ITQAN</a>
+  </div>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow"><span class="ar">إتقان</span> &middot; mastery, precision</div>
+      <h1 class="hero-h">Every past paper.<br /><em>One syllabus, lit up.</em></h1>
+      <p class="lede">ITQAN turns Cambridge IGCSE past papers into a living map of what you've mastered and what's still dark — question by question, topic by topic.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="https://itqan-web-dy2r.onrender.com" target="_blank" rel="noopener">Enter ITQAN <span aria-hidden="true">&rarr;</span></a>
+        <span class="fine">Free while we build. No card, no catch.</span>
+      </div>
+      <div class="roles">
+        <div class="role"><b>Students</b>&nbsp;work past papers by topic</div>
+        <div class="role"><b>Tutors</b>&nbsp;assign, mark, and report</div>
+      </div>
+    </div>
+
+    <div class="sky-wrap">
+      <svg viewBox="0 0 1000 1000" role="img" aria-label="The ITQAN sky: six Physics 0625 topics orbiting a sun that fills in with syllabus coverage">
+        <defs>
+          <radialGradient id="sun" cx="42%" cy="36%" r="70%">
+            <stop offset="0%" stop-color="#fff6da"/>
+            <stop offset="42%" stop-color="#dcc68f"/>
+            <stop offset="72%" stop-color="#c5a44f"/>
+            <stop offset="100%" stop-color="#856a22"/>
+          </radialGradient>
+        </defs>
+        <circle class="orbit-ring" cx="500" cy="500" r="158"/>
+        <circle class="orbit-ring" cx="500" cy="500" r="228"/>
+        <circle class="orbit-ring" cx="500" cy="500" r="300"/>
+        <circle class="orbit-ring" cx="500" cy="500" r="366"/>
+        <circle class="orbit-ring" cx="500" cy="500" r="424"/>
+        <circle class="orbit-ring" cx="500" cy="500" r="474"/>
+        <circle cx="500" cy="500" r="66" fill="url(#sun)"/>
+
+        <g class="planet-spin" style="animation:spin 42s linear infinite; animation-delay:-24.27s;">
+          <circle cx="500" cy="342" r="19" fill="var(--topic-motion)"/>
+        </g>
+        <g class="planet-spin" style="animation:spin 52s linear infinite; animation-delay:-45.07s;">
+          <circle cx="500" cy="272" r="16" fill="var(--topic-thermal)"/>
+        </g>
+        <g class="planet-spin" style="animation:spin 63s linear infinite; animation-delay:-5.60s;">
+          <circle cx="500" cy="200" r="14" fill="var(--topic-waves)"/>
+        </g>
+        <g class="planet-spin" style="animation:spin 74s linear infinite; animation-delay:-28.37s;">
+          <circle cx="500" cy="134" r="13" fill="var(--topic-electricity)"/>
+        </g>
+        <g class="planet-spin" style="animation:spin 85s linear infinite; animation-delay:-60.44s;">
+          <circle cx="500" cy="76" r="11" fill="var(--topic-nuclear)"/>
+        </g>
+        <g class="planet-spin" style="animation:spin 96s linear infinite; animation-delay:-19.73s;">
+          <circle cx="500" cy="26" r="10" fill="var(--topic-space)"/>
+        </g>
+      </svg>
+      <div class="sky-coverage">
+        <span>Coverage</span>
+        <b>64%</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="section-head">
+    <div class="eyebrow">How it works</div>
+    <h2>Three portals, one record of what's actually been learned.</h2>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <span class="chip">For students</span>
+      <h3>Open your sky</h3>
+      <p>Work through real past-paper questions sorted by topic and subtopic. Each one you master lights up &mdash; the syllabus becomes a map instead of a stack of PDFs.</p>
+      <div class="topic-dots" aria-hidden="true">
+        <span style="background:var(--topic-motion)"></span><span style="background:var(--topic-thermal)"></span><span style="background:var(--topic-waves)"></span><span style="background:var(--topic-electricity)"></span><span style="background:var(--topic-nuclear)"></span><span style="background:var(--topic-space)"></span>
+      </div>
+    </div>
+    <div class="card">
+      <span class="chip">For tutors</span>
+      <h3>Assign from any past paper</h3>
+      <p>Build an assignment from any combination of real exam questions, across years and boards. Mark it, and the student's map updates on its own.</p>
+    </div>
+    <div class="card">
+      <span class="chip">For families</span>
+      <h3>Progress you can actually read</h3>
+      <p>A printed or emailed report shows what was covered and how it went &mdash; no login, no dashboard to learn, no data kept on a child beyond what the report needs.</p>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap">
+    <div class="stat-row">
+      <div class="stat"><b>1,025</b><span>automated tests, each pinned to a bug that actually shipped</span></div>
+      <div class="stat"><b>98.1%</b><span>character accuracy recovering text from corrupted exam PDFs</span></div>
+      <div class="stat"><b>147</b><span>API routes across student, tutor, and admin portals</span></div>
+      <div class="stat"><b>0</b><span>IP addresses ever stored &mdash; visitor analytics are salted and rotate daily</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="scope">
+    <span class="tag">Live scope</span>
+    <p><strong style="color:var(--foreground);">Physics &middot; Cambridge IGCSE 0625</strong> is live today, built question-by-question from real past papers. More subjects are next.</p>
+  </div>
+</section>
+
+<section class="wrap final">
+  <h2>Stop guessing what you know.</h2>
+  <p>See your own syllabus light up.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="https://itqan-web-dy2r.onrender.com" target="_blank" rel="noopener">Enter ITQAN <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>ITQAN &middot; Cambridge IGCSE revision, built to last</span>
+    <span>itqan-web-dy2r.onrender.com</span>
+  </footer>
+</div>

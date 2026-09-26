@@ -1,0 +1,527 @@
+<title>CuraCare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f6f7f5; --surface:#ffffff; --surface-2:#eef1ee;
+    --ink:#14231f; --ink-2:#425048; --muted:#5c6b66; --faint:#8b9a94;
+    --accent:#0f7a5c; --accent-ink:#ffffff; --accent-wash:#e4f2ec;
+    --line:#dee4e1; --ring:rgba(15,122,92,0.18);
+    --good:#0ca30c; --warn:#b8860b; --critical:#d03b3b;
+    --shadow: 0 1px 2px rgba(20,35,31,0.04), 0 8px 24px -12px rgba(20,35,31,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#0f1613; --surface:#16201c; --surface-2:#1b2622;
+      --ink:#eaf0ed; --ink-2:#c7d3ce; --muted:#93a39d; --faint:#5f6f69;
+      --accent:#3fbf93; --accent-ink:#08120e; --accent-wash:#182b23;
+      --line:#26332d; --ring:rgba(63,191,147,0.22);
+      --good:#3fbf70; --warn:#e0ac2e; --critical:#e66767;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px -16px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#0f1613; --surface:#16201c; --surface-2:#1b2622;
+    --ink:#eaf0ed; --ink-2:#c7d3ce; --muted:#93a39d; --faint:#5f6f69;
+    --accent:#3fbf93; --accent-ink:#08120e; --accent-wash:#182b23;
+    --line:#26332d; --ring:rgba(63,191,147,0.22);
+    --good:#3fbf70; --warn:#e0ac2e; --critical:#e66767;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px -16px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding:20px; padding-block:20px;
+  }
+  h1,h2,h3{font-family:"Fraunces", serif; font-weight:600; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  button, input, select{font-family:inherit; font-size:inherit; color:inherit;}
+  a{color:inherit;}
+
+  .app{max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:16px;}
+
+  /* header */
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .mark{width:34px; height:34px; border-radius:9px; background:linear-gradient(155deg,var(--accent),#0b5a43); display:flex; align-items:center; justify-content:center; color:#fff; font-family:"Fraunces",serif; font-weight:600; font-size:17px; flex:none;}
+  .brand h1{font-size:20px; letter-spacing:-0.01em;}
+  .demo-badge{font-size:11.5px; letter-spacing:0.03em; text-transform:uppercase; color:var(--muted); background:var(--surface-2); border:1px solid var(--line); padding:4px 9px; border-radius:100px; display:inline-flex; align-items:center; gap:6px;}
+  .demo-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent);}
+
+  .nav{display:flex; gap:4px; background:var(--surface); border:1px solid var(--line); padding:4px; border-radius:11px; box-shadow:var(--shadow);}
+  .nav button{border:none; background:transparent; padding:7px 14px; border-radius:8px; font-size:13.5px; font-weight:500; color:var(--muted); cursor:pointer;}
+  .nav button.active{background:var(--accent-wash); color:var(--accent);}
+
+  /* stat strip */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow);}
+  .stat .label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;}
+  .stat .value{font-size:26px; font-weight:600; margin-top:4px; font-family:"Fraunces",serif;}
+  .stat .sub{font-size:12.5px; color:var(--faint); margin-top:2px;}
+  .stat .sub.good{color:var(--good);} .stat .sub.warn{color:var(--warn);}
+
+  /* main grid */
+  .grid{display:grid; grid-template-columns:1.35fr 1fr; gap:14px; align-items:start;}
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); overflow:hidden;}
+  .panel-head{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line); gap:10px; flex-wrap:wrap;}
+  .panel-head h2{font-size:16px;}
+  .search{display:flex; align-items:center; gap:8px; background:var(--surface-2); border:1px solid var(--line); border-radius:9px; padding:6px 10px; min-width:180px;}
+  .search input{border:none; background:transparent; outline:none; width:100%; font-size:13.5px;}
+  .btn{border:1px solid var(--line); background:var(--surface); padding:7px 12px; border-radius:9px; font-size:13px; font-weight:500; cursor:pointer; white-space:nowrap;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .btn.primary:hover{opacity:0.92;}
+  .btn.ghost{border-color:transparent; background:transparent;}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  thead th{text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:0.03em; color:var(--muted); font-weight:500; padding:9px 16px; border-bottom:1px solid var(--line);}
+  tbody td{padding:10px 16px; border-bottom:1px solid var(--line); vertical-align:middle;}
+  tbody tr{cursor:pointer;}
+  tbody tr:hover{background:var(--surface-2);}
+  tbody tr.selected{background:var(--accent-wash);}
+  tbody tr:last-child td{border-bottom:none;}
+  .pname{font-weight:600;}
+  .psub{color:var(--muted); font-size:12px;}
+  .pill{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; padding:3px 8px; border-radius:100px; font-weight:500;}
+  .pill.good{background:color-mix(in srgb, var(--good) 14%, transparent); color:var(--good);}
+  .pill.warn{background:color-mix(in srgb, var(--warn) 16%, transparent); color:var(--warn);}
+  .pill.critical{background:color-mix(in srgb, var(--critical) 14%, transparent); color:var(--critical);}
+  .rtable-wrap{max-height:520px; overflow-y:auto;}
+
+  .avatar{width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; color:#fff; flex:none;}
+  .provider-cell{display:flex; align-items:center; gap:8px;}
+
+  .admin-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px;}
+  .admin-card{border-radius:14px; padding:16px 18px; color:#fff; display:flex; align-items:center; gap:14px; box-shadow:var(--shadow);}
+  .admin-card.scheduled{background:linear-gradient(135deg,#2a78d6,#184f95);}
+  .admin-card.pending{background:linear-gradient(135deg,#c98500,#8a5a06);}
+  .admin-card.cancelled{background:linear-gradient(135deg,#d03b3b,#8a1f1f);}
+  .admin-card .aicon{width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.18); display:flex; align-items:center; justify-content:center; font-size:18px; flex:none;}
+  .admin-card .aval{font-size:26px; font-weight:700; font-family:"Fraunces",serif;}
+  .admin-card .alabel{font-size:12px; opacity:0.85;}
+
+  .appt-status{border:none; font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:100px; cursor:pointer;}
+  .appt-status.scheduled{background:color-mix(in srgb, #2a78d6 16%, transparent); color:#2a78d6;}
+  .appt-status.pending{background:color-mix(in srgb, var(--warn) 16%, transparent); color:var(--warn);}
+  .appt-status.cancelled{background:color-mix(in srgb, var(--critical) 14%, transparent); color:var(--critical);}
+
+  /* detail panel */
+  .detail-body{padding:16px; display:flex; flex-direction:column; gap:16px;}
+  .id-row{display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
+  .id-row h3{font-size:19px;}
+  .id-row .mono{font-size:12px; color:var(--faint);}
+  .kv{display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; font-size:13px;}
+  .kv .k{color:var(--muted);}
+  .kv .v{font-weight:500;}
+
+  .vitals{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .vital{background:var(--surface-2); border-radius:10px; padding:10px 12px;}
+  .vital .label{font-size:11px; text-transform:uppercase; color:var(--muted); letter-spacing:0.03em;}
+  .vital .val{font-size:17px; font-weight:600; margin-top:2px;}
+  .vital svg{display:block; margin-top:6px;}
+
+  .section-label{font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); font-weight:600; margin-bottom:8px;}
+
+  .audit{display:flex; flex-direction:column; gap:0; max-height:190px; overflow-y:auto; border-top:1px solid var(--line);}
+  .audit-row{display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:12.5px;}
+  .audit-row:last-child{border-bottom:none;}
+  .audit-row .ts{color:var(--faint); flex:none; width:78px;}
+  .audit-row .who{font-weight:600; flex:none;}
+  .audit-row .what{color:var(--ink-2);}
+
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .form-grid.full{grid-template-columns:1fr;}
+  label{display:flex; flex-direction:column; gap:5px; font-size:12.5px; color:var(--muted);}
+  input[type=text], input[type=date], input[type=time], select, textarea{
+    border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:8px 10px; font-size:13.5px;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{outline:2px solid var(--ring); outline-offset:1px;}
+
+  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(8px); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; box-shadow:var(--shadow); z-index:20;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  dialog{border:none; border-radius:14px; padding:0; background:var(--surface); color:var(--ink); box-shadow:var(--shadow); max-width:420px; width:calc(100% - 32px);}
+  dialog::backdrop{background:rgba(10,15,13,0.45);}
+  .dialog-head{padding:16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;}
+  .dialog-body{padding:16px; display:flex; flex-direction:column; gap:12px;}
+  .dialog-foot{padding:14px 16px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:8px;}
+
+  @media (max-width:860px){
+    .grid{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .form-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:480px){
+    .stats{grid-template-columns:1fr 1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">C</div>
+      <h1>CuraCare</h1>
+      <span class="demo-badge">Demo sandbox &middot; synthetic patients</span>
+    </div>
+    <nav class="nav" id="tabs">
+      <button class="active" data-tab="roster">Roster</button>
+      <button data-tab="admin">Admin dashboard</button>
+    </nav>
+  </div>
+
+  <div id="viewRoster">
+    <div class="stats">
+      <div class="stat"><div class="label">Active patients</div><div class="value mono" id="statActive">—</div><div class="sub">across 3 care teams</div></div>
+      <div class="stat"><div class="label">Today's visits</div><div class="value mono" id="statVisits">—</div><div class="sub good">2 checked in</div></div>
+      <div class="stat"><div class="label">Pending intake</div><div class="value mono" id="statPending">—</div><div class="sub warn">needs review</div></div>
+      <div class="stat"><div class="label">Open alerts</div><div class="value mono" id="statAlerts">—</div><div class="sub">vitals out of range</div></div>
+    </div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Patient roster</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div class="search"><span aria-hidden="true">&#128269;</span><input id="rosterSearch" type="text" placeholder="Search by name or MRN&hellip;" /></div>
+            <button class="btn primary" id="btnNewIntake">+ New intake</button>
+          </div>
+        </div>
+        <div class="rtable-wrap">
+          <table>
+            <thead><tr><th>Patient</th><th>Provider</th><th>Last visit</th><th>Status</th></tr></thead>
+            <tbody id="rosterBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Patient record</h2><button class="btn" id="btnSchedule">Schedule visit</button></div>
+        <div class="detail-body" id="detailBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewAdmin" hidden>
+    <div class="admin-cards">
+      <div class="admin-card scheduled"><div class="aicon">&#128197;</div><div><div class="aval mono" id="admScheduled">0</div><div class="alabel">Scheduled</div></div></div>
+      <div class="admin-card pending"><div class="aicon">&#8987;</div><div><div class="aval mono" id="admPending">0</div><div class="alabel">Pending</div></div></div>
+      <div class="admin-card cancelled"><div class="aicon">&#10005;</div><div><div class="aval mono" id="admCancelled">0</div><div class="alabel">Cancelled</div></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>All appointments</h2><p style="margin:0; font-size:12px; color:var(--muted);">Click a status pill to change it</p></div>
+      <div class="rtable-wrap">
+        <table>
+          <thead><tr><th>Patient</th><th>Provider</th><th>Scheduled for</th><th>Status</th></tr></thead>
+          <tbody id="apptBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<dialog id="dlgIntake">
+  <form method="dialog">
+    <div class="dialog-head"><h3 style="font-size:16px;">New patient intake</h3><button class="btn ghost" value="cancel" type="submit">&times;</button></div>
+    <div class="dialog-body">
+      <div class="form-grid">
+        <label>Full name<input required id="inName" type="text" placeholder="e.g. Salma Tarek" /></label>
+        <label>Date of birth<input required id="inDob" type="date" /></label>
+      </div>
+      <div class="form-grid full">
+        <label>Reason for visit<input required id="inReason" type="text" placeholder="e.g. Follow-up: hypertension" /></label>
+      </div>
+      <div class="form-grid">
+        <label>Assigned provider
+          <select id="inProvider"><option>Dr. A. Haddad</option><option>Dr. R. Youssef</option><option>Dr. L. Kanaan</option></select>
+        </label>
+        <label>Priority
+          <select id="inPriority"><option value="good">Routine</option><option value="warn">Needs review</option><option value="critical">Urgent</option></select>
+        </label>
+      </div>
+    </div>
+    <div class="dialog-foot"><button class="btn" value="cancel" type="submit">Cancel</button><button class="btn primary" value="save" id="btnSaveIntake" type="submit">Create record</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgSchedule">
+  <form method="dialog">
+    <div class="dialog-head"><h3 style="font-size:16px;">Schedule visit</h3><button class="btn ghost" value="cancel" type="submit">&times;</button></div>
+    <div class="dialog-body">
+      <p style="margin:0; font-size:13px; color:var(--muted);">For <strong id="schedFor" style="color:var(--ink);">&mdash;</strong></p>
+      <div class="form-grid">
+        <label>Date<input required id="schDate" type="date" /></label>
+        <label>Time<input required id="schTime" type="time" /></label>
+      </div>
+      <label>Visit type<input id="schType" type="text" placeholder="e.g. Follow-up, Lab review" /></label>
+    </div>
+    <div class="dialog-foot"><button class="btn" value="cancel" type="submit">Cancel</button><button class="btn primary" value="save" id="btnSaveSched" type="submit">Confirm</button></div>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = "curacare-demo-v1";
+
+  var seedPatients = [
+    {id:"MRN-40231", name:"Salma Tarek", dob:"1988-03-14", reason:"Follow-up: hypertension", provider:"Dr. A. Haddad", status:"good", lastVisit:"2026-09-18", nextVisit:"2026-10-02 09:30", hr:[78,81,76,74,79,77], bp:"124/80", temp:"36.8",
+      insurance:"Daman Enhanced", allergies:"Penicillin",
+      audit:[["09:14","Dr. A. Haddad","viewed record"],["08:50","System","vitals synced from monitor"],["08:32","N. Farouk (Nurse)","updated intake form"]]},
+    {id:"MRN-40197", name:"Omar El-Sayed", dob:"1975-11-02", reason:"Post-op wound check", provider:"Dr. R. Youssef", status:"warn", lastVisit:"2026-09-20", nextVisit:"2026-09-27 11:00", hr:[92,95,98,94,101,97], bp:"138/88", temp:"37.4",
+      insurance:"NAS — Comprehensive", allergies:"None known",
+      audit:[["07:55","Dr. R. Youssef","flagged elevated temperature"],["07:40","System","lab result received: WBC"],["Sep 19","N. Farouk (Nurse)","dressing changed"]]},
+    {id:"MRN-40312", name:"Mariam Adel", dob:"1996-06-29", reason:"Annual wellness exam", provider:"Dr. L. Kanaan", status:"good", lastVisit:"2026-09-12", nextVisit:"2027-09-12", hr:[70,72,69,71,73,70], bp:"116/74", temp:"36.6",
+      insurance:"Daman Basic", allergies:"None known",
+      audit:[["Sep 12","Dr. L. Kanaan","closed visit note"],["Sep 12","System","insurance eligibility verified"]]},
+    {id:"MRN-40405", name:"Youssef Hany", dob:"1960-01-08", reason:"Chest pain, rule out ACS", provider:"Dr. A. Haddad", status:"critical", lastVisit:"2026-09-25", nextVisit:"2026-09-26 08:00", hr:[104,110,108,115,112,109], bp:"151/96", temp:"37.1",
+      insurance:"Thiqa (Government)", allergies:"Aspirin",
+      audit:[["06:20","Dr. A. Haddad","ordered troponin panel"],["06:05","System","triage alert: abnormal ECG"],["05:58","N. Farouk (Nurse)","admitted to observation"]]},
+    {id:"MRN-40088", name:"Dina Nabil", dob:"2001-09-17", reason:"Migraine management", provider:"Dr. L. Kanaan", status:"good", lastVisit:"2026-08-30", nextVisit:"2026-11-14", hr:[68,70,67,69,71,68], bp:"110/70", temp:"36.5",
+      insurance:"NAS — Comprehensive", allergies:"Sulfa drugs",
+      audit:[["Aug 30","Dr. L. Kanaan","adjusted prescription"],["Aug 30","System","pharmacy notified"]]},
+    {id:"MRN-40276", name:"Karim Fathy", dob:"1982-05-22", reason:"Diabetes follow-up: A1c review", provider:"Dr. R. Youssef", status:"warn", lastVisit:"2026-09-21", nextVisit:"2026-10-05 14:15", hr:[84,86,88,85,90,87], bp:"129/84", temp:"36.9",
+      insurance:"Daman Enhanced", allergies:"None known",
+      audit:[["Sep 21","Dr. R. Youssef","reviewed A1c: 7.8%"],["Sep 21","System","referral sent: nutrition"]]}
+  ];
+
+  var DOCTOR_COLORS = {
+    "Dr. A. Haddad": "#0f7a5c",
+    "Dr. R. Youssef": "#2a78d6",
+    "Dr. L. Kanaan": "#8b2c4e"
+  };
+  function initials(name){
+    return name.replace(/^Dr\.\s*/,"").split(/\s+/).map(function(p){ return p[0]; }).join("").slice(0,2).toUpperCase();
+  }
+  function avatar(name){
+    var color = DOCTOR_COLORS[name] || "#5c6b66";
+    return '<span class="avatar" style="background:'+color+';">'+initials(name)+'</span>';
+  }
+
+  var APPT_STATUS_CYCLE = ["scheduled","pending","cancelled"];
+  var seedApptStatus = {"MRN-40231":"scheduled","MRN-40197":"pending","MRN-40312":"scheduled","MRN-40405":"pending","MRN-40088":"cancelled","MRN-40276":"scheduled"};
+
+  var state = load() || {patients: seedPatients, selected: seedPatients[0].id, apptStatus: seedApptStatus};
+  if(!state.apptStatus) state.apptStatus = seedApptStatus;
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+  function save(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function fmtDate(iso){
+    var parts = iso.split("-");
+    if(parts.length!==3) return iso;
+    var d = new Date(+parts[0], +parts[1]-1, +parts[2]);
+    return d.toLocaleDateString(undefined,{month:"short", day:"numeric", year:"numeric"});
+  }
+  function age(dob){
+    var b = new Date(dob); var t = new Date(2026,8,26);
+    var a = t.getFullYear()-b.getFullYear();
+    if(t.getMonth()<b.getMonth() || (t.getMonth()===b.getMonth() && t.getDate()<b.getDate())) a--;
+    return a;
+  }
+  function statusLabel(s){ return s==="critical"?"Urgent":s==="warn"?"Needs review":"Routine"; }
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function(){ t.classList.remove("show"); }, 2400);
+  }
+
+  function sparkline(values, color){
+    var w=100, h=28, pad=3;
+    var min=Math.min.apply(null,values), max=Math.max.apply(null,values);
+    var range = (max-min)||1;
+    var step = (w-pad*2)/(values.length-1);
+    var pts = values.map(function(v,i){
+      var x = pad+i*step;
+      var y = h-pad-((v-min)/range)*(h-pad*2);
+      return [x,y];
+    });
+    var d = pts.map(function(p,i){ return (i===0?"M":"L")+p[0].toFixed(1)+","+p[1].toFixed(1); }).join(" ");
+    var last = pts[pts.length-1];
+    return '<svg width="100" height="28" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="trend sparkline">'+
+      '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+      '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.6" fill="'+color+'"/>'+
+      '</svg>';
+  }
+
+  function statusColorVar(s){ return s==="critical"?"var(--critical)":s==="warn"?"var(--warn)":"var(--good)"; }
+
+  function renderStats(){
+    var p = state.patients;
+    document.getElementById("statActive").textContent = p.length;
+    document.getElementById("statVisits").textContent = p.filter(function(x){ return x.nextVisit && x.nextVisit.indexOf("2026-09-26")===0; }).length + 3;
+    document.getElementById("statPending").textContent = p.filter(function(x){ return x.status==="warn"; }).length;
+    document.getElementById("statAlerts").textContent = p.filter(function(x){ return x.status==="critical"; }).length;
+  }
+
+  function renderRoster(){
+    var q = (document.getElementById("rosterSearch").value||"").toLowerCase();
+    var tbody = document.getElementById("rosterBody");
+    tbody.innerHTML = "";
+    state.patients
+      .filter(function(p){ return p.name.toLowerCase().indexOf(q)>-1 || p.id.toLowerCase().indexOf(q)>-1; })
+      .forEach(function(p){
+        var tr = document.createElement("tr");
+        if(p.id===state.selected) tr.className = "selected";
+        tr.innerHTML =
+          '<td><div class="pname">'+p.name+'</div><div class="psub mono">'+p.id+' &middot; age '+age(p.dob)+'</div></td>'+
+          '<td><div class="provider-cell">'+avatar(p.provider)+'<span>'+p.provider.replace(/^Dr\.\s*/,"")+'</span></div></td>'+
+          '<td class="mono">'+fmtDate(p.lastVisit)+'</td>'+
+          '<td><span class="pill '+p.status+'">'+statusLabel(p.status)+'</span></td>';
+        tr.addEventListener("click", function(){ state.selected = p.id; save(); renderAll(); });
+        tbody.appendChild(tr);
+      });
+  }
+
+  function renderDetail(){
+    var p = state.patients.find(function(x){ return x.id===state.selected; }) || state.patients[0];
+    var body = document.getElementById("detailBody");
+    if(!p){ body.innerHTML = '<p style="color:var(--muted); font-size:13px;">No patient selected.</p>'; return; }
+    document.getElementById("schedFor").textContent = p.name;
+
+    var hrColor = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0f7a5c";
+
+    body.innerHTML =
+      '<div class="id-row"><div><h3>'+p.name+'</h3><div class="mono" style="margin-top:2px;">'+p.id+' &middot; DOB '+fmtDate(p.dob)+' (age '+age(p.dob)+')</div></div><span class="pill '+p.status+'">'+statusLabel(p.status)+'</span></div>'+
+      '<div class="kv">'+
+        '<div class="k">Reason for visit</div><div class="v">'+p.reason+'</div>'+
+        '<div class="k">Care team</div><div class="v provider-cell">'+avatar(p.provider)+'<span>'+p.provider+'</span></div>'+
+        '<div class="k">Last visit</div><div class="v mono">'+fmtDate(p.lastVisit)+'</div>'+
+        '<div class="k">Next visit</div><div class="v mono">'+p.nextVisit+'</div>'+
+        '<div class="k">Insurance</div><div class="v">'+(p.insurance||'&mdash;')+'</div>'+
+        '<div class="k">Allergies</div><div class="v">'+(p.allergies||'&mdash;')+'</div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="section-label">Vitals &middot; last 6 readings</div>'+
+        '<div class="vitals">'+
+          '<div class="vital"><div class="label">Heart rate</div><div class="val mono">'+p.hr[p.hr.length-1]+' bpm</div>'+sparkline(p.hr, hrColor)+'</div>'+
+          '<div class="vital"><div class="label">Blood pressure</div><div class="val mono">'+p.bp+'</div></div>'+
+          '<div class="vital"><div class="label">Temperature</div><div class="val mono">'+p.temp+'&deg;C</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="section-label">Audit trail</div>'+
+        '<div class="audit">'+p.audit.map(function(a){
+          return '<div class="audit-row"><span class="ts mono">'+a[0]+'</span><span class="who">'+a[1]+'</span><span class="what">'+a[2]+'</span></div>';
+        }).join("")+'</div>'+
+      '</div>';
+  }
+
+  function renderAdmin(){
+    var counts = {scheduled:0, pending:0, cancelled:0};
+    state.patients.forEach(function(p){
+      var s = state.apptStatus[p.id] || "scheduled";
+      counts[s] = (counts[s]||0) + 1;
+    });
+    document.getElementById("admScheduled").textContent = counts.scheduled;
+    document.getElementById("admPending").textContent = counts.pending;
+    document.getElementById("admCancelled").textContent = counts.cancelled;
+
+    var tbody = document.getElementById("apptBody");
+    tbody.innerHTML = state.patients.map(function(p){
+      var s = state.apptStatus[p.id] || "scheduled";
+      return '<tr>'+
+        '<td><div class="pname">'+p.name+'</div><div class="psub mono">'+p.id+'</div></td>'+
+        '<td><div class="provider-cell">'+avatar(p.provider)+'<span>'+p.provider.replace(/^Dr\.\s*/,"")+'</span></div></td>'+
+        '<td class="mono">'+p.nextVisit+'</td>'+
+        '<td><button class="appt-status '+s+'" data-appt="'+p.id+'">'+s.charAt(0).toUpperCase()+s.slice(1)+'</button></td>'+
+      '</tr>';
+    }).join("");
+
+    tbody.querySelectorAll("[data-appt]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.dataset.appt;
+        var cur = state.apptStatus[id] || "scheduled";
+        var next = APPT_STATUS_CYCLE[(APPT_STATUS_CYCLE.indexOf(cur)+1) % APPT_STATUS_CYCLE.length];
+        state.apptStatus[id] = next;
+        save();
+        renderAdmin();
+      });
+    });
+  }
+
+  function renderAll(){ renderStats(); renderRoster(); renderDetail(); renderAdmin(); }
+
+  document.getElementById("rosterSearch").addEventListener("input", renderRoster);
+
+  document.getElementById("btnNewIntake").addEventListener("click", function(){
+    document.getElementById("dlgIntake").showModal();
+  });
+  document.getElementById("dlgIntake").addEventListener("close", function(e){
+    var dlg = e.target;
+    if(dlg.returnValue!=="save") return;
+    var name = document.getElementById("inName").value.trim();
+    var dob = document.getElementById("inDob").value;
+    var reason = document.getElementById("inReason").value.trim();
+    if(!name || !dob || !reason) return;
+    var provider = document.getElementById("inProvider").value;
+    var priority = document.getElementById("inPriority").value;
+    var id = "MRN-"+(40000+Math.floor(Math.random()*900+100));
+    var now = new Date().toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"});
+    var rec = {id:id, name:name, dob:dob, reason:reason, provider:provider, status:priority,
+      lastVisit:"2026-09-26", nextVisit:"Not yet scheduled",
+      hr:[74,75,73,76,74,75], bp:"118/76", temp:"36.7",
+      audit:[[now, "You", "created new intake record"]]};
+    state.patients.unshift(rec);
+    state.selected = id;
+    save(); renderAll();
+    toast("Intake created for "+name);
+    document.getElementById("inName").value=""; document.getElementById("inDob").value="";
+    document.getElementById("inReason").value="";
+  });
+
+  document.getElementById("btnSchedule").addEventListener("click", function(){
+    document.getElementById("dlgSchedule").showModal();
+  });
+  document.getElementById("dlgSchedule").addEventListener("close", function(e){
+    var dlg = e.target;
+    if(dlg.returnValue!=="save") return;
+    var date = document.getElementById("schDate").value;
+    var time = document.getElementById("schTime").value;
+    if(!date || !time) return;
+    var p = state.patients.find(function(x){ return x.id===state.selected; });
+    if(!p) return;
+    p.nextVisit = date+" "+time;
+    p.audit.unshift([new Date().toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"}), "You", "scheduled a visit"]);
+    save(); renderAll();
+    toast("Visit scheduled for "+p.name);
+    document.getElementById("schDate").value=""; document.getElementById("schTime").value=""; document.getElementById("schType").value="";
+  });
+
+  document.getElementById("tabs").addEventListener("click", function(e){
+    var btn = e.target.closest("button"); if(!btn) return;
+    document.querySelectorAll("#tabs button").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    var isAdmin = btn.dataset.tab==="admin";
+    document.getElementById("viewRoster").hidden = isAdmin;
+    document.getElementById("viewAdmin").hidden = !isAdmin;
+  });
+
+  renderAll();
+
+  function boot(data){ if(data && data.patients) state = data; renderAll(); }
+  if(window.claude && window.claude.hot){
+    window.claude.hot.snapshot(function(){ return state; });
+    window.claude.hot.ready ? window.claude.hot.ready(boot) : boot(window.claude.hot.data);
+  }
+})();
+</script>

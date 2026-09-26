@@ -26,6 +26,10 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+        mono: ["var(--font-mono)"],
+      },
       colors: {
         black: {
           DEFAULT: "#000",
@@ -42,6 +46,19 @@ const config = {
           "100": "#00CEC8",
         },
         green: "#005451",
+        // Console palette — the whole redesign runs on these five.
+        console: {
+          bg: "#0a0a09",
+          surface: "#131311",
+          raised: "#1a1a17",
+          line: "#26261f",
+          ink: "#f2f1ea",
+          muted: "#8f8d80",
+          faint: "#5c5b51",
+          amber: "#e8a33d",
+          "amber-dim": "#8a611f",
+          good: "#4fae6a",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -146,6 +163,10 @@ const config = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        "cursor-blink": {
+          "0%, 49%": { opacity: "1" },
+          "50%, 100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -159,6 +180,7 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        "cursor-blink": "cursor-blink 1s step-end infinite",
       },
     },
   },

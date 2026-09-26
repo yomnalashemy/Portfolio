@@ -1,7 +1,6 @@
 export const navItems = [
-  { name: "About", link: "#about" },
-  { name: "Projects", link: "#projects" },
-  { name: "Testimonials", link: "#testimonials" },
+  { name: "Profile", link: "#about" },
+  { name: "Systems", link: "#systems" },
   { name: "Contact", link: "#contact" },
 ];
 
@@ -70,51 +69,69 @@ export const gridItems = [
 export const projects = [
   {
     id: 1,
+    tag: "ITQAN",
     title: "ITQAN – Full-Stack Cambridge IGCSE Revision Platform",
     des: "~61K lines of TypeScript, 147 API routes, 1,025 automated tests, serving students, tutors, and parents with assignments, marking, and progress tracking — used across the UAE and Egypt.",
     img: "/itqan.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg", "/c.svg"],
     link: "https://itqan-web-dy2r.onrender.com/welcome",
+    demo: "/demos/itqan/",
+    repo: "https://github.com/yomnalashemy/ITQAN_TECH",
   },
   {
     id: 2,
+    tag: "CuraCare",
     title: "CuraCare – Full-Stack Healthcare Platform",
     des: "Secure platform with structured data models for patient intake, appointment flow, and medical records — admin/provider dashboards with SQL-based access controls and audit trails.",
     img: "/Carepulse.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/fm.svg"],
     link: "https://claude.ai/artifact/P7raKA66GyFudtepYzFyuf",
+    demo: "/demos/curacare/",
+    repo: "https://github.com/yomnalashemy/mini-carepulse",
   },
   {
     id: 3,
+    tag: "Lupira",
     title: "Lupira – Full-Stack AI-Powered Lupus Detection App",
     des: "SVM models for early lupus risk prediction — custom datasets, clinical-input mapping to diagnostic probabilities, and visualized output guiding patient self-assessments.",
     img: "/Lupira.png",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg", "/c.svg"],
     link: "https://claude.ai/artifact/8MtmHz8e9Nh6fx4rwTQPDy",
+    demo: "/demos/lupira/",
+    repo: "https://github.com/yomnalashemy/Lupira",
   },
   {
     id: 4,
+    tag: "Horizon Banking",
     title: "Horizon Banking – Full-Stack Financial Management Platform",
     des: "Responsive fintech app with secure auth, cross-account transfers, and data-driven spending analysis — SQL-based reporting for user-level insights and budgeting.",
     img: "/horizon.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/c.svg"],
     link: "https://claude.ai/artifact/TALpCQwdvDFebsQNpca2vA",
+    demo: "/demos/banking/",
+    repo: "https://github.com/yomnalashemy/mini-banking",
   },
   {
     id: 5,
+    tag: "SushiMania",
     title: "SushiMania – Sushi Ordering Website",
     des: "A user-friendly sushi restaurant website built with HTML, CSS, and JavaScript, focused on responsive UI, an interactive cart, and clear UX.",
     img: "/sushi.png",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
     link: "https://sushi-zj20.onrender.com",
+    demo: "https://sushi-zj20.onrender.com",
+    repo: "https://github.com/yomnalashemy/Sushi",
   },
   {
     id: 6,
+    tag: "Sentinel",
     title: "Sentinel – Raw Data to Branded PDF Engine (mini demo)",
     des: "A generic miniature of an internal tool suite built at Ziina: the same raw data, rendered live into a real PDF through three completely different brand templates — the engine, not any specific report.",
     img: "/sentinel.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg"],
     link: "https://claude.ai/artifact/U3hS6i8hvLSd8yCxpnijaq",
+    demo: "/demos/sentinel/",
+    repo: "https://github.com/yomnalashemy/mini-sentinel",
   },
 ];
 
@@ -219,13 +236,16 @@ export const socialMedia = [
   {
     id: 1,
     img: "/git.svg",
+    link: "https://github.com/yomnalashemy",
   },
   {
     id: 2,
     img: "/twit.svg",
+    link: "",
   },
   {
     id: 3,
     img: "/link.svg",
+    link: "",
   },
 ];

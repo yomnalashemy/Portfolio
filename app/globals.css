@@ -71,15 +71,25 @@
     @apply border-border !scroll-smooth;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-console-bg text-console-ink;
   }
   button {
     @apply active:outline-none;
+  }
+  ::selection {
+    background: color-mix(in srgb, theme("colors.console.amber") 30%, transparent);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.console.line") transparent;
   }
 }
 
 @layer utilities {
   .heading {
-    @apply font-bold text-4xl md:text-5xl text-center;
+    @apply font-mono font-semibold text-3xl md:text-4xl;
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.16em] text-console-amber;
   }
 }

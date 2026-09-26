@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 
-
 import "./globals.css";
 import { ThemeProvider } from "./provider";
 
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { IBM_Plex_Mono, Manrope } from "next/font/google";
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
+const sans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
-  title: "Yomna's Portfolio",
-  description: "Modern & Minimal JS Mastery Portfolio",
+  title: "Yomna Alshemy — Live Systems",
+  description:
+    "FinCrime analyst and full-stack engineer. Six real, running systems — not screenshots of them.",
 };
 
 export default function RootLayout({
@@ -23,7 +28,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/girl-icon.png" sizes="any" />
       </head>
-      <body className={jakarta.className}>
+      <body className={`${sans.variable} ${mono.variable} font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

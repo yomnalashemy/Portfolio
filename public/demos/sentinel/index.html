@@ -1,0 +1,387 @@
+<title>Sentinel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f4f3ef; --surface:#ffffff; --surface-2:#ece9e2;
+    --ink:#20242a; --ink-2:#3d434a; --muted:#5b626b; --faint:#8a9098;
+    --accent:#8a3b2e; --accent-ink:#ffffff; --accent-wash:#f3e6e2;
+    --line:#e2e0d9; --ring:rgba(138,59,46,0.22);
+    --shadow:0 1px 2px rgba(32,36,42,0.05), 0 10px 26px -14px rgba(32,36,42,0.2);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#14171b; --surface:#1c2126; --surface-2:#20262c;
+      --ink:#eef0f2; --ink-2:#ccd2d8; --muted:#9aa2ab; --faint:#5f666e;
+      --accent:#d97a5f; --accent-ink:#221008; --accent-wash:#2c1e18;
+      --line:#2a3038; --ring:rgba(217,122,95,0.25);
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#14171b; --surface:#1c2126; --surface-2:#20262c;
+    --ink:#eef0f2; --ink-2:#ccd2d8; --muted:#9aa2ab; --faint:#5f666e;
+    --accent:#d97a5f; --accent-ink:#221008; --accent-wash:#2c1e18;
+    --line:#2a3038; --ring:rgba(217,122,95,0.25);
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 30px -16px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:"Archivo", system-ui, sans-serif; padding:20px; padding-block:20px;}
+  h1,h2,h3{font-family:"Source Serif 4", serif; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums;}
+  a{color:inherit;}
+  button,input,select,textarea{font-family:inherit; font-size:inherit; color:inherit;}
+
+  .app{max-width:1160px; margin:0 auto; display:flex; flex-direction:column; gap:16px;}
+  header.top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .mark{width:34px; height:34px; border-radius:9px; background:linear-gradient(155deg,var(--accent),#5c2318); display:flex; align-items:center; justify-content:center; color:#fff; font-family:"Source Serif 4",serif; font-weight:700; font-size:16px; flex:none;}
+  .brand h1{font-size:20px; font-weight:600;}
+  .badge{font-size:11.5px; letter-spacing:0.03em; text-transform:uppercase; color:var(--muted); background:var(--surface-2); border:1px solid var(--line); padding:4px 9px; border-radius:100px;}
+
+  .notice{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:13px; color:var(--ink-2); display:flex; gap:10px; align-items:flex-start;}
+  .notice .ico{flex:none; font-size:16px; line-height:1;}
+  .notice strong{color:var(--ink);}
+
+  .layout{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);}
+  .card-head{padding:15px 18px; border-bottom:1px solid var(--line);}
+  .card-head h2{font-size:16px;}
+  .card-head p{margin:3px 0 0; font-size:12px; color:var(--muted); font-family:"Archivo",sans-serif;}
+  .card-body{padding:16px 18px; display:flex; flex-direction:column; gap:14px;}
+
+  .brand-picker{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .brand-opt{border:1.5px solid var(--line); border-radius:10px; padding:10px 8px; text-align:center; cursor:pointer; background:var(--surface);}
+  .brand-opt.active{border-color:var(--accent); background:var(--accent-wash);}
+  .brand-opt .swatch{width:100%; height:22px; border-radius:6px; margin-bottom:7px;}
+  .brand-opt .name{font-size:12.5px; font-weight:600;}
+  .brand-opt input{position:absolute; opacity:0; pointer-events:none;}
+
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  label{display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em; font-weight:600;}
+  input, select, textarea{
+    border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:9px 10px; font-size:13.5px; color:var(--ink); text-transform:none; font-weight:400; letter-spacing:0;
+  }
+  textarea{resize:vertical; min-height:56px; font-family:"Archivo",sans-serif; line-height:1.5;}
+  input:focus, select:focus, textarea:focus, button:focus-visible{outline:2px solid var(--ring); outline-offset:1px;}
+
+  .stat-list{display:flex; flex-direction:column; gap:8px;}
+  .stat-row{display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:center;}
+  .stat-row input{margin:0;}
+  .icon-btn{border:1px solid var(--line); background:var(--surface); border-radius:8px; width:34px; height:34px; cursor:pointer; font-size:15px; line-height:1; flex:none;}
+  .icon-btn:hover{border-color:var(--accent);}
+  .add-row{align-self:flex-start; font-size:12.5px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; padding:0;}
+
+  .btn{border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink); padding:11px 18px; border-radius:9px; font-size:13.5px; font-weight:600; cursor:pointer; width:100%;}
+  .btn:hover{opacity:0.92;}
+
+  .preview-wrap{padding:16px 18px; display:flex; flex-direction:column; gap:10px;}
+  .preview-frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface-2); aspect-ratio:8.5/11; width:100%;}
+  .preview-frame iframe{width:100%; height:100%; border:none; display:block;}
+  .preview-hint{font-size:12px; color:var(--faint); text-align:center;}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .row{grid-template-columns:1fr;}
+    .brand-picker{grid-template-columns:1fr 1fr 1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="mark">S</div><h1>Sentinel</h1></div>
+    <span class="badge">Portfolio demo &middot; generic sample data</span>
+  </header>
+
+  <div class="notice">
+    <span class="ico">&#128196;</span>
+    <div><strong>The point isn't fraud, or reports specifically &mdash; it's the engine underneath.</strong> Sentinel's real job at work is turning raw, structured data into a properly formatted, print-ready PDF on demand. This mini demo proves that by doing something sillier than any real use case: the exact same data, rendered through three completely different "brands." Change the data once, or change the brand once &mdash; either way, a real PDF comes out the other side.</div>
+  </div>
+
+  <div class="layout">
+    <div class="card">
+      <div class="card-head"><h2>Raw data &rarr; branded PDF</h2><p>Pick a brand, edit the data, generate. The preview is a real PDF, not a mockup.</p></div>
+      <div class="card-body">
+        <div>
+          <label style="margin-bottom:8px;">Brand template</label>
+          <div class="brand-picker" id="brandPicker">
+            <label class="brand-opt active" data-brand="standard">
+              <input type="radio" name="brand" value="standard" checked />
+              <div class="swatch" style="background:#1b2430;"></div>
+              <div class="name">Standard</div>
+            </label>
+            <label class="brand-opt" data-brand="barbie">
+              <input type="radio" name="brand" value="barbie" />
+              <div class="swatch" style="background:linear-gradient(90deg,#ff5fa2,#ffd1e6);"></div>
+              <div class="name">Barbie</div>
+            </label>
+            <label class="brand-opt" data-brand="oppenheimer">
+              <input type="radio" name="brand" value="oppenheimer" />
+              <div class="swatch" style="background:repeating-linear-gradient(90deg,#0a0a0a 0 6px, #fff 6px 12px);"></div>
+              <div class="name">Oppenheimer</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Report title<input id="reportTitle" type="text" value="Quarterly Rollout Summary" /></label>
+          <label>Prepared for<input id="preparedFor" type="text" value="Leadership Team" /></label>
+        </div>
+
+        <div>
+          <label style="margin-bottom:8px;">Data points (label / value)</label>
+          <div class="stat-list" id="statList"></div>
+          <button class="add-row" id="btnAddRow" type="button">+ Add data point</button>
+        </div>
+
+        <label>Notes<textarea id="notes" rows="3">Placeholder narrative — any free text goes here, regardless of which brand renders it.</textarea></label>
+
+        <button class="btn" id="btnGenerate" type="button">Generate PDF</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Preview</h2><p>Rendered live &mdash; use the viewer's own controls to print or save it.</p></div>
+      <div class="preview-wrap">
+        <div class="preview-frame"><iframe id="pdfFrame" title="Generated PDF preview"></iframe></div>
+        <div class="preview-hint">A real generated PDF, not a screenshot &mdash; open it full-size or save it from the viewer toolbar above.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DEFAULT_STATS = [
+    ["Regions live", "12"],
+    ["Adoption", "87%"],
+    ["Open issues", "3"],
+  ];
+
+  function addStatRow(label, value){
+    var list = document.getElementById("statList");
+    var row = document.createElement("div");
+    row.className = "stat-row";
+    row.innerHTML =
+      '<input type="text" class="stat-label" value="' + label.replace(/"/g,"&quot;") + '" placeholder="Label" />' +
+      '<input type="text" class="stat-value" value="' + value.replace(/"/g,"&quot;") + '" placeholder="Value" />' +
+      '<button type="button" class="icon-btn" aria-label="Remove data point">&times;</button>';
+    row.querySelector(".icon-btn").addEventListener("click", function(){ row.remove(); });
+    list.appendChild(row);
+  }
+
+  DEFAULT_STATS.forEach(function(s){ addStatRow(s[0], s[1]); });
+
+  document.getElementById("btnAddRow").addEventListener("click", function(){
+    addStatRow("", "");
+  });
+
+  document.getElementById("brandPicker").addEventListener("click", function(e){
+    var opt = e.target.closest(".brand-opt");
+    if(!opt) return;
+    document.querySelectorAll(".brand-opt").forEach(function(o){ o.classList.remove("active"); });
+    opt.classList.add("active");
+  });
+
+  function currentBrand(){
+    var checked = document.querySelector('input[name="brand"]:checked');
+    return checked ? checked.value : "standard";
+  }
+
+  function collectStats(){
+    var rows = document.querySelectorAll("#statList .stat-row");
+    var out = [];
+    rows.forEach(function(r){
+      var label = r.querySelector(".stat-label").value.trim();
+      var value = r.querySelector(".stat-value").value.trim();
+      if(label || value) out.push([label || "—", value || "—"]);
+    });
+    return out;
+  }
+
+  function wrapLines(doc, text, maxWidth){
+    return doc.splitTextToSize(text, maxWidth);
+  }
+
+  // ---- Brand templates: same data in, wildly different PDF out ----
+
+  function renderStandard(doc, data){
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 54;
+    var contentW = pageW - margin * 2;
+    var y = margin;
+
+    doc.setFillColor(27, 36, 48);
+    doc.rect(0, 0, pageW, 70, "F");
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text(data.title, margin, 42);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Prepared for " + data.preparedFor, margin, 58);
+
+    y = 100;
+    doc.setTextColor(20,20,20);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("KEY FIGURES", margin, y);
+    y += 18;
+    doc.setDrawColor(220,220,220);
+    data.stats.forEach(function(s){
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(s[0], margin, y);
+      doc.setFont("helvetica", "bold");
+      doc.text(s[1], pageW - margin, y, { align: "right" });
+      y += 14;
+      doc.line(margin, y - 9, pageW - margin, y - 9);
+    });
+    y += 16;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("NOTES", margin, y);
+    y += 16;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    wrapLines(doc, data.notes, contentW).forEach(function(line){ doc.text(line, margin, y); y += 14; });
+
+    doc.setFontSize(8);
+    doc.setTextColor(150,150,150);
+    doc.text("Generated by Sentinel (demo) — standard brand", margin, doc.internal.pageSize.getHeight() - 30);
+  }
+
+  function renderBarbie(doc, data){
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var margin = 50;
+    var y = 0;
+
+    doc.setFillColor(255, 95, 162);
+    doc.rect(0, 0, pageW, pageH, "F");
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(24, 24, pageW - 48, pageH - 48, 18, 18, "F");
+
+    y = 70;
+    doc.setTextColor(219, 39, 119);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text(String(data.title).toUpperCase() + " *", margin, y);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("A fabulous update for " + data.preparedFor, margin, y + 18);
+
+    y += 46;
+    data.stats.forEach(function(s){
+      doc.setFillColor(255, 209, 230);
+      doc.roundedRect(margin, y - 12, pageW - margin * 2, 26, 13, 13, "F");
+      doc.setTextColor(157, 23, 77);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("* " + s[0], margin + 12, y + 5);
+      doc.text(s[1], pageW - margin - 12, y + 5, { align: "right" });
+      y += 34;
+    });
+
+    y += 12;
+    doc.setTextColor(219, 39, 119);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("XOXO, NOTES", margin, y);
+    y += 16;
+    doc.setTextColor(80, 30, 55);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    wrapLines(doc, data.notes, pageW - margin * 2).forEach(function(line){ doc.text(line, margin, y); y += 14; });
+
+    doc.setFontSize(8);
+    doc.setTextColor(219, 39, 119);
+    doc.text("Generated by Sentinel (demo) — barbie brand, obviously", margin, pageH - 40);
+  }
+
+  function renderOppenheimer(doc, data){
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var margin = 54;
+    var y = 0;
+
+    doc.setFillColor(10, 10, 10);
+    doc.rect(0, 0, pageW, pageH, "F");
+    doc.setDrawColor(255,255,255);
+    doc.setLineWidth(1.2);
+    doc.rect(20, 20, pageW - 40, pageH - 40);
+
+    doc.setTextColor(255,255,255);
+    doc.setFont("courier", "bold");
+    doc.setFontSize(9);
+    doc.text("DECLASSIFIED // FOR DEMONSTRATION ONLY", margin, 46);
+    doc.setLineWidth(0.6);
+    doc.line(margin, 52, pageW - margin, 52);
+
+    y = 82;
+    doc.setFont("courier", "bold");
+    doc.setFontSize(20);
+    doc.text(String(data.title).toUpperCase(), margin, y);
+    doc.setFont("courier", "normal");
+    doc.setFontSize(10);
+    doc.text("PREPARED FOR: " + String(data.preparedFor).toUpperCase(), margin, y + 20);
+
+    y += 48;
+    doc.setFont("courier", "bold");
+    doc.setFontSize(10);
+    doc.text("[ DATA ]", margin, y);
+    y += 16;
+    data.stats.forEach(function(s){
+      doc.setFont("courier", "normal");
+      doc.setFontSize(10);
+      doc.text(">> " + s[0].toUpperCase(), margin, y);
+      doc.text(String(s[1]).toUpperCase(), pageW - margin, y, { align: "right" });
+      y += 15;
+    });
+
+    y += 14;
+    doc.setFont("courier", "bold");
+    doc.text("[ NOTES ]", margin, y);
+    y += 16;
+    doc.setFont("courier", "normal");
+    doc.setFontSize(10);
+    wrapLines(doc, data.notes, pageW - margin * 2).forEach(function(line){ doc.text(line, margin, y); y += 14; });
+
+    doc.setFont("courier", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(150,150,150);
+    doc.text("Generated by Sentinel (demo) — oppenheimer brand", margin, pageH - 40);
+  }
+
+  function generate(){
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: "pt", format: "letter" });
+
+    var data = {
+      title: document.getElementById("reportTitle").value || "Untitled",
+      preparedFor: document.getElementById("preparedFor").value || "—",
+      stats: collectStats(),
+      notes: document.getElementById("notes").value || "",
+    };
+
+    var brand = currentBrand();
+    if(brand === "barbie") renderBarbie(doc, data);
+    else if(brand === "oppenheimer") renderOppenheimer(doc, data);
+    else renderStandard(doc, data);
+
+    document.getElementById("pdfFrame").src = doc.output("datauristring");
+  }
+
+  document.getElementById("btnGenerate").addEventListener("click", generate);
+  window.addEventListener("load", generate);
+})();
+</script>

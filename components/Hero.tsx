@@ -1,73 +1,104 @@
-import { FaLocationArrow } from "react-icons/fa6";
+"use client";
 
-import MagicButton from "./MagicButton";
-import { Spotlight } from "./ui/Spotlight";
-import { TextGenerateEffect } from "./ui/TextGenerateEffect";
+import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
+import * as React from "react";
+
+import { projects } from "@/data";
+
+/**
+ * The hero used to be a purple/teal Spotlight gradient behind a
+ * TextGenerateEffect headline — the exact combination that shows up on
+ * hundreds of Aceternity-template portfolios. This one leads with the thing
+ * nobody else can copy: every project below is real, running software, not a
+ * screenshot of it. The boot sequence says so literally, using the real
+ * project list rather than invented copy.
+ */
+
+const BOOT_LINES = projects.map((p) => p.title.split(/[–|-]/)[0]!.trim());
 
 const Hero = () => {
+  const [line, setLine] = React.useState(0);
+  const [done, setDone] = React.useState(false);
+
+  React.useEffect(() => {
+    if (line >= BOOT_LINES.length) {
+      const t = setTimeout(() => setDone(true), 400);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setLine((n) => n + 1), 260);
+    return () => clearTimeout(t);
+  }, [line]);
+
   return (
-    <div className="pb-20 pt-36">
-      {/**
-       *  UI: Spotlights
-       *  Link: https://ui.aceternity.com/components/spotlight
-       */}
-      <div>
-        <Spotlight
-          className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
-          fill="white"
-        />
-        <Spotlight
-          className="h-[80vh] w-[50vw] top-10 left-full"
-          fill="green"
-        />
-        <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="bluegreen" />
-      </div>
-
-      {/**
-       *  UI: grid
-       *  change bg color to bg-black-100 and reduce grid color from
-       *  0.2 to 0.03
-       */}
+    <div className="relative min-h-[92vh] flex flex-col justify-center py-20">
+      {/* Faint scanline texture — a nod to the console concept, kept subtle
+          enough to never fight with the actual text. */}
       <div
-        className="h-screen w-full dark:bg-black-100 bg-white dark:bg-grid-white/[0.03] bg-grid-black-100/[0.2]
-       absolute top-0 left-0 flex items-center justify-center"
-      >
-        {/* Radial gradient for the container to give a faded look */}
-        <div
-          // chnage the bg to bg-black-100, so it matches the bg color and will blend in
-          className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black-100
-         bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"
-        />
-      </div>
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 3px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)]"
+        style={{ background: "radial-gradient(ellipse 60% 50% at 30% 20%, rgba(232,163,61,0.08), transparent)" }}
+      />
 
-      <div className="flex justify-center relative my-20 z-10">
-        <div className="max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center justify-center">
-          <p className="uppercase tracking-widest text-xs text-center text-bluegreen-100 max-w-80">
-            Reliable Code, Thoughtful Design, Real Impact
+      <div className="relative z-10 max-w-3xl">
+        <div className="font-mono text-[13px] text-console-muted mb-8 leading-relaxed">
+          <p className="text-console-faint">yomna@systems ~ %</p>
+          <p className="mt-1">
+            <span className="text-console-ink">./boot</span>
+            <span className="text-console-faint"> --list-live-systems</span>
           </p>
-
-          {/**
-           *  Link: https://ui.aceternity.com/components/text-generate-effect
-           *
-           *  change md:text-6xl, add more responsive code
-           */}
-          <TextGenerateEffect
-            words="Transforming Concepts into Seamless User Experiences"
-            className="text-center text-[40px] md:text-5xl lg:text-6xl"
-          />
-
-          <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-            Hi! I&apos;m Yomna, an IT Developer based in Egypt.
-          </p>
-
-          <a href="#about">
-            <MagicButton
-              title="Show my work"
-              icon={<FaLocationArrow />}
-              position="right"
-            />
-          </a>
+          <div className="mt-3 flex flex-col gap-0.5">
+            {BOOT_LINES.map((name, i) => (
+              <motion.div
+                key={name}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: i < line ? 1 : 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-3"
+              >
+                <span className="text-console-faint">[{String(i + 1).padStart(2, "0")}]</span>
+                <span className="text-console-ink">{name}</span>
+                <span className="flex-1 border-b border-dotted border-console-line translate-y-[-3px]" />
+                <span className="text-console-good">online</span>
+              </motion.div>
+            ))}
+          </div>
+          {!done && (
+            <span className="inline-block w-2 h-3.5 bg-console-amber mt-2 animate-cursor-blink" />
+          )}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: done ? 1 : 0, y: done ? 0 : 10 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-[44px] md:text-6xl font-mono font-semibold leading-[1.05] tracking-tight text-console-ink">
+            Six systems.
+            <br />
+            <span className="text-console-amber">All of them running.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-console-muted text-base md:text-lg leading-relaxed">
+            I&rsquo;m Yomna — a FinCrime analyst who builds the tools she wishes she had, and a
+            full-stack engineer who&rsquo;d rather ship a working thing than a pretty picture of
+            one. Everything below is live. Try it.
+          </p>
+          <a
+            href="#systems"
+            className="mt-9 inline-flex items-center gap-2 font-mono text-sm text-console-ink border border-console-line hover:border-console-amber hover:text-console-amber transition-colors rounded-md px-5 py-3"
+          >
+            View the systems
+            <ArrowDown className="size-3.5" />
+          </a>
+        </motion.div>
       </div>
     </div>
   );

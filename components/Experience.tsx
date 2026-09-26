@@ -1,53 +1,43 @@
-import React from "react";
+"use client";
+
+import { motion } from "framer-motion";
 
 import { workExperience } from "@/data";
-import { Button } from "./ui/MovingBorders";
+
+/**
+ * Was a grid of gradient "moving border" cards — flashy, but the border
+ * animation had nothing to do with the content. A simple timeline reads
+ * faster and fits the console concept: entries appearing in sequence, like
+ * a log.
+ */
 
 const Experience = () => {
   return (
-    <div className="py-20 w-full">
-      <h1 className="heading">
-        My <span className="text-green">work experience</span>
-      </h1>
+    <section className="py-24">
+      <p className="eyebrow">03 / Experience</p>
+      <h2 className="heading mt-3 mb-12">Where this was actually built.</h2>
 
-      <div className="w-full mt-12 grid lg:grid-cols-4 grid-cols-1 gap-10">
-        {workExperience.map((card) => (
-          <Button
+      <div className="flex flex-col">
+        {workExperience.map((card, i) => (
+          <motion.div
             key={card.id}
-            //   random duration will be fun , I think , may be not
-            duration={Math.floor(Math.random() * 10000) + 10000}
-            borderRadius="1.75rem"
-            style={{
-              //   add these two
-              //   you can generate the color from here https://cssgradient.io/
-              background: "rgb(0, 84, 81)",
-              backgroundColor:
-                "linear-gradient(90deg, rgba(0, 84, 81,1) 0%, rgba(129, 218, 202,1) 100%)",
-              // add this border radius to make it more rounded so that the moving border is more realistic
-              borderRadius: `calc(1.75rem* 0.96)`,
-            }}
-            // remove bg-white dark:bg-slate-900
-            className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+            className="grid grid-cols-[3rem_1fr] md:grid-cols-[5rem_1fr] gap-4 py-6 border-b border-console-line last:border-b-0"
           >
-            <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
-              <img
-                src={card.thumbnail}
-                alt={card.thumbnail}
-                className="lg:w-32 md:w-20 w-16"
-              />
-              <div className="lg:ms-5">
-                <h1 className="text-start text-xl md:text-2xl font-bold">
-                  {card.title}
-                </h1>
-                <p className="text-start text-white-100 mt-3 font-semibold">
-                  {card.desc}
-                </p>
-              </div>
+            <span className="font-mono text-xs text-console-faint pt-1">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <h3 className="font-mono text-lg text-console-ink">{card.title}</h3>
+              <p className="mt-2 text-console-muted leading-relaxed max-w-2xl">{card.desc}</p>
             </div>
-          </Button>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

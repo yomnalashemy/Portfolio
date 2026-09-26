@@ -1,0 +1,436 @@
+<title>Horizon Banking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#f5f4f0; --surface:#ffffff; --surface-2:#ece9e1;
+    --ink:#1b2430; --ink-2:#3d4655; --muted:#626b78; --faint:#93989e;
+    --accent:#c6742b; --accent-ink:#ffffff; --accent-wash:#faeada;
+    --line:#e3e0d8; --ring:rgba(198,116,43,0.25);
+    --good:#0ca30c; --warn:#b8860b; --critical:#d03b3b;
+    --shadow:0 1px 2px rgba(27,36,48,0.05), 0 10px 28px -14px rgba(27,36,48,0.22);
+    --gridline:#e1e0d9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#12161b; --surface:#1b2129; --surface-2:#212832;
+      --ink:#f2f1ec; --ink-2:#d3d6da; --muted:#9aa3ad; --faint:#5e6670;
+      --accent:#e08a42; --accent-ink:#1a1005; --accent-wash:#2e2013;
+      --line:#2a323b; --ring:rgba(224,138,66,0.28);
+      --good:#3fbf70; --warn:#e0ac2e; --critical:#e66767;
+      --shadow:0 1px 2px rgba(0,0,0,0.35), 0 14px 32px -16px rgba(0,0,0,0.65);
+      --gridline:#2c2c2a;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#12161b; --surface:#1b2129; --surface-2:#212832;
+    --ink:#f2f1ec; --ink-2:#d3d6da; --muted:#9aa3ad; --faint:#5e6670;
+    --accent:#e08a42; --accent-ink:#1a1005; --accent-wash:#2e2013;
+    --line:#2a323b; --ring:rgba(224,138,66,0.28);
+    --good:#3fbf70; --warn:#e0ac2e; --critical:#e66767;
+    --shadow:0 1px 2px rgba(0,0,0,0.35), 0 14px 32px -16px rgba(0,0,0,0.65);
+    --gridline:#2c2c2a;
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; padding:20px; padding-block:20px;}
+  h1,h2,h3{font-family:"Newsreader", serif; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  a{color:inherit;} button,input,select{font-family:inherit; font-size:inherit; color:inherit;}
+
+  .app{max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:16px;}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .mark{width:34px; height:34px; border-radius:9px; background:linear-gradient(155deg,var(--accent),#8a4d15); display:flex; align-items:center; justify-content:center; color:#fff; font-family:"Newsreader",serif; font-weight:600; font-size:17px; flex:none;}
+  .brand h1{font-size:20px; font-weight:600; letter-spacing:-0.01em;}
+  .badge{font-size:11.5px; letter-spacing:0.03em; text-transform:uppercase; color:var(--muted); background:var(--surface-2); border:1px solid var(--line); padding:4px 9px; border-radius:100px;}
+
+  .btn{border:1px solid var(--line); background:var(--surface); padding:8px 14px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); width:100%;}
+  .btn.primary:hover{opacity:.92;}
+  .btn.ghost{border-color:transparent; background:transparent; padding:4px 8px;}
+  .btn:focus-visible, select:focus-visible, input:focus-visible{outline:2px solid var(--ring); outline-offset:2px;}
+
+  /* total balance + animated counter */
+  .balance-strip{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+  .balance-strip .label{font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .balance-strip .value{font-size:38px; font-weight:700; letter-spacing:-0.01em;}
+  .balance-strip .sub{font-size:12.5px; color:var(--faint);}
+
+  /* bank cards */
+  .banks-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .bank-card{border-radius:16px; padding:18px 20px; color:#fff; cursor:pointer; position:relative; overflow:hidden; box-shadow:var(--shadow); border:2px solid transparent; min-height:120px; display:flex; flex-direction:column; justify-content:space-between;}
+  .bank-card.selected{border-color:var(--ink);}
+  .bank-card .bname{font-size:13px; font-weight:600; opacity:.92;}
+  .bank-card .bnum{font-size:12px; opacity:.75; margin-top:2px;}
+  .bank-card .bbal{font-size:22px; font-weight:700; margin-top:14px;}
+  .bank-card::after{content:""; position:absolute; right:-30px; bottom:-30px; width:110px; height:110px; border-radius:50%; background:rgba(255,255,255,0.12);}
+
+  .grid{display:grid; grid-template-columns:1.4fr 1fr; gap:14px; align-items:start;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);}
+  .card-head{padding:15px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+  .card-head h2{font-size:16px; font-weight:600;}
+  .card-head p{margin:2px 0 0; font-size:12px; color:var(--muted); font-family:"Public Sans",sans-serif;}
+  .card-body{padding:16px 18px;}
+
+  /* donut chart */
+  .donut-wrap{display:flex; gap:20px; align-items:center; flex-wrap:wrap;}
+  .donut-svg{flex:none;}
+  .donut-center-val{font-size:19px; font-weight:700;}
+  .donut-center-lbl{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .legend{display:flex; flex-direction:column; gap:8px; flex:1; min-width:160px;}
+  .legend-row{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12.5px;}
+  .legend-left{display:flex; align-items:center; gap:8px; min-width:0;}
+  .legend-chip{width:9px; height:9px; border-radius:3px; flex:none;}
+  .legend-name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .legend-val{font-weight:600; flex:none;}
+
+  .budget-callout{margin-top:16px; padding:12px 14px; border-radius:12px; background:var(--surface-2); display:flex; flex-direction:column; gap:8px;}
+  .budget-callout .t{font-size:12.5px; font-weight:600; display:flex; align-items:center; gap:6px;}
+  .meter{height:8px; border-radius:100px; background:color-mix(in srgb, var(--warn) 18%, var(--surface)); overflow:hidden;}
+  .meter-fill{height:100%; background:var(--warn); border-radius:100px;}
+  .budget-callout .note{font-size:12px; color:var(--muted);}
+
+  .tx-list{display:flex; flex-direction:column; min-height:260px;}
+  .tx-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px dashed var(--line); font-size:13px;}
+  .tx-row:last-child{border-bottom:none;}
+  .tx-left{display:flex; align-items:center; gap:9px; min-width:0;}
+  .tx-dot{width:9px; height:9px; border-radius:3px; flex:none;}
+  .tx-merchant{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tx-meta{font-size:11.5px; color:var(--faint);}
+  .tx-amt{font-weight:600; flex:none;}
+  .tx-amt.neg{color:var(--ink);} .tx-amt.pos{color:var(--good);}
+  .pagination{display:flex; align-items:center; justify-content:center; gap:6px; padding-top:12px; margin-top:6px; border-top:1px solid var(--line);}
+  .page-btn{width:28px; height:28px; border-radius:7px; border:1px solid var(--line); background:var(--surface); font-size:12.5px; cursor:pointer;}
+  .page-btn.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .page-btn:disabled{opacity:.4; cursor:not-allowed;}
+
+  .transfer-body{display:flex; flex-direction:column; gap:12px;}
+  label{display:flex; flex-direction:column; gap:5px; font-size:12.5px; color:var(--muted);}
+  select, input[type=text]{border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:9px 10px; font-size:13.5px;}
+  .amount-input{position:relative;}
+  .amount-input span{position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:13.5px;}
+  .amount-input input{padding-left:22px; width:100%;}
+  .swap-row{display:flex; align-items:center; gap:8px;}
+  .swap-btn{border:1px solid var(--line); background:var(--surface-2); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; font-size:13px;}
+  .err{font-size:12px; color:var(--critical); min-height:16px;}
+
+  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(8px); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:9px; font-size:13px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; box-shadow:var(--shadow); z-index:20;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:900px){
+    .banks-row{grid-template-columns:1fr;}
+    .grid{grid-template-columns:1fr;}
+    .donut-wrap{flex-direction:column; align-items:flex-start;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><div class="mark">H</div><h1>Horizon Banking</h1><span class="badge">Demo sandbox &middot; sample accounts</span></div>
+  </div>
+
+  <div class="balance-strip">
+    <span class="label">Total balance</span>
+    <span class="value mono" id="totalBalance">$0.00</span>
+    <span class="sub" id="balanceSub"></span>
+  </div>
+
+  <div class="banks-row" id="banksRow"></div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-head"><h2>Spending by category</h2><p id="spendScope">This month &middot; Sept 2026</p></div>
+      <div class="card-body">
+        <div class="donut-wrap">
+          <svg class="donut-svg" id="donutSvg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="Spending by category donut chart"></svg>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="budget-callout" id="budgetCallout"></div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card">
+        <div class="card-head"><h2>Move money</h2></div>
+        <div class="card-body transfer-body">
+          <div class="swap-row">
+            <label style="flex:1;">From<select id="fromAcct"></select></label>
+            <button class="swap-btn" id="swapBtn" title="Swap accounts" aria-label="Swap from and to accounts">&#8646;</button>
+            <label style="flex:1;">To<select id="toAcct"></select></label>
+          </div>
+          <label>Amount
+            <span class="amount-input"><span>$</span><input type="text" inputmode="decimal" id="amount" placeholder="0.00" /></span>
+          </label>
+          <div class="err" id="transferErr"></div>
+          <button class="btn primary" id="btnTransfer">Transfer</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Recent transactions</h2><span class="badge" id="bankFilterBadge" hidden></span></div>
+        <div class="card-body">
+          <div class="tx-list" id="txList"></div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = "horizon-banking-demo-v2";
+  var PAGE_SIZE = 5;
+
+  var categoryColor = {
+    Bills:"#2a78d6", Dining:"#eb6834", Groceries:"#1baf7a",
+    Shopping:"#eda100", Subscriptions:"#e87ba4", Transport:"#008300", Transfer:"#4a3aa7"
+  };
+
+  var bankGradients = {
+    checking: "linear-gradient(135deg,#c6742b,#8a4d15)",
+    savings: "linear-gradient(135deg,#2a4858,#16262e)",
+    credit: "linear-gradient(135deg,#5b3aa0,#2e1b57)"
+  };
+
+  var seed = {
+    accounts:{
+      checking:{name:"Everyday Checking", num:"4821", balance:3220.14, trend:[3450,3180,3390,3100,3260,3220.14]},
+      savings:{name:"High-Yield Savings", num:"7309", balance:11520.30, trend:[11200,11250,11340,11400,11460,11520.30]},
+      credit:{name:"Rewards Credit", num:"2094", balance:642.50, trend:[900,820,760,700,660,642.50]}
+    },
+    tx:[
+      {date:"Sep 24", merchant:"Nour's Kitchen", cat:"Dining", amt:-46.00, acct:"checking"},
+      {date:"Sep 23", merchant:"CarrefourMart", cat:"Groceries", amt:-128.40, acct:"checking"},
+      {date:"Sep 22", merchant:"RTA Metro", cat:"Transport", amt:-18.00, acct:"checking"},
+      {date:"Sep 21", merchant:"Netflix", cat:"Subscriptions", amt:-9.99, acct:"credit"},
+      {date:"Sep 20", merchant:"Namshi", cat:"Shopping", amt:-212.50, acct:"credit"},
+      {date:"Sep 19", merchant:"DEWA Bill", cat:"Bills", amt:-310.00, acct:"checking"},
+      {date:"Sep 18", merchant:"Salary Deposit", cat:"Income", amt:4200.00, acct:"checking"},
+      {date:"Sep 17", merchant:"Zoom Cafe", cat:"Dining", amt:-21.75, acct:"credit"},
+      {date:"Sep 16", merchant:"Spotify", cat:"Subscriptions", amt:-14.99, acct:"credit"},
+      {date:"Sep 15", merchant:"Etisalat Bill", cat:"Bills", amt:-230.00, acct:"checking"},
+      {date:"Sep 14", merchant:"Talabat", cat:"Dining", amt:-34.10, acct:"credit"},
+      {date:"Sep 12", merchant:"Lulu Hypermarket", cat:"Groceries", amt:-96.60, acct:"checking"},
+      {date:"Sep 10", merchant:"Careem", cat:"Transport", amt:-27.40, acct:"checking"},
+      {date:"Sep 8", merchant:"Ounass", cat:"Shopping", amt:-88.90, acct:"credit"},
+      {date:"Sep 6", merchant:"Interest credit", cat:"Income", amt:12.10, acct:"savings"}
+    ]
+  };
+
+  var state = load() || seed;
+  var selectedBank = null; // null = all banks
+  var currentPage = 1;
+
+  function load(){ try{ var r = localStorage.getItem(STORE_KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+  function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+  function money(n){ return "$"+n.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}); }
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast._h); toast._h = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+
+  function animateCount(el, from, to, ms){
+    var start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min(1, (ts-start)/ms);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = money(from + (to-from)*eased);
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function renderBalance(){
+    var order = ["checking","savings","credit"];
+    var total = order.reduce(function(sum,k){ return sum + state.accounts[k].balance; }, 0);
+    var el = document.getElementById("totalBalance");
+    var prev = parseFloat((el.dataset.val||"0"));
+    animateCount(el, prev, total, 700);
+    el.dataset.val = total;
+    document.getElementById("balanceSub").textContent = "across " + order.length + " accounts";
+  }
+
+  function renderBanks(){
+    var order = ["checking","savings","credit"];
+    var el = document.getElementById("banksRow");
+    el.innerHTML = order.map(function(key){
+      var a = state.accounts[key];
+      return '<div class="bank-card'+(selectedBank===key?" selected":"")+'" data-bank="'+key+'" style="background:'+bankGradients[key]+';">'+
+        '<div><div class="bname">'+a.name+'</div><div class="bnum mono">&bull;&bull;&bull;&bull; '+a.num+'</div></div>'+
+        '<div class="bbal mono">'+money(a.balance)+'</div>'+
+      '</div>';
+    }).join("");
+    el.querySelectorAll(".bank-card").forEach(function(card){
+      card.addEventListener("click", function(){
+        var k = card.dataset.bank;
+        selectedBank = selectedBank === k ? null : k;
+        currentPage = 1;
+        renderBanks(); renderChart(); renderTx();
+      });
+    });
+  }
+
+  function visibleTx(){
+    return selectedBank ? state.tx.filter(function(t){ return t.acct === selectedBank; }) : state.tx;
+  }
+
+  function polarPoint(cx, cy, r, angleDeg){
+    var a = (angleDeg-90) * Math.PI/180;
+    return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  }
+  function arcPath(cx, cy, rOuter, rInner, startAngle, endAngle){
+    var gap = 1.2; // degrees, surface gap between segments
+    startAngle += gap/2; endAngle -= gap/2;
+    if(endAngle < startAngle) endAngle = startAngle;
+    var p1 = polarPoint(cx,cy,rOuter,startAngle), p2 = polarPoint(cx,cy,rOuter,endAngle);
+    var p3 = polarPoint(cx,cy,rInner,endAngle), p4 = polarPoint(cx,cy,rInner,startAngle);
+    var large = (endAngle-startAngle) > 180 ? 1 : 0;
+    return "M "+p1[0]+" "+p1[1]+
+      " A "+rOuter+" "+rOuter+" 0 "+large+" 1 "+p2[0]+" "+p2[1]+
+      " L "+p3[0]+" "+p3[1]+
+      " A "+rInner+" "+rInner+" 0 "+large+" 0 "+p4[0]+" "+p4[1]+" Z";
+  }
+
+  function renderChart(){
+    var tx = visibleTx();
+    var totals = {};
+    tx.forEach(function(t){
+      if(t.cat==="Income") return;
+      totals[t.cat] = (totals[t.cat]||0) + Math.abs(t.amt);
+    });
+    var order = ["Bills","Shopping","Groceries","Dining","Transport","Subscriptions","Transfer"];
+    var rows = order.filter(function(c){ return totals[c]; }).map(function(c){ return {cat:c, val:totals[c]}; });
+    var sum = rows.reduce(function(s,r){ return s+r.val; }, 0) || 1;
+
+    var svg = document.getElementById("donutSvg");
+    var cx=90, cy=90, rOuter=78, rInner=50;
+    var angle = 0;
+    var paths = rows.map(function(r){
+      var sweep = (r.val/sum)*360;
+      var d = arcPath(cx,cy,rOuter,rInner, angle, angle+sweep);
+      angle += sweep;
+      return '<path d="'+d+'" fill="'+categoryColor[r.cat]+'"></path>';
+    }).join("");
+
+    var sumLabel = "$" + Math.round(sum).toLocaleString();
+    svg.innerHTML = paths +
+      '<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-family="Public Sans, sans-serif" font-weight="700" font-size="17" fill="var(--ink)">'+sumLabel+'</text>'+
+      '<text x="'+cx+'" y="'+(cy+14)+'" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="9" letter-spacing="0.04em" fill="var(--muted)">SPENT</text>';
+
+    document.getElementById("legend").innerHTML = rows.map(function(r){
+      var pct = Math.round((r.val/sum)*100);
+      return '<div class="legend-row"><div class="legend-left"><span class="legend-chip" style="background:'+categoryColor[r.cat]+';"></span><span class="legend-name">'+r.cat+'</span></div><span class="legend-val mono">'+pct+'%</span></div>';
+    }).join("");
+
+    var shopping = totals["Shopping"]||0;
+    var target = 200;
+    var overPct = Math.round(((shopping-target)/target)*100);
+    var cb = document.getElementById("budgetCallout");
+    if(shopping>target){
+      cb.innerHTML = '<div class="t">&#9888;&#65039; Shopping is '+overPct+'% over your $'+target+' monthly target</div>'+
+        '<div class="meter"><div class="meter-fill" style="width:'+Math.min(100,(shopping/(target*2))*100).toFixed(0)+'%;"></div></div>'+
+        '<div class="note">'+money(shopping)+' spent this month &middot; consider capping non-essential purchases at $'+target+'/mo.</div>';
+    } else {
+      cb.innerHTML = '<div class="t" style="color:var(--good);">On track</div><div class="note">Shopping spend is within your $'+target+' monthly target.</div>';
+    }
+
+    document.getElementById("spendScope").textContent = (selectedBank ? state.accounts[selectedBank].name : "All accounts") + " · Sept 2026";
+  }
+
+  function renderTx(){
+    var all = visibleTx();
+    var totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+    if(currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage-1)*PAGE_SIZE;
+    var page = all.slice(start, start+PAGE_SIZE);
+
+    var el = document.getElementById("txList");
+    el.innerHTML = page.map(function(t){
+      var isIncome = t.amt>0;
+      return '<div class="tx-row"><div class="tx-left">'+
+        '<span class="tx-dot" style="background:'+(isIncome?"var(--good)":categoryColor[t.cat])+';"></span>'+
+        '<div><div class="tx-merchant">'+t.merchant+'</div><div class="tx-meta">'+t.date+' &middot; '+t.cat+'</div></div>'+
+        '</div><div class="tx-amt '+(isIncome?"pos":"neg")+' mono">'+(isIncome?"+":"&minus;")+money(Math.abs(t.amt))+'</div></div>';
+    }).join("") || '<div style="padding:24px 0; text-align:center; color:var(--faint); font-size:13px;">No transactions for this account yet.</div>';
+
+    var pag = document.getElementById("pagination");
+    if(totalPages <= 1){ pag.innerHTML = ""; return; }
+    var html = '<button class="page-btn" id="pgPrev" '+(currentPage===1?"disabled":"")+'>&lsaquo;</button>';
+    for(var i=1;i<=totalPages;i++){
+      html += '<button class="page-btn'+(i===currentPage?" active":"")+'" data-pg="'+i+'">'+i+'</button>';
+    }
+    html += '<button class="page-btn" id="pgNext" '+(currentPage===totalPages?"disabled":"")+'>&rsaquo;</button>';
+    pag.innerHTML = html;
+    pag.querySelectorAll("[data-pg]").forEach(function(b){
+      b.addEventListener("click", function(){ currentPage = +b.dataset.pg; renderTx(); });
+    });
+    var prev = document.getElementById("pgPrev"), next = document.getElementById("pgNext");
+    if(prev) prev.addEventListener("click", function(){ if(currentPage>1){ currentPage--; renderTx(); } });
+    if(next) next.addEventListener("click", function(){ if(currentPage<totalPages){ currentPage++; renderTx(); } });
+
+    var badge = document.getElementById("bankFilterBadge");
+    if(selectedBank){ badge.hidden = false; badge.textContent = state.accounts[selectedBank].name; }
+    else { badge.hidden = true; }
+  }
+
+  function populateSelects(){
+    var from = document.getElementById("fromAcct"), to = document.getElementById("toAcct");
+    var opts = '<option value="checking">Everyday Checking</option><option value="savings">High-Yield Savings</option><option value="credit">Rewards Credit</option>';
+    from.innerHTML = opts; to.innerHTML = opts;
+    to.value = "savings";
+  }
+
+  document.getElementById("swapBtn").addEventListener("click", function(){
+    var from = document.getElementById("fromAcct"), to = document.getElementById("toAcct");
+    var f = from.value; from.value = to.value; to.value = f;
+  });
+
+  document.getElementById("btnTransfer").addEventListener("click", function(){
+    var errEl = document.getElementById("transferErr");
+    errEl.textContent = "";
+    var fromKey = document.getElementById("fromAcct").value;
+    var toKey = document.getElementById("toAcct").value;
+    var raw = document.getElementById("amount").value.replace(/[^0-9.]/g,"");
+    var amt = parseFloat(raw);
+
+    if(fromKey===toKey){ errEl.textContent = "Choose two different accounts."; return; }
+    if(!amt || amt<=0){ errEl.textContent = "Enter an amount greater than $0."; return; }
+    var fromAcct = state.accounts[fromKey];
+    if(amt>fromAcct.balance){ errEl.textContent = "Insufficient funds in "+fromAcct.name+"."; return; }
+
+    var toAcct = state.accounts[toKey];
+    fromAcct.balance = +(fromAcct.balance-amt).toFixed(2);
+    toAcct.balance = +(toAcct.balance+amt).toFixed(2);
+    fromAcct.trend.push(fromAcct.balance); fromAcct.trend.shift();
+    toAcct.trend.push(toAcct.balance); toAcct.trend.shift();
+
+    state.tx.unshift({date:"Sep 26", merchant:"Transfer to "+toAcct.name, cat:"Transfer", amt:-amt, acct:fromKey});
+
+    save();
+    currentPage = 1;
+    renderBalance(); renderBanks(); renderChart(); renderTx();
+    document.getElementById("amount").value = "";
+    toast("Transferred "+money(amt)+" to "+toAcct.name);
+  });
+
+  populateSelects();
+  renderBalance();
+  renderBanks();
+  renderChart();
+  renderTx();
+})();
+</script>
