@@ -31,18 +31,25 @@ const config = {
         mono: ["var(--font-mono)"],
         display: ["var(--font-display)"],
         italic: ["var(--font-italic)"],
+        script: ["var(--font-script)"],
       },
       colors: {
-        // Elle Woods x Oppenheimer — obsidian + bone carry the site,
-        // rose/burgundy/champagne are accents, electric pink is a spark.
-        obsidian: "#111114",
-        bone: "#F3EEE7",
-        "dusty-rose": "#D98B9A",
-        "electric-pink": "#E94F87",
-        burgundy: "#681F35",
-        champagne: "#D8C7A5",
-        steel: "#72747C",
-        blush: "#F6DDE4",
+        // Elle Woods x technical brilliance — buttercream/pearl carry the
+        // page, pink/raspberry/cherry are the dominant personality,
+        // pistachio/baby-blue/lavender are unexpected accents, espresso
+        // stands in for black, champagne-gold marks tiny luxury details.
+        bubblegum: "#FF5FA2",
+        "hot-fuchsia": "#E91E63",
+        raspberry: "#B51F52",
+        cherry: "#C72C48",
+        buttercream: "#FFF4D8",
+        "powder-pink": "#FFD6E7",
+        pistachio: "#B8D8A8",
+        "baby-blue": "#A9DDF5",
+        lavender: "#C9B6E4",
+        espresso: "#321B24",
+        "champagne-gold": "#D9B66F",
+        pearl: "#FFFDF8",
         black: {
           DEFAULT: "#000",
           100: "#3b0211",

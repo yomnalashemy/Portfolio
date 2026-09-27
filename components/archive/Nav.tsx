@@ -3,103 +3,87 @@
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 
-const LINKS = [
-  { label: "WORK", href: "#work" },
-  { label: "ABOUT", href: "#about" },
-  { label: "LAB", href: "#lab" },
-  { label: "CONTACT", href: "#contact" },
+import { usePanels, type PanelId } from "@/components/panels/PanelContext";
+
+const LINKS: { label: string; id: PanelId }[] = [
+  { label: "WORK", id: "work" },
+  { label: "ABOUT", id: "about" },
+  { label: "LAB", id: "lab" },
+  { label: "RESUME", id: "resume" },
+  { label: "CONTACT", id: "contact" },
 ];
 
 export default function Nav() {
-  const [open, setOpen] = React.useState(false);
+  const { open } = usePanels();
+  const [menuOpen, setMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (href: string) => {
-    setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  const go = (id: PanelId) => {
+    setMenuOpen(false);
+    open(id);
   };
 
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 font-mono text-xs transition-colors duration-500 md:px-10 ${
-          scrolled ? "bg-obsidian/80 backdrop-blur-md" : "bg-transparent"
+          scrolled ? "bg-buttercream/85 backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <a
-          href="#"
-          data-cursor="TOP"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="font-display text-lg text-bone"
-        >
-          YA
-        </a>
+        <span className="font-display text-lg text-cherry">YOMNA</span>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
+            <button
+              key={l.label}
+              type="button"
               data-cursor="GO"
-              onClick={(e) => {
-                e.preventDefault();
-                go(l.href);
-              }}
-              className="tracking-[0.18em] text-steel transition-colors hover:text-dusty-rose"
+              onClick={() => go(l.id)}
+              className="tracking-[0.18em] text-espresso/60 transition-colors hover:text-raspberry"
             >
               {l.label}
-            </a>
+            </button>
           ))}
-          <span className="flex items-center gap-1.5 tracking-[0.18em] text-steel">
-            <span className="size-1.5 rounded-full bg-dusty-rose" style={{ boxShadow: "0 0 8px #D98B9A" }} />
-            SYSTEM / ONLINE
-          </span>
         </nav>
 
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setMenuOpen((v) => !v)}
           className="flex flex-col gap-1.5 md:hidden"
           aria-label="Toggle menu"
         >
-          <span className={`h-px w-6 bg-bone transition-transform ${open ? "translate-y-[3px] rotate-45" : ""}`} />
-          <span className={`h-px w-6 bg-bone transition-transform ${open ? "-translate-y-[3px] -rotate-45" : ""}`} />
+          <span className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "translate-y-[3px] rotate-45" : ""}`} />
+          <span className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
         </button>
       </header>
 
       <AnimatePresence>
-        {open && (
+        {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-obsidian md:hidden"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-buttercream md:hidden"
           >
             {LINKS.map((l, i) => (
-              <motion.a
-                key={l.href}
-                href={l.href}
+              <motion.button
+                key={l.label}
+                type="button"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  go(l.href);
-                }}
-                className="font-display text-3xl text-bone"
+                onClick={() => go(l.id)}
+                className="font-display text-3xl text-espresso"
               >
                 {l.label}
-              </motion.a>
+              </motion.button>
             ))}
           </motion.div>
         )}

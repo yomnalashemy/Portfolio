@@ -4,9 +4,9 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import * as React from "react";
 
 /**
- * Desktop-only ring cursor. Any element with data-cursor="label" expands
- * the ring and shows that label (e.g. "INSPECT", "OPEN FILE") instead of
- * needing a bespoke hover handler per interactive element.
+ * Small pearl-like ring by default; expands and shows a label near
+ * anything with data-cursor="LABEL" (INSPECT / OPEN / WRITE / GO...).
+ * Desktop, fine-pointer, motion-safe only.
  */
 export default function CustomCursor() {
   const [enabled, setEnabled] = React.useState(false);
@@ -28,8 +28,11 @@ export default function CustomCursor() {
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
-      document.documentElement.style.setProperty("--cursor-x", `${e.clientX}px`);
-      document.documentElement.style.setProperty("--cursor-y", `${e.clientY}px`);
+
+      // The 3D canvas has its own R3F pointer-event hover system (see
+      // desk-hover below) — DOM data-cursor lookup would otherwise reset
+      // the label to null on every move across the bare canvas element.
+      if ((e.target as HTMLElement)?.closest("[data-desk-canvas]")) return;
 
       const target = (e.target as HTMLElement)?.closest("[data-cursor]") as HTMLElement | null;
       if (target) {
@@ -40,9 +43,16 @@ export default function CustomCursor() {
         setLabel(null);
       }
     };
+    const onDeskHover = (e: Event) => {
+      const detail = (e as CustomEvent<string | null>).detail;
+      setExpanded(!!detail);
+      setLabel(detail ?? null);
+    };
     window.addEventListener("pointermove", onMove);
+    window.addEventListener("desk-hover", onDeskHover);
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("desk-hover", onDeskHover);
       document.documentElement.classList.remove("has-custom-cursor");
     };
   }, [x, y]);
@@ -52,16 +62,16 @@ export default function CustomCursor() {
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full border border-bone/70 mix-blend-difference"
+      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full border-2 border-raspberry/60 bg-pearl/70 shadow-[0_2px_10px_rgba(181,31,82,0.25)]"
       style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
       animate={{
-        width: expanded ? 72 : 14,
-        height: expanded ? 72 : 14,
+        width: expanded ? 68 : 11,
+        height: expanded ? 68 : 11,
       }}
       transition={{ type: "spring", damping: 22, stiffness: 300 }}
     >
       {label && (
-        <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-bone">{label}</span>
+        <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-raspberry">{label}</span>
       )}
     </motion.div>
   );
