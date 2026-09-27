@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { motion, MotionConfig, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 import * as React from "react";
 
@@ -66,6 +66,15 @@ function DesktopExperience() {
         <SectionShell id="contact" eyebrow="05 / THE ENVELOPE" title="Let's talk." tone="buttercream">
           <ContactContent />
         </SectionShell>
+
+        <footer className="border-t border-cherry/10 bg-espresso px-6 py-10 text-center md:px-10">
+          <p className="label-tech text-pearl/50">
+            SYSTEM STATUS: <span className="text-pistachio">ONLINE</span>
+          </p>
+          <p className="script-note mt-3" style={{ color: "#FFD6E7" }}>
+            Thanks for stopping by.
+          </p>
+        </footer>
       </div>
     </>
   );
@@ -82,13 +91,17 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    // "user" makes every Framer Motion animation site-wide respect the OS
+    // prefers-reduced-motion setting automatically — the CSS override in
+    // globals.css only catches plain CSS transitions/@keyframes, not the
+    // Web Animations API calls Framer Motion uses under the hood.
+    <MotionConfig reducedMotion="user">
       <div className="grain" />
       <Loader />
       <CustomCursor />
       <Nav />
       {isDesktop === null ? null : isDesktop ? <DesktopExperience /> : <MobileHome />}
-    </>
+    </MotionConfig>
   );
 };
 

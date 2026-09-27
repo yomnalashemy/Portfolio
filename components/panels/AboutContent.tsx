@@ -99,19 +99,32 @@ export default function AboutContent() {
         ))}
       </div>
 
-      <div className="relative min-h-[220px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={page}
-            initial={{ opacity: 0, x: 24, rotateY: -8 }}
-            animate={{ opacity: 1, x: 0, rotateY: 0 }}
-            exit={{ opacity: 0, x: -24, rotateY: 8 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformPerspective: 800 }}
-          >
-            {PAGES[page].content}
-          </motion.div>
-        </AnimatePresence>
+      {/* a real notebook page: cream paper, a spiral-binding edge, paper
+          shadow — not just a bare tab panel */}
+      <div className="relative overflow-hidden rounded-r-xl rounded-l-sm border border-cherry/10 bg-pearl pl-9 shadow-[0_20px_45px_-26px_rgba(50,27,36,0.4)]">
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-0 flex w-9 flex-col items-center justify-evenly border-r border-cherry/10 bg-powder-pink/40"
+        >
+          {Array.from({ length: 7 }).map((_, i) => (
+            <span key={i} className="size-2 rounded-full border border-cherry/20 bg-pearl" />
+          ))}
+        </div>
+
+        <div className="relative min-h-[220px] p-7">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={page}
+              initial={{ opacity: 0, x: 24, rotateY: -8 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              exit={{ opacity: 0, x: -24, rotateY: 8 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ transformPerspective: 800 }}
+            >
+              {PAGES[page].content}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

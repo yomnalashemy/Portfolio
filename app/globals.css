@@ -61,6 +61,15 @@
     scrollbar-width: thin;
     scrollbar-color: rgb(233 30 99) transparent;
   }
+  /* the custom cursor + hidden native cursor made keyboard focus the
+     only visual affordance left for non-mouse users — needs to be
+     genuinely visible against both the light sections and the dark
+     footer, not just the browser default outline */
+  :focus-visible {
+    outline: 2px solid #B51F52;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *,

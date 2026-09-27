@@ -9,6 +9,22 @@ export default function ResumeContent() {
 
   return (
     <div className="flex flex-col items-center gap-6 text-center">
+      {/* the document itself, as an object — not just a download button */}
+      <div className="w-full max-w-sm rotate-1 rounded-sm border border-cherry/10 bg-pearl px-6 py-7 text-left shadow-[0_24px_50px_-28px_rgba(50,27,36,0.45)]">
+        <div className="flex items-center justify-between border-b border-champagne-gold/40 pb-3">
+          <span className="font-display text-lg text-espresso">Yomna Alshemy</span>
+          <span className="label-tech">PDF</span>
+        </div>
+        <div className="mt-4 flex flex-col gap-1.5" aria-hidden>
+          <span className="h-1.5 w-3/4 rounded-full bg-espresso/10" />
+          <span className="h-1.5 w-full rounded-full bg-espresso/10" />
+          <span className="h-1.5 w-5/6 rounded-full bg-espresso/10" />
+          <span className="mt-2 h-1.5 w-2/3 rounded-full bg-raspberry/20" />
+          <span className="h-1.5 w-full rounded-full bg-espresso/10" />
+          <span className="h-1.5 w-4/5 rounded-full bg-espresso/10" />
+        </div>
+      </div>
+
       <p className="max-w-sm text-sm text-espresso/70">
         Everything above, plus the parts that only fit on one page.
       </p>
