@@ -13,21 +13,23 @@ export default function Laptop({ position, onOpen }: { position: [number, number
       onOpen={onOpen}
       hitSize={[1.25, 0.85, 1.05]}
     >
-      {/* base / keyboard deck */}
+      {/* base / keyboard deck — glossy plastic is low metalness, low
+          roughness, and something to reflect (see EnvironmentSetup),
+          not high metalness, which reads as brushed metal instead */}
       <mesh position={[0, 0.035, 0]} castShadow receiveShadow>
-        <boxGeometry args={[1.15, 0.07, 0.78]} />
-        <meshStandardMaterial color="#FF5FA2" roughness={0.25} metalness={0.35} />
+        <roundedBoxGeometry args={[1.15, 0.07, 0.78, 4, 0.015]} />
+        <meshStandardMaterial color="#FF5FA2" roughness={0.18} metalness={0.06} envMapIntensity={1.1} />
       </mesh>
       <mesh position={[0, 0.075, -0.02]}>
-        <boxGeometry args={[1.0, 0.005, 0.62]} />
-        <meshStandardMaterial color="#321B24" roughness={0.6} />
+        <roundedBoxGeometry args={[1.0, 0.005, 0.62, 2, 0.006]} />
+        <meshStandardMaterial color="#321B24" roughness={0.55} envMapIntensity={0.5} />
       </mesh>
 
       {/* screen, tilted back */}
       <group position={[0, 0.07, -0.37]} rotation={[-0.32, 0, 0]}>
         <mesh position={[0, 0.4, 0]} castShadow>
-          <boxGeometry args={[1.15, 0.78, 0.04]} />
-          <meshStandardMaterial color="#FF5FA2" roughness={0.3} metalness={0.3} />
+          <roundedBoxGeometry args={[1.15, 0.78, 0.04, 4, 0.02]} />
+          <meshStandardMaterial color="#FF5FA2" roughness={0.2} metalness={0.06} envMapIntensity={1.1} />
         </mesh>
         <mesh position={[0, 0.4, 0.023]}>
           <planeGeometry args={[1.02, 0.66]} />

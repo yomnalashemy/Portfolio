@@ -4,6 +4,8 @@ import { useFrame } from "@react-three/fiber";
 import * as React from "react";
 import * as THREE from "three";
 
+import { getSoftDotTexture } from "./softDotTexture";
+
 /** Dust drifting through warm light, not generic space particles — slow
  * downward sway, gold/pink tint, one mutated buffer, no per-particle
  * React overhead. */
@@ -40,7 +42,15 @@ export default function DustParticles({ count = 180 }: { count?: number }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} count={count} array={positions} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.018} color="#D9B66F" transparent opacity={0.45} sizeAttenuation depthWrite={false} />
+      <pointsMaterial
+        map={getSoftDotTexture()}
+        size={0.03}
+        color="#D9B66F"
+        transparent
+        opacity={0.5}
+        sizeAttenuation
+        depthWrite={false}
+      />
     </points>
   );
 }

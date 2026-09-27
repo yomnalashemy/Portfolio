@@ -4,6 +4,8 @@ import { useFrame } from "@react-three/fiber";
 import * as React from "react";
 import * as THREE from "three";
 
+import { getSoftDotTexture } from "../softDotTexture";
+
 function Steam({ position }: { position: [number, number, number] }) {
   const ref = React.useRef<THREE.Points>(null);
   const count = 24;
@@ -38,7 +40,14 @@ function Steam({ position }: { position: [number, number, number] }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} count={count} array={positions} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.014} color="#FFFDF8" transparent opacity={0.35} depthWrite={false} />
+      <pointsMaterial
+        map={getSoftDotTexture()}
+        size={0.024}
+        color="#FFFDF8"
+        transparent
+        opacity={0.4}
+        depthWrite={false}
+      />
     </points>
   );
 }
@@ -97,13 +106,16 @@ export function Pen({ position }: { position: [number, number, number] }) {
   });
   return (
     <group ref={ref} position={position} rotation={[0, 0, -0.15]}>
-      <mesh position={[0, 0.006, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.006, 0.006, 0.32, 12]} />
-        <meshStandardMaterial color="#321B24" metalness={0.4} roughness={0.35} />
+      {/* was 0.006 radius — essentially invisible at the camera's actual
+          viewing distance, reading as a stray dark scratch rather than a
+          pen */}
+      <mesh position={[0, 0.013, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.013, 0.013, 0.34, 12]} />
+        <meshStandardMaterial color="#321B24" metalness={0.35} roughness={0.25} envMapIntensity={0.8} />
       </mesh>
-      <mesh position={[0.15, 0.006, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <coneGeometry args={[0.006, 0.02, 12]} />
-        <meshStandardMaterial color="#D9B66F" metalness={0.7} roughness={0.25} />
+      <mesh position={[0.16, 0.013, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <coneGeometry args={[0.013, 0.03, 12]} />
+        <meshStandardMaterial color="#D9B66F" metalness={0.75} roughness={0.2} envMapIntensity={1.2} />
       </mesh>
     </group>
   );

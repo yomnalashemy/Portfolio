@@ -9,16 +9,17 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Cinematic close-up → pull back → settle framing the whole desk (objects
-// span roughly x:[-0.55,0.55] z:[-0.32,0.42]) with real margin, not
-// cropped at the edges. A steep, close, top-down-ish angle badly
-// exaggerates how large near objects read (the same reason a wide-angle
-// lens close to a face looks distorted) — every keyframe here uses a
-// gentler ~20° angle below horizontal at real distance instead, which
-// scales far more predictably.
+// Third attempt at this framing, so: reliability over drama. Two rounds
+// of "still cropped" real screenshots means the previous "dramatic close
+// keyframe, wide reveal keyframe" arc had a start/mid too tight — rather
+// than tune that blind again, start/mid/end all sit close to the same
+// well-framed distance now, with only a small drift between them for a
+// gentle settle rather than a big zoom journey. Objects span roughly
+// x:[-0.55,0.55] z:[-0.32,0.42]; a ~4 unit distance at a gentle ~18°
+// angle below horizontal frames that with real margin on every side.
 const KEYFRAMES = {
-  start: { pos: [0.4, 0.4, 1.0] as const, look: [0.08, 0.12, 0.15] as const },
-  mid: { pos: [1.5, 1.0, 2.6] as const, look: [0, 0.1, -0.05] as const },
+  start: { pos: [0.75, 1.35, 3.7] as const, look: [0.05, 0.14, 0.05] as const },
+  mid: { pos: [0.55, 1.42, 3.95] as const, look: [0.02, 0.11, 0] as const },
   end: { pos: [0.4, 1.5, 4.2] as const, look: [0, 0.1, -0.1] as const },
 };
 
