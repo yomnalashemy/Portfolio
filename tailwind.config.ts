@@ -29,8 +29,20 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
+        display: ["var(--font-display)"],
+        italic: ["var(--font-italic)"],
       },
       colors: {
+        // Elle Woods x Oppenheimer — obsidian + bone carry the site,
+        // rose/burgundy/champagne are accents, electric pink is a spark.
+        obsidian: "#111114",
+        bone: "#F3EEE7",
+        "dusty-rose": "#D98B9A",
+        "electric-pink": "#E94F87",
+        burgundy: "#681F35",
+        champagne: "#D8C7A5",
+        steel: "#72747C",
+        blush: "#F6DDE4",
         black: {
           DEFAULT: "#000",
           100: "#3b0211",
@@ -46,22 +58,6 @@ const config = {
           "100": "#00CEC8",
         },
         green: "#005451",
-        // Console palette — the whole redesign runs on these. Values are
-        // CSS vars (see globals.css :root / .dark) so next-themes' .dark
-        // class swap actually changes them; <alpha-value> keeps opacity
-        // modifiers (bg-console-surface/60 etc.) working.
-        console: {
-          bg: "rgb(var(--console-bg) / <alpha-value>)",
-          surface: "rgb(var(--console-surface) / <alpha-value>)",
-          raised: "rgb(var(--console-raised) / <alpha-value>)",
-          line: "rgb(var(--console-line) / <alpha-value>)",
-          ink: "rgb(var(--console-ink) / <alpha-value>)",
-          muted: "rgb(var(--console-muted) / <alpha-value>)",
-          faint: "rgb(var(--console-faint) / <alpha-value>)",
-          amber: "rgb(var(--console-amber) / <alpha-value>)",
-          "amber-dim": "rgb(var(--console-amber-dim) / <alpha-value>)",
-          good: "rgb(var(--console-good) / <alpha-value>)",
-        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -218,13 +214,7 @@ const config = {
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(
-    Object.entries(allColors)
-      // console-* already defines its own --console-* vars in globals.css
-      // (light/dark values); re-exporting the resolved rgb(var(...) /
-      // <alpha-value>) string here would just write that literal,
-      // unsubstituted text back into --console-bg etc.
-      .filter(([key]) => !key.startsWith("console-"))
-      .map(([key, val]) => [`--${key}`, val])
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
 
   addBase({

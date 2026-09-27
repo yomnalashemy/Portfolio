@@ -4,21 +4,6 @@
 
 @layer base {
   :root {
-    /* Console palette as raw "r g b" triples so Tailwind's opacity
-       modifiers (bg-console-surface/60 etc.) keep working — see
-       tailwind.config.ts's rgb(var(...) / <alpha-value>) wiring. Light
-       theme is the default; .dark overrides below. */
-    --console-bg: 246 245 240;
-    --console-surface: 255 255 255;
-    --console-raised: 251 250 246;
-    --console-line: 221 217 207;
-    --console-ink: 23 21 15;
-    --console-muted: 107 104 88;
-    --console-faint: 166 162 148;
-    --console-amber: 168 100 27;
-    --console-amber-dim: 217 184 120;
-    --console-good: 47 143 76;
-
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
@@ -48,47 +33,9 @@
     --ring: 240 10% 3.9%;
 
     --radius: 0.5rem;
-  }
 
-  .dark {
-    --console-bg: 10 10 9;
-    --console-surface: 19 19 17;
-    --console-raised: 26 26 23;
-    --console-line: 38 38 31;
-    --console-ink: 242 241 234;
-    --console-muted: 143 141 128;
-    --console-faint: 92 91 81;
-    --console-amber: 232 163 61;
-    --console-amber-dim: 138 97 31;
-    --console-good: 79 174 106;
-
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --cursor-x: 50vw;
+    --cursor-y: 50vh;
   }
 }
 
@@ -97,29 +44,59 @@
     @apply border-border !scroll-smooth;
   }
   body {
-    @apply bg-console-bg text-console-ink;
+    @apply bg-obsidian text-bone;
+    font-feature-settings: "ss01" 1;
   }
   button {
     @apply active:outline-none;
   }
   ::selection {
-    /* theme("colors.console.amber") would return the raw
-       rgb(var(...) / <alpha-value>) string with <alpha-value> left
-       unsubstituted outside Tailwind's own utility pipeline — reference
-       the CSS variable directly instead. */
-    background: rgb(var(--console-amber) / 0.3);
+    background: rgb(233 79 135 / 0.32);
+  }
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
   }
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgb(var(--console-line)) transparent;
+    scrollbar-color: rgb(114 116 124) transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 @layer utilities {
-  .heading {
-    @apply font-mono font-semibold text-3xl md:text-4xl;
+  /* Archive theme typographic system */
+  .label-tech {
+    @apply font-mono text-[11px] uppercase tracking-[0.2em] text-steel;
   }
-  .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.16em] text-console-amber;
+  .display-xl {
+    @apply font-display leading-[0.95] tracking-tight;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+  }
+  .display-lg {
+    @apply font-display leading-[1] tracking-tight;
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+  }
+  .italic-phrase {
+    @apply font-italic italic;
+  }
+  .grain {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
