@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Download } from "lucide-react";
 import * as React from "react";
 
 import { projects } from "@/data";
+import StudyTrack from "./StudyTrack";
 
 /**
  * The hero used to be a purple/teal Spotlight gradient behind a
@@ -91,13 +92,26 @@ const Hero = () => {
             full-stack engineer who&rsquo;d rather ship a working thing than a pretty picture of
             one. Everything below is live. Try it.
           </p>
-          <a
-            href="#systems"
-            className="mt-9 inline-flex items-center gap-2 font-mono text-sm text-console-ink border border-console-line hover:border-console-amber hover:text-console-amber transition-colors rounded-md px-5 py-3"
-          >
-            View the systems
-            <ArrowDown className="size-3.5" />
-          </a>
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a
+              href="#systems"
+              className="inline-flex items-center gap-2 font-mono text-sm text-console-ink border border-console-line hover:border-console-amber hover:text-console-amber transition-colors rounded-md px-5 py-3"
+            >
+              View the systems
+              <ArrowDown className="size-3.5" />
+            </a>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-sm text-console-amber border border-console-amber-dim bg-console-amber/10 hover:bg-console-amber/20 transition-colors rounded-md px-5 py-3"
+            >
+              Résumé
+              <Download className="size-3.5" />
+            </a>
+          </div>
+
+          <StudyTrack />
         </motion.div>
       </div>
     </div>
