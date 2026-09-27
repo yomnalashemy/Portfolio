@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 import * as React from "react";
 
@@ -8,8 +8,12 @@ import CustomCursor from "@/components/archive/CustomCursor";
 import Loader from "@/components/archive/Loader";
 import Nav from "@/components/archive/Nav";
 import MobileHome from "@/components/mobile/MobileHome";
-import PanelHost from "@/components/panels/PanelHost";
-import { PanelProvider } from "@/components/panels/PanelContext";
+import AboutContent from "@/components/panels/AboutContent";
+import ContactContent from "@/components/panels/ContactContent";
+import LabContent from "@/components/panels/LabContent";
+import ResumeContent from "@/components/panels/ResumeContent";
+import WorkContent from "@/components/panels/WorkContent";
+import SectionShell from "@/components/sections/SectionShell";
 
 const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
 
@@ -20,10 +24,16 @@ function DesktopExperience() {
   // was the "scroll to walk in" hint overlapping it. Fades out once
   // scrolling has clearly started instead of lingering the whole intro.
   const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const heroOpacity = useTransform(scrollYProgress, [0.82, 1], [1, 0]);
+
+  const [heroPaused, setHeroPaused] = React.useState(false);
+  useMotionValueEvent(scrollYProgress, "change", (v) => setHeroPaused(v >= 0.999));
 
   return (
     <>
-      <DeskScene trackEl={trackEl} />
+      <motion.div style={{ opacity: heroOpacity }}>
+        <DeskScene trackEl={trackEl} paused={heroPaused} />
+      </motion.div>
       {/* scroll distance for the cinematic intro fly-through; the canvas
           itself is fixed and reads this element's position via
           ScrollTrigger inside CameraRig */}
@@ -37,6 +47,26 @@ function DesktopExperience() {
       >
         <p className="label-tech animate-pulse">scroll to walk in</p>
       </motion.div>
+
+      {/* real, always-scrollable sections — the desk's objects and the
+          nav are a second way into these, not the only way in */}
+      <div className="relative z-20 bg-buttercream">
+        <SectionShell id="work" eyebrow="01 / THE ARCHIVE" title={<>Six systems. <span className="italic-phrase text-cherry">All of them running.</span></>} tone="buttercream">
+          <WorkContent />
+        </SectionShell>
+        <SectionShell id="about" eyebrow="02 / THE NOTEBOOK" title={<>Not a bio. <span className="italic-phrase text-raspberry">A working notebook.</span></>} tone="pearl">
+          <AboutContent />
+        </SectionShell>
+        <SectionShell id="lab" eyebrow="03 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder">
+          <LabContent />
+        </SectionShell>
+        <SectionShell id="resume" eyebrow="04 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="pearl">
+          <ResumeContent />
+        </SectionShell>
+        <SectionShell id="contact" eyebrow="05 / THE ENVELOPE" title="Let's talk." tone="buttercream">
+          <ContactContent />
+        </SectionShell>
+      </div>
     </>
   );
 }
@@ -52,14 +82,13 @@ const Home = () => {
   }, []);
 
   return (
-    <PanelProvider>
+    <>
       <div className="grain" />
       <Loader />
       <CustomCursor />
       <Nav />
-      <PanelHost />
       {isDesktop === null ? null : isDesktop ? <DesktopExperience /> : <MobileHome />}
-    </PanelProvider>
+    </>
   );
 };
 

@@ -17,9 +17,19 @@ export default function WorkContent() {
       {projects.map((project, i) => (
         <article
           key={project.id}
-          className="overflow-hidden rounded-xl border border-cherry/10"
-          style={{ borderTopColor: project.color, borderTopWidth: 3 }}
+          className="relative overflow-hidden rounded-xl border border-cherry/10 shadow-[0_18px_40px_-24px_rgba(50,27,36,0.35)]"
+          style={{
+            borderTopColor: project.color,
+            borderTopWidth: 3,
+            background: `linear-gradient(180deg, ${project.color}0d, transparent 140px)`,
+          }}
         >
+          {/* a folded manila-tab detail, like a real project folder */}
+          <span
+            aria-hidden
+            className="absolute -top-px left-6 h-3 w-16 rounded-b-md"
+            style={{ background: project.color }}
+          />
           <div className="flex items-center justify-between px-5 pt-4">
             <span className="label-tech">FILE {String(i + 1).padStart(2, "0")}</span>
             <span className="label-tech" style={{ color: project.color }}>

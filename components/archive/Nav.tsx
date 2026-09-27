@@ -3,9 +3,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 
-import { usePanels, type PanelId } from "@/components/panels/PanelContext";
+import { scrollToId } from "@/lib/scrollToId";
 
-const LINKS: { label: string; id: PanelId }[] = [
+const LINKS = [
   { label: "WORK", id: "work" },
   { label: "ABOUT", id: "about" },
   { label: "LAB", id: "lab" },
@@ -14,7 +14,6 @@ const LINKS: { label: string; id: PanelId }[] = [
 ];
 
 export default function Nav() {
-  const { open } = usePanels();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -25,9 +24,9 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (id: PanelId) => {
+  const go = (id: string) => {
     setMenuOpen(false);
-    open(id);
+    scrollToId(id);
   };
 
   return (

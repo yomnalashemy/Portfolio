@@ -5,7 +5,7 @@ import * as React from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
-import { usePanels } from "@/components/panels/PanelContext";
+import { scrollToId } from "@/lib/scrollToId";
 
 import CameraRig from "./CameraRig";
 import DustParticles from "./DustParticles";
@@ -52,8 +52,15 @@ function Lighting() {
   );
 }
 
-export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDivElement> }) {
-  const { open } = usePanels();
+export default function DeskScene({
+  trackEl,
+  paused = false,
+}: {
+  trackEl: React.RefObject<HTMLDivElement>;
+  /** stop the render loop once the hero has scrolled out of view —
+      no point spending frames on a canvas nothing can see */
+  paused?: boolean;
+}) {
   const introDone = React.useRef(false);
 
   return (
@@ -61,6 +68,7 @@ export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDi
       <Canvas
         shadows
         dpr={[1, 1.5]}
+        frameloop={paused ? "never" : "always"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
       >
         <color attach="background" args={["#FFF4D8"]} />
@@ -71,13 +79,15 @@ export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDi
         <DeskSurface />
         <DustParticles count={110} />
 
-        {/* hero objects: cast + receive, worth the shadow cost */}
-        <Laptop position={[-0.05, 0, -0.15]} onOpen={() => open("work")} />
-        <Notebook position={[0.42, 0, 0.12]} onOpen={() => open("about")} />
-        <Folder position={[-0.42, 0, 0.18]} onOpen={() => open("work")} />
-        <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => open("resume")} />
-        <Envelope position={[0.5, 0, -0.28]} onOpen={() => open("contact")} />
-        <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => open("about")} />
+        {/* hero objects: cast + receive, worth the shadow cost. onOpen
+            scrolls to the real page section below — these are a second
+            way in, not the only way in. */}
+        <Laptop position={[-0.05, 0, -0.15]} onOpen={() => scrollToId("work")} />
+        <Notebook position={[0.42, 0, 0.12]} onOpen={() => scrollToId("about")} />
+        <Folder position={[-0.42, 0, 0.18]} onOpen={() => scrollToId("work")} />
+        <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => scrollToId("resume")} />
+        <Envelope position={[0.5, 0, -0.28]} onOpen={() => scrollToId("contact")} />
+        <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => scrollToId("about")} />
 
         {/* ambient-only: no shadow casting, kept cheap */}
         <CoffeeCup position={[0.28, 0, 0.38]} />
