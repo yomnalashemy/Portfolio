@@ -2,7 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
+import dynamic from "next/dynamic";
 import * as React from "react";
+
+const ExploreScene = dynamic(() => import("@/components/three/ExploreScene"), { ssr: false });
 
 /**
  * Replaces the passive Stack ticker. Instead of watching tools scroll by,
@@ -85,7 +88,14 @@ const Explore = () => {
         </span>
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="relative mt-8 h-[380px] rounded-xl border border-console-line bg-console-surface/60 overflow-hidden">
+        <ExploreScene stacks={STACKS} found={found} active={active} onSelect={select} />
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[11px] text-console-faint">
+          drag to spin the system map · click a node to unlock it
+        </p>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
         {STACKS.map((s) => {
           const isFound = found.has(s.tag);
           const isActive = active === s.tag;
