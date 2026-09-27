@@ -5,6 +5,7 @@ import ContactContent from "@/components/panels/ContactContent";
 import LabContent from "@/components/panels/LabContent";
 import ResumeContent from "@/components/panels/ResumeContent";
 import WorkContent from "@/components/panels/WorkContent";
+import SiteFooter from "@/components/sections/SiteFooter";
 
 const SECTIONS = [
   { id: "work", label: "01 / WORK", title: "The Work", Content: WorkContent },
@@ -22,25 +23,28 @@ const SECTIONS = [
  */
 export default function MobileHome() {
   return (
-    <main className="min-h-screen bg-buttercream px-5 pb-16 pt-28">
-      <p className="script-note text-3xl">Yomna Alshemy</p>
-      <h1 className="display-lg mt-2 text-espresso">
-        Live systems, <span className="italic-phrase text-cherry">on a real desk.</span>
-      </h1>
-      <p className="mt-4 text-sm text-espresso/70">
-        Software · systems · infrastructure · curiosity. The full interactive desk lives on desktop —
-        here&rsquo;s everything on it, in order.
-      </p>
+    <>
+      <main className="min-h-screen bg-buttercream px-5 pb-16 pt-28">
+        <p className="script-note text-3xl">Yomna Alshemy</p>
+        <h1 className="display-lg mt-2 text-espresso">
+          Live systems, <span className="italic-phrase text-cherry">on a real desk.</span>
+        </h1>
+        <p className="mt-4 text-sm text-espresso/70">
+          Software · systems · infrastructure · curiosity. The full interactive desk lives on desktop —
+          here&rsquo;s everything on it, in order.
+        </p>
 
-      <div className="mt-14 flex flex-col gap-16">
-        {SECTIONS.map((s) => (
-          <section key={s.id} id={s.id} className="scroll-mt-24">
-            <p className="label-tech mb-2">{s.label}</p>
-            <h2 className="display-lg mb-6 text-espresso">{s.title}</h2>
-            <s.Content />
-          </section>
-        ))}
-      </div>
-    </main>
+        <div className="mt-14 flex flex-col gap-16">
+          {SECTIONS.map((s) => (
+            <section key={s.id} id={s.id} className="scroll-mt-24">
+              <p className="label-tech mb-2">{s.label}</p>
+              <h2 className="display-lg mb-6 text-espresso">{s.title}</h2>
+              <s.Content />
+            </section>
+          ))}
+        </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

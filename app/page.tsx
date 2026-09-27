@@ -14,6 +14,7 @@ import LabContent from "@/components/panels/LabContent";
 import ResumeContent from "@/components/panels/ResumeContent";
 import WorkContent from "@/components/panels/WorkContent";
 import SectionShell from "@/components/sections/SectionShell";
+import SiteFooter from "@/components/sections/SiteFooter";
 
 const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
 
@@ -67,14 +68,7 @@ function DesktopExperience() {
           <ContactContent />
         </SectionShell>
 
-        <footer className="border-t border-cherry/10 bg-espresso px-6 py-10 text-center md:px-10">
-          <p className="label-tech text-pearl/50">
-            SYSTEM STATUS: <span className="text-pistachio">ONLINE</span>
-          </p>
-          <p className="script-note mt-3" style={{ color: "#FFD6E7" }}>
-            Thanks for stopping by.
-          </p>
-        </footer>
+        <SiteFooter />
       </div>
     </>
   );
