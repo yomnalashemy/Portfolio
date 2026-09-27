@@ -9,11 +9,13 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Cinematic close-up → pull back → settle on the laptop screen.
+// Cinematic close-up → pull back → settle framing the whole desk (objects
+// span roughly x:[-0.55,0.55] z:[-0.32,0.42]) with real margin, not
+// cropped at the edges.
 const KEYFRAMES = {
-  start: { pos: [0.35, 0.28, 0.55] as const, look: [0.15, 0.1, 0.1] as const },
-  mid: { pos: [0.9, 0.85, 1.5] as const, look: [0, 0.1, -0.1] as const },
-  end: { pos: [0.05, 0.42, 0.95] as const, look: [0, 0.1, -0.35] as const },
+  start: { pos: [0.3, 0.24, 0.55] as const, look: [0.12, 0.05, 0.25] as const },
+  mid: { pos: [1.3, 1.1, 2.1] as const, look: [0, 0.1, -0.05] as const },
+  end: { pos: [0.1, 1.2, 2.35] as const, look: [0, 0.08, -0.05] as const },
 };
 
 interface Props {
@@ -25,6 +27,16 @@ export default function CameraRig({ trackEl, introDone }: Props) {
   const camRef = React.useRef<THREE.PerspectiveCamera>(null);
   const { size } = useThree();
   const lookAt = React.useRef(new THREE.Vector3(...KEYFRAMES.start.look));
+  const camState = React.useRef<{ x: number; y: number; z: number }>({
+    x: KEYFRAMES.start.pos[0],
+    y: KEYFRAMES.start.pos[1],
+    z: KEYFRAMES.start.pos[2],
+  });
+  const lookState = React.useRef<{ x: number; y: number; z: number }>({
+    x: KEYFRAMES.start.look[0],
+    y: KEYFRAMES.start.look[1],
+    z: KEYFRAMES.start.look[2],
+  });
   const mouse = React.useRef({ x: 0, y: 0 });
   const reducedMotion = React.useRef(false);
 
@@ -39,18 +51,14 @@ export default function CameraRig({ trackEl, introDone }: Props) {
   }, []);
 
   React.useEffect(() => {
-    const cam = camRef.current;
-    if (!cam || !trackEl.current) return;
+    if (!trackEl.current) return;
 
     if (reducedMotion.current) {
-      cam.position.set(...KEYFRAMES.end.pos);
-      lookAt.current.set(...KEYFRAMES.end.look);
+      camState.current = { x: KEYFRAMES.end.pos[0], y: KEYFRAMES.end.pos[1], z: KEYFRAMES.end.pos[2] };
+      lookState.current = { x: KEYFRAMES.end.look[0], y: KEYFRAMES.end.look[1], z: KEYFRAMES.end.look[2] };
       introDone.current = true;
       return;
     }
-
-    const camPos = { x: KEYFRAMES.start.pos[0], y: KEYFRAMES.start.pos[1], z: KEYFRAMES.start.pos[2] };
-    const lookState = { x: KEYFRAMES.start.look[0], y: KEYFRAMES.start.look[1], z: KEYFRAMES.start.look[2] };
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -66,19 +74,15 @@ export default function CameraRig({ trackEl, introDone }: Props) {
       },
     });
 
-    tl.to(camPos, { x: KEYFRAMES.mid.pos[0], y: KEYFRAMES.mid.pos[1], z: KEYFRAMES.mid.pos[2], ease: "power1.inOut" }, 0)
-      .to(lookState, { x: KEYFRAMES.mid.look[0], y: KEYFRAMES.mid.look[1], z: KEYFRAMES.mid.look[2], ease: "power1.inOut" }, 0)
-      .to(camPos, { x: KEYFRAMES.end.pos[0], y: KEYFRAMES.end.pos[1], z: KEYFRAMES.end.pos[2], ease: "power1.inOut" }, 0.5)
-      .to(lookState, { x: KEYFRAMES.end.look[0], y: KEYFRAMES.end.look[1], z: KEYFRAMES.end.look[2], ease: "power1.inOut" }, 0.5);
-
-    const sync = () => {
-      cam.position.set(camPos.x, camPos.y, camPos.z);
-      lookAt.current.set(lookState.x, lookState.y, lookState.z);
-    };
-    gsap.ticker.add(sync);
+    // Tween the plain refs directly — read every R3F frame below. Two
+    // independent rAF loops (gsap's ticker + fiber's own) fighting over
+    // the same camera object was the source of the visible stutter.
+    tl.to(camState.current, { x: KEYFRAMES.mid.pos[0], y: KEYFRAMES.mid.pos[1], z: KEYFRAMES.mid.pos[2], ease: "power1.inOut" }, 0)
+      .to(lookState.current, { x: KEYFRAMES.mid.look[0], y: KEYFRAMES.mid.look[1], z: KEYFRAMES.mid.look[2], ease: "power1.inOut" }, 0)
+      .to(camState.current, { x: KEYFRAMES.end.pos[0], y: KEYFRAMES.end.pos[1], z: KEYFRAMES.end.pos[2], ease: "power1.inOut" }, 0.5)
+      .to(lookState.current, { x: KEYFRAMES.end.look[0], y: KEYFRAMES.end.look[1], z: KEYFRAMES.end.look[2], ease: "power1.inOut" }, 0.5);
 
     return () => {
-      gsap.ticker.remove(sync);
       tl.scrollTrigger?.kill();
       tl.kill();
     };
@@ -87,15 +91,19 @@ export default function CameraRig({ trackEl, introDone }: Props) {
   useFrame(() => {
     const cam = camRef.current;
     if (!cam) return;
-    const target = lookAt.current.clone();
+
+    cam.position.set(camState.current.x, camState.current.y, camState.current.z);
+    lookAt.current.set(lookState.current.x, lookState.current.y, lookState.current.z);
+
+    const target = lookAt.current;
     if (introDone.current && !reducedMotion.current) {
       // subtle parallax once settled — "disturbing" the scene, not
       // steering it
-      target.x += mouse.current.x * 0.06;
-      target.y += -mouse.current.y * 0.04;
+      cam.lookAt(target.x + mouse.current.x * 0.06, target.y - mouse.current.y * 0.04, target.z);
+    } else {
+      cam.lookAt(target);
     }
-    cam.lookAt(target);
   });
 
-  return <PerspectiveCamera ref={camRef} makeDefault fov={38} aspect={size.width / size.height} position={KEYFRAMES.start.pos} />;
+  return <PerspectiveCamera ref={camRef} makeDefault fov={40} aspect={size.width / size.height} position={KEYFRAMES.start.pos} />;
 }

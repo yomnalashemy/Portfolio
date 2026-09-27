@@ -22,17 +22,13 @@ export default function LabVessels({ position, onOpen }: { position: [number, nu
 
       {VESSELS.map((v, i) => (
         <group key={i} position={[v.x, 0, v.z]}>
+          {/* transparent standard material, not transmission — transmission
+              forces an extra render pass per surface and was the single
+              biggest cost in this scene for very little visible gain at
+              this scale */}
           <mesh position={[0, v.h / 2 + 0.02, 0]}>
             <cylinderGeometry args={[0.035, 0.035, v.h, 16]} />
-            <meshPhysicalMaterial
-              color="#FFFDF8"
-              transparent
-              opacity={0.35}
-              roughness={0.05}
-              transmission={0.9}
-              thickness={0.05}
-              ior={1.3}
-            />
+            <meshStandardMaterial color="#FFFDF8" transparent opacity={0.28} roughness={0.1} metalness={0.05} />
           </mesh>
           <mesh position={[0, v.h * 0.32 + 0.02, 0]}>
             <cylinderGeometry args={[0.032, 0.032, v.h * 0.5, 16]} />

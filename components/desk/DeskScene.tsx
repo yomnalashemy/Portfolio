@@ -27,8 +27,8 @@ function DeskSurface() {
 function Lighting() {
   return (
     <>
-      <ambientLight intensity={0.55} color="#FFF4D8" />
-      <directionalLight position={[2, 3, 2]} intensity={0.9} color="#FFD6E7" castShadow shadow-mapSize={[1024, 1024]} />
+      <ambientLight intensity={0.6} color="#FFF4D8" />
+      <directionalLight position={[2, 3, 2]} intensity={0.9} color="#FFD6E7" castShadow shadow-mapSize={[512, 512]} />
       <pointLight position={[-1.5, 1, -1]} intensity={0.3} color="#C9B6E4" />
     </>
   );
@@ -40,14 +40,15 @@ export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDi
 
   return (
     <div data-desk-canvas className="fixed inset-0 z-0">
-      <Canvas shadows dpr={[1, 1.75]} gl={{ antialias: true, alpha: true }}>
+      <Canvas shadows dpr={[1, 1.5]} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
         <color attach="background" args={["#FFF4D8"]} />
-        <fog attach="fog" args={["#FFF4D8", 2, 5.5]} />
+        <fog attach="fog" args={["#FFF4D8", 2.5, 6.5]} />
         <CameraRig trackEl={trackEl} introDone={introDone} />
         <Lighting />
         <DeskSurface />
-        <DustParticles />
+        <DustParticles count={110} />
 
+        {/* hero objects: cast + receive, worth the shadow cost */}
         <Laptop position={[-0.05, 0, -0.15]} onOpen={() => open("work")} />
         <Notebook position={[0.42, 0, 0.12]} onOpen={() => open("about")} />
         <Folder position={[-0.42, 0, 0.18]} onOpen={() => open("work")} />
@@ -55,6 +56,7 @@ export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDi
         <Envelope position={[0.5, 0, -0.28]} onOpen={() => open("contact")} />
         <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => open("about")} />
 
+        {/* ambient-only: no shadow casting, kept cheap */}
         <CoffeeCup position={[0.28, 0, 0.38]} />
         <DeskLamp position={[-0.55, 0, 0.42]} />
         <Pen position={[0.1, 0, 0.28]} />

@@ -46,7 +46,7 @@ function Steam({ position }: { position: [number, number, number] }) {
 export function CoffeeCup({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
-      <mesh position={[0, 0.035, 0]} castShadow>
+      <mesh position={[0, 0.035, 0]}>
         <cylinderGeometry args={[0.045, 0.038, 0.07, 20]} />
         <meshStandardMaterial color="#FFFDF8" roughness={0.35} />
       </mesh>
@@ -120,7 +120,7 @@ export function Flowers({ position }: { position: [number, number, number] }) {
     <group ref={ref} position={position}>
       <mesh position={[0, 0.06, 0]}>
         <cylinderGeometry args={[0.025, 0.03, 0.12, 12]} />
-        <meshPhysicalMaterial color="#A9DDF5" transparent opacity={0.4} roughness={0.1} transmission={0.7} />
+        <meshStandardMaterial color="#A9DDF5" transparent opacity={0.45} roughness={0.15} />
       </mesh>
       {petals.map((c, i) => (
         <mesh key={i} position={[Math.cos(i * 2.1) * 0.02, 0.13 + i * 0.015, Math.sin(i * 2.1) * 0.02]}>
