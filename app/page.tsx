@@ -3,6 +3,7 @@
 import { navItems } from "@/data";
 
 import Hero from "@/components/Hero";
+import Pitch from "@/components/Pitch";
 import Grid from "@/components/Grid";
 import Systems from "@/components/Systems";
 import Stack from "@/components/Stack";
@@ -17,6 +18,7 @@ const Home = () => {
       <div className="max-w-6xl w-full">
         <FloatingNav navItems={navItems} />
         <Hero />
+        <Pitch />
         <StatusStrip />
         <Systems />
         <Stack />
