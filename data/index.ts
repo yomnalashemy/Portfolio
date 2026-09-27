@@ -75,7 +75,7 @@ export const projects = [
     img: "/itqan.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg", "/c.svg"],
     link: "https://itqan-web-dy2r.onrender.com/welcome",
-    demo: "/demos/itqan/",
+    demo: "/demos/itqan/index.html",
     repo: "https://github.com/yomnalashemy/ITQAN_TECH",
   },
   {
@@ -86,7 +86,7 @@ export const projects = [
     img: "/Carepulse.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/fm.svg"],
     link: "https://mini-carepulse.onrender.com",
-    demo: "/demos/curacare/",
+    demo: "/demos/curacare/index.html",
     repo: "https://github.com/yomnalashemy/mini-carepulse",
   },
   {
@@ -97,7 +97,7 @@ export const projects = [
     img: "/Lupira.png",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg", "/c.svg"],
     link: "https://lupira-mulo.onrender.com",
-    demo: "/demos/lupira/",
+    demo: "/demos/lupira/index.html",
     repo: "https://github.com/yomnalashemy/Lupira",
   },
   {
@@ -108,7 +108,7 @@ export const projects = [
     img: "/horizon.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/c.svg"],
     link: "https://mini-banking.onrender.com",
-    demo: "/demos/banking/",
+    demo: "/demos/banking/index.html",
     repo: "https://github.com/yomnalashemy/mini-banking",
   },
   {
@@ -130,7 +130,7 @@ export const projects = [
     img: "/sentinel.svg",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg"],
     link: "https://mini-sentinel-1.onrender.com",
-    demo: "/demos/sentinel/",
+    demo: "/demos/sentinel/index.html",
     repo: "https://github.com/yomnalashemy/mini-sentinel",
   },
 ];

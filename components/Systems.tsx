@@ -104,7 +104,7 @@ const Systems = () => {
                   <div className="flex items-center gap-2 px-2 py-2">
                     <span className="size-2 rounded-full bg-console-good" />
                     <span className="font-mono text-[11px] text-console-faint truncate">
-                      {project.demo}
+                      {project.demo.replace(/index\.html$/, "")}
                     </span>
                   </div>
                   <div className="overflow-hidden rounded-lg border border-console-line bg-white">
