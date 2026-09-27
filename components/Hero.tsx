@@ -5,7 +5,6 @@ import { ArrowDown, Download } from "lucide-react";
 import * as React from "react";
 
 import { projects } from "@/data";
-import StudyTrack from "./StudyTrack";
 
 /**
  * The hero used to be a purple/teal Spotlight gradient behind a
@@ -110,8 +109,6 @@ const Hero = () => {
               <Download className="size-3.5" />
             </a>
           </div>
-
-          <StudyTrack />
         </motion.div>
       </div>
     </div>

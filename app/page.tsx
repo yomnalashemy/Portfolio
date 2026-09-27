@@ -5,6 +5,7 @@ import { navItems } from "@/data";
 import Hero from "@/components/Hero";
 import Grid from "@/components/Grid";
 import Systems from "@/components/Systems";
+import Stack from "@/components/Stack";
 import StatusStrip from "@/components/StatusStrip";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
@@ -18,6 +19,7 @@ const Home = () => {
         <Hero />
         <StatusStrip />
         <Systems />
+        <Stack />
         <Grid />
         <Experience />
         <Footer />
