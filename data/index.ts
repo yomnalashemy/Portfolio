@@ -96,7 +96,7 @@ export const projects = [
     des: "SVM models for early lupus risk prediction — custom datasets, clinical-input mapping to diagnostic probabilities, and visualized output guiding patient self-assessments.",
     img: "/Lupira.png",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg", "/c.svg"],
-    link: "https://claude.ai/artifact/8MtmHz8e9Nh6fx4rwTQPDy",
+    link: "https://lupira-mulo.onrender.com",
     demo: "/demos/lupira/",
     repo: "https://github.com/yomnalashemy/Lupira",
   },

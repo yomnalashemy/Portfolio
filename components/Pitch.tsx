@@ -18,7 +18,7 @@ const Pitch = () => {
     <section className="py-24 flex flex-col items-center text-center">
       <p className="eyebrow">The pitch, in one line</p>
 
-      <h2 className="mt-4 font-mono font-semibold text-[13vw] leading-[0.95] sm:text-6xl md:text-7xl tracking-tight">
+      <h2 className="mt-4 font-mono font-semibold text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] tracking-tight">
         {WORDS.map((w, i) => (
           <motion.span
             key={w}
