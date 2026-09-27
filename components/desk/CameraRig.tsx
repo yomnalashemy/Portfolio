@@ -9,18 +9,28 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Third attempt at this framing, so: reliability over drama. Two rounds
-// of "still cropped" real screenshots means the previous "dramatic close
-// keyframe, wide reveal keyframe" arc had a start/mid too tight — rather
-// than tune that blind again, start/mid/end all sit close to the same
-// well-framed distance now, with only a small drift between them for a
-// gentle settle rather than a big zoom journey. Objects span roughly
-// x:[-0.55,0.55] z:[-0.32,0.42]; a ~4 unit distance at a gentle ~18°
-// angle below horizontal frames that with real margin on every side.
+// The `end` framing below is confirmed good (real screenshot: whole desk,
+// real margin on every side). The previous fix made `start`/`mid` almost
+// identical to `end` to guarantee that, which was the overcorrection —
+// it killed nearly all camera movement, which is why scrolling read as
+// "not working." Fix: dolly straight in along the exact same viewing
+// ray as `end` (same look target, just closer), rather than picking a
+// new angle blind — since it's the identical ray, the framing can only
+// ever be a tighter crop of the same well-composed shot, never a
+// differently-distorted one, however close `start` gets.
+const LOOK = [0, 0.1, -0.1] as const;
+const END_POS = [0.4, 1.5, 4.2] as const;
+const OFFSET = [END_POS[0] - LOOK[0], END_POS[1] - LOOK[1], END_POS[2] - LOOK[2]] as const;
+const dolly = (t: number): readonly [number, number, number] => [
+  LOOK[0] + OFFSET[0] * t,
+  LOOK[1] + OFFSET[1] * t,
+  LOOK[2] + OFFSET[2] * t,
+];
+
 const KEYFRAMES = {
-  start: { pos: [0.75, 1.35, 3.7] as const, look: [0.05, 0.14, 0.05] as const },
-  mid: { pos: [0.55, 1.42, 3.95] as const, look: [0.02, 0.11, 0] as const },
-  end: { pos: [0.4, 1.5, 4.2] as const, look: [0, 0.1, -0.1] as const },
+  start: { pos: dolly(0.42), look: LOOK },
+  mid: { pos: dolly(0.7), look: LOOK },
+  end: { pos: END_POS, look: LOOK },
 };
 
 interface Props {

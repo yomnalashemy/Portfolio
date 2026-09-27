@@ -27,14 +27,16 @@ function DesktopExperience() {
       {/* scroll distance for the cinematic intro fly-through; the canvas
           itself is fixed and reads this element's position via
           ScrollTrigger inside CameraRig */}
-      <div ref={trackEl} className="relative z-10 h-[220vh]">
-        <motion.div
-          style={{ opacity: hintOpacity }}
-          className="sticky bottom-10 flex justify-center"
-        >
-          <p className="label-tech animate-pulse">scroll to walk in</p>
-        </motion.div>
-      </div>
+      <div ref={trackEl} className="relative z-10 h-[220vh]" />
+      {/* fixed, not sticky — sticky needs sibling flow content on either
+          side to react against, which this lone hint doesn't have, and
+          it wasn't reliably pinning to the viewport bottom as a result */}
+      <motion.div
+        style={{ opacity: hintOpacity }}
+        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center"
+      >
+        <p className="label-tech animate-pulse">scroll to walk in</p>
+      </motion.div>
     </>
   );
 }
