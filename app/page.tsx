@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import Console from "@/components/Console";
 import Grid from "@/components/Grid";
 import Systems from "@/components/Systems";
-import Stack from "@/components/Stack";
+import Explore from "@/components/Explore";
 import StatusStrip from "@/components/StatusStrip";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
@@ -21,7 +21,7 @@ const Home = () => {
         <Console />
         <StatusStrip />
         <Systems />
-        <Stack />
+        <Explore />
         <Grid />
         <Experience />
         <Footer />
