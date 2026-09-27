@@ -33,11 +33,14 @@ export default function Laptop({ position, onOpen }: { position: [number, number
           <planeGeometry args={[1.02, 0.66]} />
           <meshStandardMaterial color="#321B24" emissive="#4a2836" emissiveIntensity={0.4} roughness={0.4} />
         </mesh>
-        <Html transform position={[0, 0.4, 0.026]} distanceFactor={1.35} style={{ pointerEvents: "none" }}>
-          <div className="flex w-[220px] flex-col items-center gap-1 text-center">
-            <p className="font-display text-[15px] leading-none text-powder-pink">YOMNA ALSHEMY</p>
-            <p className="mt-1 font-mono text-[7px] uppercase tracking-[0.25em] text-pearl/80">Live Systems</p>
-            <p className="mt-1.5 font-mono text-[5px] uppercase tracking-[0.2em] text-pearl/50">
+        <Html transform position={[0, 0.4, 0.026]} distanceFactor={1.1} style={{ pointerEvents: "none" }}>
+          {/* larger than feels necessary up close — the camera settles
+              much farther back now, which shrinks transform-mode Html
+              proportionally like any real object in the scene */}
+          <div className="flex w-[260px] flex-col items-center gap-1.5 text-center">
+            <p className="font-display text-[22px] leading-none text-powder-pink">YOMNA ALSHEMY</p>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-pearl/80">Live Systems</p>
+            <p className="mt-1.5 font-mono text-[7px] uppercase tracking-[0.2em] text-pearl/50">
               software · systems · infrastructure · curiosity
             </p>
           </div>

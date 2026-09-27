@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 import * as React from "react";
 
@@ -14,6 +15,12 @@ const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: fa
 
 function DesktopExperience() {
   const trackEl = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: trackEl, offset: ["start start", "end end"] });
+  // Bottom of the viewport, not the top — pinned near the laptop screen
+  // was the "scroll to walk in" hint overlapping it. Fades out once
+  // scrolling has clearly started instead of lingering the whole intro.
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+
   return (
     <>
       <DeskScene trackEl={trackEl} />
@@ -21,9 +28,12 @@ function DesktopExperience() {
           itself is fixed and reads this element's position via
           ScrollTrigger inside CameraRig */}
       <div ref={trackEl} className="relative z-10 h-[220vh]">
-        <div className="sticky top-8 flex justify-center pt-6">
+        <motion.div
+          style={{ opacity: hintOpacity }}
+          className="sticky bottom-10 flex justify-center"
+        >
           <p className="label-tech animate-pulse">scroll to walk in</p>
-        </div>
+        </motion.div>
       </div>
     </>
   );

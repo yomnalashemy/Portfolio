@@ -11,11 +11,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Cinematic close-up → pull back → settle framing the whole desk (objects
 // span roughly x:[-0.55,0.55] z:[-0.32,0.42]) with real margin, not
-// cropped at the edges.
+// cropped at the edges. A steep, close, top-down-ish angle badly
+// exaggerates how large near objects read (the same reason a wide-angle
+// lens close to a face looks distorted) — every keyframe here uses a
+// gentler ~20° angle below horizontal at real distance instead, which
+// scales far more predictably.
 const KEYFRAMES = {
-  start: { pos: [0.3, 0.24, 0.55] as const, look: [0.12, 0.05, 0.25] as const },
-  mid: { pos: [1.3, 1.1, 2.1] as const, look: [0, 0.1, -0.05] as const },
-  end: { pos: [0.1, 1.2, 2.35] as const, look: [0, 0.08, -0.05] as const },
+  start: { pos: [0.4, 0.4, 1.0] as const, look: [0.08, 0.12, 0.15] as const },
+  mid: { pos: [1.5, 1.0, 2.6] as const, look: [0, 0.1, -0.05] as const },
+  end: { pos: [0.4, 1.5, 4.2] as const, look: [0, 0.1, -0.1] as const },
 };
 
 interface Props {

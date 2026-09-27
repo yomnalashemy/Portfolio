@@ -42,7 +42,7 @@ export default function DeskScene({ trackEl }: { trackEl: React.RefObject<HTMLDi
     <div data-desk-canvas className="fixed inset-0 z-0">
       <Canvas shadows dpr={[1, 1.5]} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
         <color attach="background" args={["#FFF4D8"]} />
-        <fog attach="fog" args={["#FFF4D8", 2.5, 6.5]} />
+        <fog attach="fog" args={["#FFF4D8", 4, 9]} />
         <CameraRig trackEl={trackEl} introDone={introDone} />
         <Lighting />
         <DeskSurface />
