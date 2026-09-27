@@ -6,7 +6,13 @@ import DeskObject from "../DeskObject";
 
 export default function Laptop({ position, onOpen }: { position: [number, number, number]; onOpen: () => void }) {
   return (
-    <DeskObject position={position} label="WORK" cursorLabel="INSPECT" onOpen={onOpen}>
+    <DeskObject
+      position={position}
+      label="WORK"
+      cursorLabel="INSPECT"
+      onOpen={onOpen}
+      hitSize={[1.25, 0.85, 1.05]}
+    >
       {/* base / keyboard deck */}
       <mesh position={[0, 0.035, 0]} castShadow receiveShadow>
         <boxGeometry args={[1.15, 0.07, 0.78]} />

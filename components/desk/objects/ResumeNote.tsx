@@ -6,7 +6,7 @@ import DeskObject from "../DeskObject";
 
 export default function ResumeNote({ position, onOpen }: { position: [number, number, number]; onOpen: () => void }) {
   return (
-    <DeskObject position={position} label="RESUME" cursorLabel="OPEN" onOpen={onOpen}>
+    <DeskObject position={position} label="RESUME" cursorLabel="OPEN" onOpen={onOpen} hitSize={[0.4, 0.1, 0.5]}>
       <group rotation={[0, -0.08, 0]}>
         <mesh position={[0, 0.008, 0]} receiveShadow>
           <boxGeometry args={[0.32, 0.012, 0.42]} />

@@ -13,7 +13,13 @@ const VESSELS: { x: number; z: number; h: number; liquid: string }[] = [
  * skills page for anyone not exploring the 3D scene. */
 export default function LabVessels({ position, onOpen }: { position: [number, number, number]; onOpen: () => void }) {
   return (
-    <DeskObject position={position} label="EXPERIMENTS" cursorLabel="INSPECT" onOpen={onOpen}>
+    <DeskObject
+      position={position}
+      label="EXPERIMENTS"
+      cursorLabel="INSPECT"
+      onOpen={onOpen}
+      hitSize={[0.42, 0.3, 0.16]}
+    >
       {/* connecting tube */}
       <mesh position={[0, 0.05, 0]} rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.004, 0.004, 0.3, 8]} />

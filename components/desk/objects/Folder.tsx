@@ -4,7 +4,7 @@ import DeskObject from "../DeskObject";
 
 export default function Folder({ position, onOpen }: { position: [number, number, number]; onOpen: () => void }) {
   return (
-    <DeskObject position={position} label="PROJECTS" cursorLabel="INSPECT" onOpen={onOpen}>
+    <DeskObject position={position} label="PROJECTS" cursorLabel="INSPECT" onOpen={onOpen} hitSize={[0.58, 0.12, 0.46]}>
       <group rotation={[0, 0.12, 0]}>
         <mesh position={[0, 0.012, 0]} receiveShadow>
           <boxGeometry args={[0.5, 0.02, 0.38]} />

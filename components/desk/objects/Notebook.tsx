@@ -4,7 +4,7 @@ import DeskObject from "../DeskObject";
 
 export default function Notebook({ position, onOpen }: { position: [number, number, number]; onOpen: () => void }) {
   return (
-    <DeskObject position={position} label="ABOUT" cursorLabel="OPEN" onOpen={onOpen}>
+    <DeskObject position={position} label="ABOUT" cursorLabel="OPEN" onOpen={onOpen} hitSize={[0.68, 0.16, 0.52]}>
       <group rotation={[0, -0.18, 0]}>
         {/* pages */}
         <mesh position={[0.005, 0.028, 0.005]}>

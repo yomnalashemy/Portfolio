@@ -3,6 +3,14 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import * as React from "react";
 
+// Fixed outer wrapper size — the centering offset is baked into the
+// spring-driven x/y pixel math below, not a CSS transform. Mixing a
+// MotionValue-driven `x` with a separately-set static `translateX: "-50%"`
+// on the same element was the actual bug: both write to the transform's
+// translateX channel, so they were fighting each other every frame
+// instead of composing, which read as a rigid, stepped cursor.
+const SIZE = 68;
+
 /**
  * Small pearl-like ring by default; expands and shows a label near
  * anything with data-cursor="LABEL" (INSPECT / OPEN / WRITE / GO...).
@@ -15,8 +23,8 @@ export default function CustomCursor() {
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const springX = useSpring(x, { damping: 28, stiffness: 350, mass: 0.4 });
-  const springY = useSpring(y, { damping: 28, stiffness: 350, mass: 0.4 });
+  const springX = useSpring(x, { damping: 32, stiffness: 420, mass: 0.4 });
+  const springY = useSpring(y, { damping: 32, stiffness: 420, mass: 0.4 });
 
   React.useEffect(() => {
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
@@ -26,8 +34,8 @@ export default function CustomCursor() {
     document.documentElement.classList.add("has-custom-cursor");
 
     const onMove = (e: PointerEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
+      x.set(e.clientX - SIZE / 2);
+      y.set(e.clientY - SIZE / 2);
 
       // The 3D canvas has its own R3F pointer-event hover system (see
       // desk-hover below) — DOM data-cursor lookup would otherwise reset
@@ -62,17 +70,18 @@ export default function CustomCursor() {
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full border-2 border-raspberry/60 bg-pearl/70 shadow-[0_2px_10px_rgba(181,31,82,0.25)]"
-      style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
-      animate={{
-        width: expanded ? 68 : 11,
-        height: expanded ? 68 : 11,
-      }}
-      transition={{ type: "spring", damping: 22, stiffness: 300 }}
+      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center"
+      style={{ x: springX, y: springY, width: SIZE, height: SIZE }}
     >
-      {label && (
-        <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-raspberry">{label}</span>
-      )}
+      <motion.div
+        className="flex items-center justify-center rounded-full border-2 border-raspberry/60 bg-pearl/70 shadow-[0_2px_10px_rgba(181,31,82,0.25)]"
+        animate={{ width: expanded ? SIZE : 11, height: expanded ? SIZE : 11 }}
+        transition={{ type: "spring", damping: 22, stiffness: 300 }}
+      >
+        {label && (
+          <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-raspberry">{label}</span>
+        )}
+      </motion.div>
     </motion.div>
   );
 }
