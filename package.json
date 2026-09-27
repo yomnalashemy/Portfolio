@@ -6,13 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "vercel --prod"
+    "lint": "next lint"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
-    "@sentry/nextjs": "^7.105.0",
     "@tabler/icons-react": "^3.1.0",
     "@types/three": "^0.163.0",
     "class-variance-authority": "^0.7.0",
@@ -21,7 +19,7 @@
     "gsap": "^3.15.0",
     "lucide-react": "^0.365.0",
     "mini-svg-data-uri": "^1.4.4",
-    "next": "14.1.4",
+    "next": "^14.2.35",
     "next-themes": "^0.3.0",
     "portfolio": "file:",
     "react": "^18",
@@ -31,8 +29,7 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.163.0",
-    "three-globe": "^2.29.0",
-    "vercel": "^34.0.0"
+    "three-globe": "^2.29.0"
   },
   "devDependencies": {
     "@types/node": "^20",
