@@ -53,13 +53,16 @@ const Systems = () => {
             >
               <div
                 aria-hidden
-                className="absolute left-0 top-1 hidden md:flex size-9 items-center justify-center rounded-full border border-console-line bg-console-bg font-mono text-xs text-console-amber"
+                className="absolute left-0 top-1 hidden md:flex size-9 items-center justify-center rounded-full border-2 bg-console-bg font-mono text-xs font-semibold"
+                style={{ borderColor: project.color, color: project.color }}
               >
                 {String(i + 1).padStart(2, "0")}
               </div>
 
               <div className={`md:pl-16 ${reversed ? "md:order-2" : ""}`}>
-                <p className="eyebrow">{project.tag}</p>
+                <p className="eyebrow" style={{ color: project.color }}>
+                  {project.tag}
+                </p>
                 <h3 className="mt-2 font-mono text-2xl font-semibold text-console-ink">
                   {shortTitle(project.title)}
                 </h3>
@@ -100,7 +103,10 @@ const Systems = () => {
               </div>
 
               <div className={reversed ? "md:order-1" : ""}>
-                <div className="rounded-xl border border-console-line bg-console-raised p-2 shadow-[0_0_0_1px_rgba(0,0,0,0.2)]">
+                <div
+                  className="rounded-xl border border-console-line border-t-2 bg-console-raised p-2 shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
+                  style={{ borderTopColor: project.color }}
+                >
                   <div className="flex items-center gap-2 px-2 py-2">
                     <span className="size-2 rounded-full bg-console-good" />
                     <span className="font-mono text-[11px] text-console-faint truncate">

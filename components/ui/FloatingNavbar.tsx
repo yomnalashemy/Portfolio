@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const FloatingNav = ({
   navItems,
@@ -63,9 +64,9 @@ export const FloatingNav = ({
         )}
         style={{
           backdropFilter: "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(10, 10, 9, 0.8)",
+          backgroundColor: "rgb(var(--console-bg) / 0.8)",
           borderRadius: "10px",
-          border: "1px solid #26261f",
+          border: "1px solid rgb(var(--console-line))",
         }}
       >
         {navItems.map((navItem: any, idx: number) => (
@@ -78,6 +79,8 @@ export const FloatingNav = ({
             <span className="!cursor-pointer">{navItem.name}</span>
           </Link>
         ))}
+        <span className="h-4 w-px bg-console-line" aria-hidden />
+        <ThemeToggle />
       </motion.div>
     </AnimatePresence>
   );

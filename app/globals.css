@@ -4,6 +4,21 @@
 
 @layer base {
   :root {
+    /* Console palette as raw "r g b" triples so Tailwind's opacity
+       modifiers (bg-console-surface/60 etc.) keep working — see
+       tailwind.config.ts's rgb(var(...) / <alpha-value>) wiring. Light
+       theme is the default; .dark overrides below. */
+    --console-bg: 246 245 240;
+    --console-surface: 255 255 255;
+    --console-raised: 251 250 246;
+    --console-line: 221 217 207;
+    --console-ink: 23 21 15;
+    --console-muted: 107 104 88;
+    --console-faint: 166 162 148;
+    --console-amber: 168 100 27;
+    --console-amber-dim: 217 184 120;
+    --console-good: 47 143 76;
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
@@ -36,6 +51,17 @@
   }
 
   .dark {
+    --console-bg: 10 10 9;
+    --console-surface: 19 19 17;
+    --console-raised: 26 26 23;
+    --console-line: 38 38 31;
+    --console-ink: 242 241 234;
+    --console-muted: 143 141 128;
+    --console-faint: 92 91 81;
+    --console-amber: 232 163 61;
+    --console-amber-dim: 138 97 31;
+    --console-good: 79 174 106;
+
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
@@ -77,11 +103,15 @@
     @apply active:outline-none;
   }
   ::selection {
-    background: color-mix(in srgb, theme("colors.console.amber") 30%, transparent);
+    /* theme("colors.console.amber") would return the raw
+       rgb(var(...) / <alpha-value>) string with <alpha-value> left
+       unsubstituted outside Tailwind's own utility pipeline — reference
+       the CSS variable directly instead. */
+    background: rgb(var(--console-amber) / 0.3);
   }
   * {
     scrollbar-width: thin;
-    scrollbar-color: theme("colors.console.line") transparent;
+    scrollbar-color: rgb(var(--console-line)) transparent;
   }
 }
 

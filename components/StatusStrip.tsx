@@ -34,6 +34,13 @@ const StatusStrip = () => {
               {s.value}
             </div>
             <p className="mt-1.5 text-sm text-console-muted leading-snug">{s.label}</p>
+            {i === 0 && (
+              <div className="mt-2.5 flex gap-1.5" aria-hidden>
+                {projects.map((p) => (
+                  <span key={p.id} className="size-2 rounded-full" style={{ background: p.color }} />
+                ))}
+              </div>
+            )}
           </motion.div>
         ))}
       </div>

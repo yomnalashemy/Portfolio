@@ -70,6 +70,7 @@ export const projects = [
   {
     id: 1,
     tag: "ITQAN",
+    color: "#dcc68f",
     title: "ITQAN – Full-Stack Cambridge IGCSE Revision Platform",
     des: "~61K lines of TypeScript, 147 API routes, 1,025 automated tests, serving students, tutors, and parents with assignments, marking, and progress tracking — used across the UAE and Egypt.",
     img: "/itqan.svg",
@@ -81,6 +82,7 @@ export const projects = [
   {
     id: 2,
     tag: "CuraCare",
+    color: "#3fbf93",
     title: "CuraCare – Full-Stack Healthcare Platform",
     des: "Secure platform with structured data models for patient intake, appointment flow, and medical records — admin/provider dashboards with SQL-based access controls and audit trails.",
     img: "/Carepulse.png",
@@ -92,6 +94,7 @@ export const projects = [
   {
     id: 3,
     tag: "Lupira",
+    color: "#e2749a",
     title: "Lupira – Full-Stack AI-Powered Lupus Detection App",
     des: "SVM models for early lupus risk prediction — custom datasets, clinical-input mapping to diagnostic probabilities, and visualized output guiding patient self-assessments.",
     img: "/Lupira.png",
@@ -103,6 +106,7 @@ export const projects = [
   {
     id: 4,
     tag: "Horizon Banking",
+    color: "#e08a42",
     title: "Horizon Banking – Full-Stack Financial Management Platform",
     des: "Responsive fintech app with secure auth, cross-account transfers, and data-driven spending analysis — SQL-based reporting for user-level insights and budgeting.",
     img: "/horizon.png",
@@ -114,6 +118,7 @@ export const projects = [
   {
     id: 5,
     tag: "SushiMania",
+    color: "#e0605a",
     title: "SushiMania – Sushi Ordering Website",
     des: "A user-friendly sushi restaurant website built with HTML, CSS, and JavaScript, focused on responsive UI, an interactive cart, and clear UX.",
     img: "/sushi.png",
@@ -125,6 +130,7 @@ export const projects = [
   {
     id: 6,
     tag: "Sentinel",
+    color: "#d97a5f",
     title: "Sentinel – Raw Data to Branded PDF Engine (mini demo)",
     des: "A generic miniature of an internal tool suite built at Ziina: the same raw data, rendered live into a real PDF through three completely different brand templates — the engine, not any specific report.",
     img: "/sentinel.svg",

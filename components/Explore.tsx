@@ -88,9 +88,12 @@ const Explore = () => {
         </span>
       </div>
 
-      <div className="relative mt-8 h-[380px] rounded-xl border border-console-line bg-console-surface/60 overflow-hidden">
+      {/* Fixed dark background regardless of site theme — the WebGL scene's
+          own lighting is tuned for it, like a physical screen embedded in
+          the page rather than a themed panel. */}
+      <div className="relative mt-8 h-[380px] overflow-hidden rounded-xl border border-console-line bg-[#0a0a09]">
         <ExploreScene stacks={STACKS} found={found} active={active} onSelect={select} />
-        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[11px] text-console-faint">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[11px] text-[#5c5b51]">
           drag to spin the system map · click a node to unlock it
         </p>
       </div>
@@ -106,8 +109,8 @@ const Explore = () => {
               onClick={() => select(s.tag)}
               className="flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-sm transition-colors"
               style={{
-                borderColor: isFound ? s.color : "#26261f",
-                color: isFound ? s.color : "#8f8d80",
+                borderColor: isFound ? s.color : "rgb(var(--console-line))",
+                color: isFound ? s.color : "rgb(var(--console-muted))",
                 background: isActive ? `${s.color}1a` : "transparent",
               }}
             >
@@ -129,7 +132,7 @@ const Explore = () => {
             className="mt-6 rounded-xl border p-6"
             style={{
               borderColor: `${activeStack.color}40`,
-              background: `radial-gradient(120% 140% at 0% 0%, ${activeStack.color}22, #131311 55%)`,
+              background: `radial-gradient(120% 140% at 0% 0%, ${activeStack.color}22, rgb(var(--console-surface)) 55%)`,
             }}
           >
             <div className="flex flex-wrap gap-2.5">

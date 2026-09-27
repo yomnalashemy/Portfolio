@@ -46,18 +46,21 @@ const config = {
           "100": "#00CEC8",
         },
         green: "#005451",
-        // Console palette — the whole redesign runs on these five.
+        // Console palette — the whole redesign runs on these. Values are
+        // CSS vars (see globals.css :root / .dark) so next-themes' .dark
+        // class swap actually changes them; <alpha-value> keeps opacity
+        // modifiers (bg-console-surface/60 etc.) working.
         console: {
-          bg: "#0a0a09",
-          surface: "#131311",
-          raised: "#1a1a17",
-          line: "#26261f",
-          ink: "#f2f1ea",
-          muted: "#8f8d80",
-          faint: "#5c5b51",
-          amber: "#e8a33d",
-          "amber-dim": "#8a611f",
-          good: "#4fae6a",
+          bg: "rgb(var(--console-bg) / <alpha-value>)",
+          surface: "rgb(var(--console-surface) / <alpha-value>)",
+          raised: "rgb(var(--console-raised) / <alpha-value>)",
+          line: "rgb(var(--console-line) / <alpha-value>)",
+          ink: "rgb(var(--console-ink) / <alpha-value>)",
+          muted: "rgb(var(--console-muted) / <alpha-value>)",
+          faint: "rgb(var(--console-faint) / <alpha-value>)",
+          amber: "rgb(var(--console-amber) / <alpha-value>)",
+          "amber-dim": "rgb(var(--console-amber-dim) / <alpha-value>)",
+          good: "rgb(var(--console-good) / <alpha-value>)",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -215,7 +218,13 @@ const config = {
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+    Object.entries(allColors)
+      // console-* already defines its own --console-* vars in globals.css
+      // (light/dark values); re-exporting the resolved rgb(var(...) /
+      // <alpha-value>) string here would just write that literal,
+      // unsubstituted text back into --console-bg etc.
+      .filter(([key]) => !key.startsWith("console-"))
+      .map(([key, val]) => [`--${key}`, val])
   );
 
   addBase({
