@@ -32,10 +32,25 @@ declare global {
 
 function DeskSurface() {
   return (
-    <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-      <planeGeometry args={[6, 6]} />
-      <meshStandardMaterial color="#F3EEE7" roughness={0.6} envMapIntensity={0.6} />
-    </mesh>
+    <>
+      <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6, 6]} />
+        <meshStandardMaterial color="#F3EEE7" roughness={0.6} envMapIntensity={0.6} />
+      </mesh>
+      {/* a desk mat, not just a bare surface — grounds the whole object
+          cluster instead of everything floating loose on plain cream,
+          and the thin gold reveal at the edge is the one recurring
+          "luxury stationery" detail (matches the notebook's gold corner,
+          the pen's gold tip, the lamp's gold arm) rather than a one-off */}
+      <mesh position={[0, 0.0015, 0.05]} receiveShadow>
+        <roundedBoxGeometry args={[1.78, 0.004, 1.38, 4, 0.07]} />
+        <meshStandardMaterial color="#D9B66F" roughness={0.4} metalness={0.3} envMapIntensity={1} />
+      </mesh>
+      <mesh position={[0, 0.003, 0.05]} receiveShadow>
+        <roundedBoxGeometry args={[1.7, 0.004, 1.3, 4, 0.06]} />
+        <meshStandardMaterial color="#FFD6E7" roughness={0.65} envMapIntensity={0.4} />
+      </mesh>
+    </>
   );
 }
 

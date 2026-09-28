@@ -31,6 +31,19 @@ export const metadata: Metadata = {
   title: "Yomna Alshemy — Live Systems",
   description:
     "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+  icons: { icon: "/favicon.svg" },
+  openGraph: {
+    title: "Yomna Alshemy — Live Systems",
+    description:
+      "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Yomna Alshemy — Live Systems",
+    description:
+      "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+  },
 };
 
 export default function RootLayout({
@@ -43,9 +56,6 @@ export default function RootLayout({
       lang="en"
       className={`${sans.variable} ${mono.variable} ${display.variable} ${italic.variable} ${script.variable}`}
     >
-      <head>
-        <link rel="icon" href="/girl-icon.png" sizes="any" />
-      </head>
       <body className="bg-buttercream font-sans text-espresso">{children}</body>
     </html>
   );
