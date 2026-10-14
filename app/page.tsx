@@ -10,6 +10,7 @@ import Nav from "@/components/archive/Nav";
 import MobileHome from "@/components/mobile/MobileHome";
 import AboutContent from "@/components/panels/AboutContent";
 import ContactContent from "@/components/panels/ContactContent";
+import ExperienceContent from "@/components/panels/ExperienceContent";
 import LabContent from "@/components/panels/LabContent";
 import ResumeContent from "@/components/panels/ResumeContent";
 import WorkContent from "@/components/panels/WorkContent";
@@ -58,13 +59,16 @@ function DesktopExperience() {
         <SectionShell id="about" eyebrow="02 / THE NOTEBOOK" title={<>Not a bio. <span className="italic-phrase text-raspberry">A working notebook.</span></>} tone="pearl">
           <AboutContent />
         </SectionShell>
-        <SectionShell id="lab" eyebrow="03 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder">
+        <SectionShell id="experience" eyebrow="03 / THE TIMELINE" title={<>Not a résumé line. <span className="italic-phrase text-lavender">A real timeline.</span></>} tone="powder">
+          <ExperienceContent />
+        </SectionShell>
+        <SectionShell id="lab" eyebrow="04 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="pearl">
           <LabContent />
         </SectionShell>
-        <SectionShell id="resume" eyebrow="04 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="pearl">
+        <SectionShell id="resume" eyebrow="05 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="powder">
           <ResumeContent />
         </SectionShell>
-        <SectionShell id="contact" eyebrow="05 / THE ENVELOPE" title="Let's talk." tone="buttercream">
+        <SectionShell id="contact" eyebrow="06 / THE ENVELOPE" title="Let's talk." tone="buttercream">
           <ContactContent />
         </SectionShell>
 
