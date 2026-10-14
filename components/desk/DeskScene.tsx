@@ -1,5 +1,6 @@
 "use client";
 
+import { ContactShadows } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode } from "@react-three/fiber";
 import * as React from "react";
 import * as THREE from "three";
@@ -34,8 +35,13 @@ declare global {
 function DeskSurface() {
   return (
     <>
+      {/* was a 6x6 plane — its physical edge sat inside the camera's
+          frustum and read as a hard horizontal "end of the world" line
+          across the frame instead of fading into the background via
+          fog. 60x60 puts that edge well past the fog's far=9 falloff,
+          so only the fog gradient is ever visible, never the geometry. */}
       <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[6, 6]} />
+        <planeGeometry args={[60, 60]} />
         <meshStandardMaterial color="#F3EEE7" roughness={0.6} envMapIntensity={0.6} />
       </mesh>
       {/* a desk mat, not just a bare surface — grounds the whole object
@@ -93,6 +99,11 @@ export default function DeskScene({
         <EnvironmentSetup />
         <Lighting />
         <DeskSurface />
+        {/* the directional light's own shadow map was there, but barely
+            visible — every object read as floating with no contact
+            point. A blurred contact-shadow catcher is the reliable fix:
+            it doesn't depend on tuning a shadow camera frustum blind. */}
+        <ContactShadows position={[0, 0.001, 0.05]} opacity={0.45} scale={2.4} blur={2.2} far={0.6} resolution={512} color="#321B24" />
         <DustParticles count={110} />
 
         {/* hero objects: cast + receive, worth the shadow cost. onOpen
