@@ -9,6 +9,7 @@ const LINKS = [
   { label: "WORK", id: "work" },
   { label: "ABOUT", id: "about" },
   { label: "EXPERIENCE", id: "experience" },
+  { label: "WORKBENCH", id: "skills" },
   { label: "LAB", id: "lab" },
   { label: "RESUME", id: "resume" },
   { label: "CONTACT", id: "contact" },

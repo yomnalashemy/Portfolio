@@ -5,6 +5,7 @@ import ContactContent from "@/components/panels/ContactContent";
 import ExperienceContent from "@/components/panels/ExperienceContent";
 import LabContent from "@/components/panels/LabContent";
 import ResumeContent from "@/components/panels/ResumeContent";
+import SkillsWorkbench from "@/components/panels/SkillsWorkbench";
 import WorkContent from "@/components/panels/WorkContent";
 import SiteFooter from "@/components/sections/SiteFooter";
 
@@ -12,9 +13,10 @@ const SECTIONS = [
   { id: "work", label: "01 / WORK", title: "The Work", Content: WorkContent },
   { id: "about", label: "02 / ABOUT", title: "About", Content: AboutContent },
   { id: "experience", label: "03 / EXPERIENCE", title: "Experience", Content: ExperienceContent },
-  { id: "lab", label: "04 / LAB", title: "Notes From the Margins", Content: LabContent },
-  { id: "resume", label: "05 / RESUME", title: "Résumé", Content: ResumeContent },
-  { id: "contact", label: "06 / CONTACT", title: "Contact", Content: ContactContent },
+  { id: "skills", label: "04 / WORKBENCH", title: "The Workbench", Content: SkillsWorkbench },
+  { id: "lab", label: "05 / LAB", title: "Notes From the Margins", Content: LabContent },
+  { id: "resume", label: "06 / RESUME", title: "Résumé", Content: ResumeContent },
+  { id: "contact", label: "07 / CONTACT", title: "Contact", Content: ContactContent },
 ] as const;
 
 /**

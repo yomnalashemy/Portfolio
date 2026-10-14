@@ -13,6 +13,7 @@ import ContactContent from "@/components/panels/ContactContent";
 import ExperienceContent from "@/components/panels/ExperienceContent";
 import LabContent from "@/components/panels/LabContent";
 import ResumeContent from "@/components/panels/ResumeContent";
+import SkillsWorkbench from "@/components/panels/SkillsWorkbench";
 import WorkContent from "@/components/panels/WorkContent";
 import SectionShell from "@/components/sections/SectionShell";
 import SiteFooter from "@/components/sections/SiteFooter";
@@ -62,13 +63,16 @@ function DesktopExperience() {
         <SectionShell id="experience" eyebrow="03 / THE TIMELINE" title={<>Not a résumé line. <span className="italic-phrase text-lavender">A real timeline.</span></>} tone="powder">
           <ExperienceContent />
         </SectionShell>
-        <SectionShell id="lab" eyebrow="04 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="pearl">
+        <SectionShell id="skills" eyebrow="04 / THE WORKBENCH" title={<>Not a percentage bar. <span className="italic-phrase text-baby-blue">A real workbench.</span></>} tone="pearl">
+          <SkillsWorkbench />
+        </SectionShell>
+        <SectionShell id="lab" eyebrow="05 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder">
           <LabContent />
         </SectionShell>
-        <SectionShell id="resume" eyebrow="05 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="powder">
+        <SectionShell id="resume" eyebrow="06 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="pearl">
           <ResumeContent />
         </SectionShell>
-        <SectionShell id="contact" eyebrow="06 / THE ENVELOPE" title="Let's talk." tone="buttercream">
+        <SectionShell id="contact" eyebrow="07 / THE ENVELOPE" title="Let's talk." tone="buttercream">
           <ContactContent />
         </SectionShell>
 

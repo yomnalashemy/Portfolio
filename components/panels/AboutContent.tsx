@@ -3,13 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 
-const SKILLS: { category: string; items: string[] }[] = [
-  { category: "LANGUAGES", items: ["Arabic (native)", "English (C1)", "Russian (A1)"] },
-  { category: "SYSTEMS", items: ["Node / Express", "Next.js", "NestJS", "FastAPI / Python"] },
-  { category: "INFRASTRUCTURE", items: ["PostgreSQL", "MongoDB", "Redis", "Docker", "Render"] },
-  { category: "TOOLS", items: ["Claude Code", "n8n", "SQL / Metabase", "Git"] },
-  { category: "CURRENTLY EXPLORING", items: ["CEH / ethical hacking", "Three.js / WebGL"] },
-];
+import { scrollToId } from "@/lib/scrollToId";
 
 const PAGES = [
   {
@@ -23,6 +17,13 @@ const PAGES = [
           challenges before moving into building the systems I used to try breaking.
         </p>
         <p className="script-note mt-4">still native Arabic, still C1 English, still terrible at Russian.</p>
+        <button
+          type="button"
+          onClick={() => scrollToId("skills")}
+          className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-cherry hover:text-raspberry"
+        >
+          → the stack itself lives on the workbench
+        </button>
       </div>
     ),
   },
@@ -53,25 +54,6 @@ const PAGES = [
           </dd>
         </div>
       </dl>
-    ),
-  },
-  {
-    tab: "SKILLS",
-    content: (
-      <div className="grid gap-5 sm:grid-cols-2">
-        {SKILLS.map((s) => (
-          <div key={s.category}>
-            <p className="label-tech">{s.category}</p>
-            <ul className="mt-2 flex flex-col gap-1">
-              {s.items.map((item) => (
-                <li key={item} className="text-sm text-espresso/80">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
     ),
   },
 ];
