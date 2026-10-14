@@ -1,6 +1,7 @@
 "use client";
 
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, NotebookText } from "lucide-react";
+import Link from "next/link";
 
 import { projects } from "@/data";
 
@@ -46,7 +47,7 @@ export default function WorkContent() {
               className="h-[260px] w-full"
             />
           </div>
-          <div className="flex items-center gap-3 px-5 py-4">
+          <div className="flex flex-wrap items-center gap-3 px-5 py-4">
             <a
               href={project.link}
               target="_blank"
@@ -64,6 +65,12 @@ export default function WorkContent() {
             >
               <Github className="size-3.5" /> Source
             </a>
+            <Link
+              href={`/work/${project.slug}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-espresso/15 px-4 py-2 font-mono text-xs uppercase tracking-wide text-espresso/70"
+            >
+              <NotebookText className="size-3.5" /> Case study
+            </Link>
           </div>
         </article>
       ))}
