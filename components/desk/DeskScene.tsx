@@ -17,6 +17,7 @@ import LabVessels from "./objects/LabVessels";
 import Laptop from "./objects/Laptop";
 import Notebook from "./objects/Notebook";
 import ResumeNote from "./objects/ResumeNote";
+import Signet from "./objects/Signet";
 
 // registers <roundedBoxGeometry> as a usable JSX intrinsic — sharp box
 // corners on every desk object were a big part of the "cheap CG" read
@@ -103,6 +104,7 @@ export default function DeskScene({
         <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => scrollToId("resume")} />
         <Envelope position={[0.5, 0, -0.28]} onOpen={() => scrollToId("contact")} />
         <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => scrollToId("about")} />
+        <Signet position={[0.7, 0, -0.42]} onOpen={() => scrollToId("about")} />
 
         {/* ambient-only: no shadow casting, kept cheap */}
         <CoffeeCup position={[0.28, 0, 0.38]} />
