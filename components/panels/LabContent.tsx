@@ -16,7 +16,7 @@ const NOTES = [
   },
   {
     tag: "CURRENT OBSESSION",
-    body: "CEH v13 — three modules in, going for the full certification.",
+    body: "CEH Master (312-50v13) — targeting December 2026.",
     stamp: "CURRENT",
   },
   {

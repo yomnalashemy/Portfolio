@@ -18,6 +18,7 @@ export const projects = [
       decisions: [
         "A from-scratch cipher-decoding pipeline to recover text from PDFs with corrupted font maps — known-plaintext cribs, a syllabus-trained trigram model, coordinate-ascent solving — reaching 98.1% character accuracy and 100% question-anchoring across 20 real exam papers, with zero external services.",
         "Privacy-preserving analytics for a product used by minors: daily-rotating salted visitor hashes, server-verified attribution, no IP address ever stored.",
+        "Rebuilt the design system from a gradient-heavy theme to a token-driven neutral UI — semantic color tokens, a single accent, a theme-adaptive SVG favicon — with automated WCAG AA contrast checks across every page and theme that caught unstyled buttons before launch.",
       ],
       tradeoffs: [
         "Building the cipher pipeline in-house instead of calling an OCR/LLM API meant more time writing the solver myself — but no per-call cost, no vendor dependency, and every step of it is auditable.",

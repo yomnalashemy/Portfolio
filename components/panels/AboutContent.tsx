@@ -11,7 +11,7 @@ const PAGES = [
     content: (
       <div>
         <p className="text-[15px] leading-relaxed text-espresso/80">
-          I&rsquo;m a FinCrime analyst at Ziina by day, and the engineer who built six of my own
+          I&rsquo;m a senior FinCrime analyst at Ziina by day, and the engineer who built six of my own
           production systems on the side — a Cambridge revision platform, a lupus-screening app wired
           to a real SVM model, a banking dashboard, and more. I started in penetration testing and CTF
           challenges before moving into building the systems I used to try breaking.
@@ -33,7 +33,7 @@ const PAGES = [
       <dl className="grid gap-5 sm:grid-cols-2">
         <div>
           <dt className="label-tech">CURRENTLY LEARNING</dt>
-          <dd className="mt-1 text-sm text-espresso/80">CEH v13 — three modules in.</dd>
+          <dd className="mt-1 text-sm text-espresso/80">CEH Master (312-50v13) — targeting Dec 2026.</dd>
         </div>
         <div>
           <dt className="label-tech">CURRENTLY BUILDING</dt>

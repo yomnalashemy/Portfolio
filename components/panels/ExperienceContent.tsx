@@ -17,15 +17,15 @@ type Role = {
 // nothing rounded up, nothing invented for effect.
 const ROLES: Role[] = [
   {
-    title: "FinCrime Analyst",
+    title: "Senior FinCrime Analyst — Automation & Investigations",
     org: "Ziina",
     location: "Dubai, UAE (Remote)",
     dates: "Aug 2025 — Present",
     current: true,
     bullets: [
       "Designed and built Sentinel, a self-initiated tool suite that cut case response time from 9 to 6.9 minutes — it now runs the team's law-enforcement response process.",
+      "Initiated and built a RAG-based chargeback-defense automation: an n8n-orchestrated, two-stage (retrieval/reasoning → generation) LLM pipeline that drafts representment packages straight from the Dispute Register for analyst review — architected to replace a third-party defense vendor.",
       "Built three production Python automations for KYB remediation that cut field-set failures from 303 to 1.",
-      "Independently traced a major coordinated card attack, mapping 60+ accounts for ban via IBAN/P2P chains.",
     ],
     seeProject: "Sentinel",
   },

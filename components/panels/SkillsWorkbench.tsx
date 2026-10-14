@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 type Cluster = { id: string; label: string; skills: string[] };
 
-// same facts the old About "SKILLS" tab listed — just wired instead of bulleted.
+// sourced from resume.pdf's Technical Skills list, grouped by category.
 const CLUSTERS: Cluster[] = [
   { id: "languages", label: "LANGUAGES", skills: ["Arabic (native)", "English (C1)", "Russian (A1)"] },
   { id: "systems", label: "SYSTEMS", skills: ["Node / Express", "Next.js", "NestJS", "FastAPI / Python"] },
@@ -15,7 +15,8 @@ const CLUSTERS: Cluster[] = [
     skills: ["PostgreSQL", "MongoDB", "Redis", "Docker", "Render"],
   },
   { id: "tools", label: "TOOLS", skills: ["Claude Code", "n8n", "SQL / Metabase", "Git"] },
-  { id: "exploring", label: "CURRENTLY EXPLORING", skills: ["CEH / ethical hacking", "Three.js / WebGL"] },
+  { id: "design", label: "DESIGN & A11Y", skills: ["UI/UX design", "Design systems", "Accessibility (WCAG AA)"] },
+  { id: "exploring", label: "CURRENTLY EXPLORING", skills: ["CEH Master (312-50v13)", "Three.js / WebGL"] },
 ];
 
 export default function SkillsWorkbench() {
