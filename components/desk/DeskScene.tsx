@@ -17,6 +17,7 @@ import Folder from "./objects/Folder";
 import LabVessels from "./objects/LabVessels";
 import Laptop from "./objects/Laptop";
 import Notebook from "./objects/Notebook";
+import PaperPlane from "./objects/PaperPlane";
 import ResumeNote from "./objects/ResumeNote";
 import Signet from "./objects/Signet";
 
@@ -132,6 +133,10 @@ export default function DeskScene({
         <DeskLamp position={[-0.55, 0, 0.42]} />
         <Pen position={[0.1, 0, 0.28]} />
         <Flowers position={[0.55, 0, 0.1]} />
+        {/* the one-time flying entrance — soars in once on load, then
+            settles into a gentle hover; respects prefers-reduced-motion
+            by skipping straight to its settled position */}
+        <PaperPlane />
       </Canvas>
     </div>
   );

@@ -54,25 +54,25 @@ function DesktopExperience() {
       {/* real, always-scrollable sections — the desk's objects and the
           nav are a second way into these, not the only way in */}
       <div className="relative z-20 bg-buttercream">
-        <SectionShell id="work" eyebrow="01 / THE ARCHIVE" title={<>Six systems. <span className="italic-phrase text-cherry">All of them running.</span></>} tone="buttercream">
+        <SectionShell id="work" eyebrow="01 / THE ARCHIVE" title={<>Six systems. <span className="italic-phrase text-cherry">All of them running.</span></>} tone="buttercream" accent="cherry">
           <WorkContent />
         </SectionShell>
-        <SectionShell id="about" eyebrow="02 / THE NOTEBOOK" title={<>Not a bio. <span className="italic-phrase text-raspberry">A working notebook.</span></>} tone="pearl">
+        <SectionShell id="about" eyebrow="02 / THE NOTEBOOK" title={<>Not a bio. <span className="italic-phrase text-raspberry">A working notebook.</span></>} tone="pearl" accent="raspberry">
           <AboutContent />
         </SectionShell>
-        <SectionShell id="experience" eyebrow="03 / THE TIMELINE" title={<>Not a résumé line. <span className="italic-phrase text-lavender">A real timeline.</span></>} tone="powder">
+        <SectionShell id="experience" eyebrow="03 / THE TIMELINE" title={<>Not a résumé line. <span className="italic-phrase text-lavender">A real timeline.</span></>} tone="powder" accent="lavender">
           <ExperienceContent />
         </SectionShell>
-        <SectionShell id="skills" eyebrow="04 / THE WORKBENCH" title={<>Not a percentage bar. <span className="italic-phrase text-baby-blue">A real workbench.</span></>} tone="pearl">
+        <SectionShell id="skills" eyebrow="04 / THE WORKBENCH" title={<>Not a percentage bar. <span className="italic-phrase text-baby-blue">A real workbench.</span></>} tone="pearl" accent="baby-blue">
           <SkillsWorkbench />
         </SectionShell>
-        <SectionShell id="lab" eyebrow="05 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder">
+        <SectionShell id="lab" eyebrow="05 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder" accent="hot-fuchsia">
           <LabContent />
         </SectionShell>
-        <SectionShell id="resume" eyebrow="06 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-cherry">Scented, allegedly.</span></>} tone="pearl">
+        <SectionShell id="resume" eyebrow="06 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-pistachio">Scented, allegedly.</span></>} tone="pearl" accent="pistachio">
           <ResumeContent />
         </SectionShell>
-        <SectionShell id="contact" eyebrow="07 / THE ENVELOPE" title="Let's talk." tone="buttercream">
+        <SectionShell id="contact" eyebrow="07 / THE ENVELOPE" title={<>Let&rsquo;s <span className="italic-phrase text-bubblegum">talk.</span></>} tone="buttercream" accent="bubblegum">
           <ContactContent />
         </SectionShell>
 
