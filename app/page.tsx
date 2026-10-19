@@ -81,6 +81,19 @@ function DesktopExperience() {
       <motion.div style={{ opacity: heroOpacity }}>
         <DeskScene trackEl={trackEl} paused={heroPaused} />
       </motion.div>
+      {/* the identity statement, real DOM text now — it used to live
+          only on the laptop's 3D screen via Html-transform, which
+          disappeared along with the laptop object. Fixed in the upper
+          third, clear of where the desk objects sit, fading with the
+          same heroOpacity as the canvas so it leaves with it. */}
+      <motion.div
+        style={{ opacity: heroOpacity }}
+        className="pointer-events-none fixed inset-x-0 top-28 z-10 flex flex-col items-center text-center md:top-32"
+      >
+        <h1 className="display-xl text-espresso">YOMNA ALSHEMY</h1>
+        <p className="label-tech mt-3">LIVE SYSTEMS</p>
+        <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
+      </motion.div>
       {/* scroll distance for the cinematic intro fly-through; the canvas
           itself is fixed and reads this element's position via
           ScrollTrigger inside CameraRig */}

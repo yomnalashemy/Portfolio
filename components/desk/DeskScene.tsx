@@ -14,9 +14,7 @@ import { CoffeeCup, DeskLamp, Flowers, Pen } from "./objects/Ambient";
 import Envelope from "./objects/Envelope";
 import Folder from "./objects/Folder";
 import LabVessels from "./objects/LabVessels";
-import Laptop from "./objects/Laptop";
 import Notebook from "./objects/Notebook";
-import PaperPlane from "./objects/PaperPlane";
 import ResumeNote from "./objects/ResumeNote";
 import Signet from "./objects/Signet";
 
@@ -120,7 +118,6 @@ export default function DeskScene({
         {/* hero objects: cast + receive, worth the shadow cost. onOpen
             navigates to the real page — these are a second way in to
             each page, not the only way in. */}
-        <Laptop position={[-0.05, 0, -0.15]} onOpen={() => router.push("/work")} />
         <Notebook position={[0.42, 0, 0.12]} onOpen={() => router.push("/about")} />
         <Folder position={[-0.42, 0, 0.18]} onOpen={() => router.push("/work")} />
         <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => router.push("/resume")} />
@@ -133,10 +130,6 @@ export default function DeskScene({
         <DeskLamp position={[-0.55, 0, 0.42]} />
         <Pen position={[0.1, 0, 0.28]} />
         <Flowers position={[0.55, 0, 0.1]} />
-        {/* the one-time flying entrance — soars in once on load, then
-            settles into a gentle hover; respects prefers-reduced-motion
-            by skipping straight to its settled position */}
-        <PaperPlane />
       </Canvas>
     </div>
   );
