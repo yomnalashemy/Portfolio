@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 
 import { projects } from "@/data";
 
+import MacFrame from "@/components/mockups/MacFrame";
+
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
@@ -74,8 +76,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </div>
         </div>
 
-        <div className="mt-14 overflow-hidden rounded-xl border border-cherry/10 bg-white shadow-[0_20px_45px_-26px_rgba(50,27,36,0.4)]">
-          <iframe src={project.demo} title={shortTitle(project.title)} loading="lazy" className="h-[340px] w-full" />
+        <div className="mt-14">
+          <MacFrame src={project.demo} title={shortTitle(project.title)} />
         </div>
 
         <div className="mt-16 flex flex-col gap-12">

@@ -1,3 +1,5 @@
+export type Project = (typeof projects)[number];
+
 export const projects = [
   {
     id: 1,
