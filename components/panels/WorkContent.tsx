@@ -6,8 +6,8 @@ import * as React from "react";
 
 import { projects, type Project } from "@/data";
 
-import MacFrame from "../mockups/MacFrame";
-import PhoneFrame from "../mockups/PhoneFrame";
+import MacFrame, { MACBOOK_FINISHES, type MacbookFinish } from "../mockups/MacFrame";
+import PhoneFrame, { IPHONE_FINISHES, type IphoneFinish } from "../mockups/PhoneFrame";
 
 function shortTitle(title: string) {
   return title.split(/[–|-]/)[0]!.trim();
@@ -15,6 +15,8 @@ function shortTitle(title: string) {
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [device, setDevice] = React.useState<"mac" | "phone">("mac");
+  const [macFinish, setMacFinish] = React.useState<MacbookFinish>("silver");
+  const [phoneFinish, setPhoneFinish] = React.useState<IphoneFinish>("black");
   const title = shortTitle(project.title);
 
   return (
@@ -66,11 +68,51 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </button>
       </div>
 
+      {/* real finish picker — the actual announced colors for each
+          device, not decorative swatches */}
+      <div className="mt-3 flex justify-center gap-2 px-5">
+        {device === "mac"
+          ? (Object.entries(MACBOOK_FINISHES) as [MacbookFinish, (typeof MACBOOK_FINISHES)[MacbookFinish]][]).map(
+              ([key, f]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setMacFinish(key)}
+                  aria-label={f.label}
+                  aria-pressed={macFinish === key}
+                  className="size-5 rounded-full border transition-shadow"
+                  style={{
+                    background: f.lid,
+                    borderColor: macFinish === key ? project.color : "rgba(50,27,36,0.15)",
+                    boxShadow: macFinish === key ? `0 0 0 2px ${project.color}33` : "none",
+                  }}
+                />
+              ),
+            )
+          : (Object.entries(IPHONE_FINISHES) as [IphoneFinish, (typeof IPHONE_FINISHES)[IphoneFinish]][]).map(
+              ([key, f]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setPhoneFinish(key)}
+                  aria-label={f.label}
+                  aria-pressed={phoneFinish === key}
+                  className="size-5 rounded-full border transition-shadow"
+                  style={{
+                    background: f.body,
+                    borderColor: phoneFinish === key ? project.color : "rgba(50,27,36,0.15)",
+                    boxShadow: phoneFinish === key ? `0 0 0 2px ${project.color}33` : "none",
+                  }}
+                />
+              ),
+            )}
+      </div>
+
       <div className="mt-5 px-5 pb-2">
         {device === "mac" ? (
-          <MacFrame src={project.demo} title={title} />
+          <MacFrame src={project.demo} title={title} finish={macFinish} />
         ) : (
-          <PhoneFrame src={project.demo} title={title} />
+          <PhoneFrame src={project.demo} title={title} finish={phoneFinish} />
         )}
       </div>
 
