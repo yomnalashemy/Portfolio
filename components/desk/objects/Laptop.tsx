@@ -49,11 +49,14 @@ export default function Laptop({ position, onOpen }: { position: [number, number
         </mesh>
         <mesh position={[0, 0.4, 0.023]}>
           <planeGeometry args={[1.02, 0.66]} />
-          <meshStandardMaterial color="#321B24" emissive="#4a2836" emissiveIntensity={0.4} roughness={0.4} />
+          <meshStandardMaterial color="#321B24" emissive="#6a3650" emissiveIntensity={0.75} roughness={0.4} />
         </mesh>
         {/* the screen actually lights the desk in front of it, instead
-            of just being an emissive plane nothing else responds to */}
-        <pointLight position={[0, 0.4, 0.3]} color="#FFD6E7" intensity={0.4} distance={1.1} decay={2} />
+            of just being an emissive plane nothing else responds to —
+            boosted alongside the emissive bump above so the screen
+            reads as the one clear "technology, powered on" focal point
+            in a scene that's otherwise stationery and desk props */}
+        <pointLight position={[0, 0.4, 0.3]} color="#FFD6E7" intensity={0.65} distance={1.3} decay={2} />
         <Html transform position={[0, 0.4, 0.026]} distanceFactor={1.1} style={{ pointerEvents: "none" }}>
           {/* larger than feels necessary up close — the camera settles
               much farther back now, which shrinks transform-mode Html

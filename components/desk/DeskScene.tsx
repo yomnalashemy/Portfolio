@@ -40,9 +40,12 @@ function DeskSurface() {
           across the frame instead of fading into the background via
           fog. 60x60 puts that edge well past the fog's far=9 falloff,
           so only the fog gradient is ever visible, never the geometry. */}
+      {/* was #F3EEE7 — a hair off the #FFF4D8 background color, so the
+          floor had almost no value contrast against the sky and read as
+          one undifferentiated blur instead of a distinct ground plane */}
       <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[60, 60]} />
-        <meshStandardMaterial color="#F3EEE7" roughness={0.6} envMapIntensity={0.6} />
+        <meshStandardMaterial color="#CFC5B4" roughness={0.65} envMapIntensity={0.5} />
       </mesh>
       {/* a desk mat, not just a bare surface — grounds the whole object
           cluster instead of everything floating loose on plain cream,
@@ -50,8 +53,8 @@ function DeskSurface() {
           "luxury stationery" detail (matches the notebook's gold corner,
           the pen's gold tip, the lamp's gold arm) rather than a one-off */}
       <mesh position={[0, 0.0015, 0.05]} receiveShadow>
-        <roundedBoxGeometry args={[1.78, 0.004, 1.38, 4, 0.07]} />
-        <meshStandardMaterial color="#D9B66F" roughness={0.4} metalness={0.3} envMapIntensity={1} />
+        <roundedBoxGeometry args={[1.82, 0.004, 1.42, 4, 0.07]} />
+        <meshStandardMaterial color="#D9B66F" roughness={0.3} metalness={0.55} envMapIntensity={1.3} />
       </mesh>
       <mesh position={[0, 0.003, 0.05]} receiveShadow>
         <roundedBoxGeometry args={[1.7, 0.004, 1.3, 4, 0.06]} />
@@ -62,14 +65,21 @@ function DeskSurface() {
 }
 
 function Lighting() {
+  // ambient light was nearly as strong as the key light (0.45 vs 1.1) —
+  // ambient has no direction, so it washes a flat, equal amount of light
+  // over every surface regardless of its normal, which is exactly what
+  // erases the light/shadow gradient that makes an edge read as an edge.
+  // Dropping it and letting the directional key dominate restores that
+  // gradient; the two point lights are dialed back to match so they
+  // still add color without flattening the new contrast back out.
   return (
     <>
-      <ambientLight intensity={0.45} color="#FFF4D8" />
-      <directionalLight position={[2, 3, 2]} intensity={1.1} color="#FFD6E7" castShadow shadow-mapSize={[512, 512]} />
-      <pointLight position={[-1.5, 1, -1]} intensity={0.35} color="#C9B6E4" />
+      <ambientLight intensity={0.22} color="#FFF4D8" />
+      <directionalLight position={[2, 3, 2]} intensity={1.6} color="#FFD6E7" castShadow shadow-mapSize={[1024, 1024]} />
+      <pointLight position={[-1.5, 1, -1]} intensity={0.2} color="#C9B6E4" />
       {/* a second, cooler fill so surfaces show two distinct highlights
           instead of one flat wash — cheap and reads as far less "flat CG" */}
-      <pointLight position={[1.2, 0.8, 1.5]} intensity={0.25} color="#A9DDF5" />
+      <pointLight position={[1.2, 0.8, 1.5]} intensity={0.15} color="#A9DDF5" />
     </>
   );
 }
