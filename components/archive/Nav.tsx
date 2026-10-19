@@ -1,23 +1,24 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
-import { scrollToId } from "@/lib/scrollToId";
-
 const LINKS = [
-  { label: "WORK", id: "work" },
-  { label: "ABOUT", id: "about" },
-  { label: "EXPERIENCE", id: "experience" },
-  { label: "WORKBENCH", id: "skills" },
-  { label: "LAB", id: "lab" },
-  { label: "RESUME", id: "resume" },
-  { label: "CONTACT", id: "contact" },
+  { label: "WORK", href: "/work" },
+  { label: "ABOUT", href: "/about" },
+  { label: "EXPERIENCE", href: "/experience" },
+  { label: "WORKBENCH", href: "/workbench" },
+  { label: "LAB", href: "/lab" },
+  { label: "RESUME", href: "/resume" },
+  { label: "CONTACT", href: "/contact" },
 ];
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const pathname = usePathname();
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -26,31 +27,28 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (id: string) => {
-    setMenuOpen(false);
-    scrollToId(id);
-  };
-
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 font-mono text-xs transition-colors duration-500 md:px-10 ${
-          scrolled ? "bg-buttercream/85 backdrop-blur-md" : "bg-transparent"
+          scrolled || pathname !== "/" ? "bg-buttercream/85 backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <span className="font-display text-lg text-cherry">YOMNA</span>
+        <Link href="/" className="font-display text-lg text-cherry">
+          YOMNA
+        </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
           {LINKS.map((l) => (
-            <button
+            <Link
               key={l.label}
-              type="button"
+              href={l.href}
               data-cursor="GO"
-              onClick={() => go(l.id)}
-              className="tracking-[0.18em] text-espresso/60 transition-colors hover:text-raspberry"
+              className="tracking-[0.18em] transition-colors hover:text-raspberry"
+              style={{ color: pathname === l.href ? "#B51F52" : "rgba(50,27,36,0.6)" }}
             >
               {l.label}
-            </button>
+            </Link>
           ))}
         </nav>
 
@@ -74,17 +72,16 @@ export default function Nav() {
             className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-buttercream md:hidden"
           >
             {LINKS.map((l, i) => (
-              <motion.button
+              <motion.div
                 key={l.label}
-                type="button"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                onClick={() => go(l.id)}
-                className="font-display text-3xl text-espresso"
               >
-                {l.label}
-              </motion.button>
+                <Link href={l.href} onClick={() => setMenuOpen(false)} className="font-display text-3xl text-espresso">
+                  {l.label}
+                </Link>
+              </motion.div>
             ))}
           </motion.div>
         )}

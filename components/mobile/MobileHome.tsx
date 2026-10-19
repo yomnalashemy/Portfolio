@@ -1,29 +1,26 @@
 "use client";
 
-import AboutContent from "@/components/panels/AboutContent";
-import ContactContent from "@/components/panels/ContactContent";
-import ExperienceContent from "@/components/panels/ExperienceContent";
-import LabContent from "@/components/panels/LabContent";
-import ResumeContent from "@/components/panels/ResumeContent";
-import SkillsWorkbench from "@/components/panels/SkillsWorkbench";
-import WorkContent from "@/components/panels/WorkContent";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+
 import SiteFooter from "@/components/sections/SiteFooter";
 
-const SECTIONS = [
-  { id: "work", label: "01 / WORK", title: "The Work", Content: WorkContent },
-  { id: "about", label: "02 / ABOUT", title: "About", Content: AboutContent },
-  { id: "experience", label: "03 / EXPERIENCE", title: "Experience", Content: ExperienceContent },
-  { id: "skills", label: "04 / WORKBENCH", title: "The Workbench", Content: SkillsWorkbench },
-  { id: "lab", label: "05 / LAB", title: "Notes From the Margins", Content: LabContent },
-  { id: "resume", label: "06 / RESUME", title: "Résumé", Content: ResumeContent },
-  { id: "contact", label: "07 / CONTACT", title: "Contact", Content: ContactContent },
+const HUB = [
+  { href: "/work", eyebrow: "01 / THE ARCHIVE", title: "Work", desc: "Six systems, all still running.", accent: "#C72C48" },
+  { href: "/about", eyebrow: "02 / THE NOTEBOOK", title: "About", desc: "Not a bio. A working notebook.", accent: "#B51F52" },
+  { href: "/experience", eyebrow: "03 / THE TIMELINE", title: "Experience", desc: "A real timeline, not a résumé line.", accent: "#C9B6E4" },
+  { href: "/workbench", eyebrow: "04 / THE WORKBENCH", title: "Workbench", desc: "Not a percentage bar.", accent: "#A9DDF5" },
+  { href: "/lab", eyebrow: "05 / THE LAB", title: "Lab", desc: "Notes from the margins.", accent: "#E91E63" },
+  { href: "/resume", eyebrow: "06 / THE DOCUMENT", title: "Résumé", desc: "Scented, allegedly.", accent: "#B8D8A8" },
+  { href: "/contact", eyebrow: "07 / THE ENVELOPE", title: "Contact", desc: "Let's talk.", accent: "#FF5FA2" },
 ] as const;
 
 /**
  * The brief is explicit: don't shrink the desktop 3D scene onto mobile,
- * build a mobile-native composition instead. Same real content (same
- * panel components desktop uses inside the overlay), typography-first,
- * no canvas at all.
+ * build a mobile-native composition instead. Same real destinations as
+ * desktop's hub, same real pages behind them — a tap list instead of a
+ * card grid, since that's what fits a phone width without the content
+ * density desktop's layout assumes.
  */
 export default function MobileHome() {
   return (
@@ -35,16 +32,26 @@ export default function MobileHome() {
         </h1>
         <p className="mt-4 text-sm text-espresso/70">
           Software · systems · infrastructure · curiosity. The full interactive desk lives on desktop —
-          here&rsquo;s everything on it, in order.
+          here&rsquo;s everywhere it leads.
         </p>
 
-        <div className="mt-14 flex flex-col gap-16">
-          {SECTIONS.map((s) => (
-            <section key={s.id} id={s.id} className="scroll-mt-24">
-              <p className="label-tech mb-2">{s.label}</p>
-              <h2 className="display-lg mb-6 text-espresso">{s.title}</h2>
-              <s.Content />
-            </section>
+        <div className="mt-10 flex flex-col gap-3">
+          {HUB.map((h) => (
+            <Link
+              key={h.href}
+              href={h.href}
+              className="relative overflow-hidden rounded-xl border border-cherry/10 bg-pearl px-5 py-4 shadow-[0_14px_30px_-20px_rgba(50,27,36,0.3)]"
+              style={{ borderLeftColor: h.accent, borderLeftWidth: 3 }}
+            >
+              <p className="label-tech" style={{ color: h.accent }}>
+                {h.eyebrow}
+              </p>
+              <h2 className="mt-1 flex items-center gap-1.5 font-display text-xl text-espresso">
+                {h.title}
+                <ArrowUpRight className="size-3.5 text-espresso/40" />
+              </h2>
+              <p className="mt-1 text-sm text-espresso/70">{h.desc}</p>
+            </Link>
           ))}
         </div>
       </main>

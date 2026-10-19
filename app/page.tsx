@@ -1,24 +1,68 @@
 "use client";
 
-import { motion, MotionConfig, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import * as React from "react";
 
-import CustomCursor from "@/components/archive/CustomCursor";
 import Loader from "@/components/archive/Loader";
-import Nav from "@/components/archive/Nav";
 import MobileHome from "@/components/mobile/MobileHome";
-import AboutContent from "@/components/panels/AboutContent";
-import ContactContent from "@/components/panels/ContactContent";
-import ExperienceContent from "@/components/panels/ExperienceContent";
-import LabContent from "@/components/panels/LabContent";
-import ResumeContent from "@/components/panels/ResumeContent";
-import SkillsWorkbench from "@/components/panels/SkillsWorkbench";
-import WorkContent from "@/components/panels/WorkContent";
-import SectionShell from "@/components/sections/SectionShell";
 import SiteFooter from "@/components/sections/SiteFooter";
 
 const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
+
+const HUB = [
+  { href: "/work", eyebrow: "01", label: "THE ARCHIVE", title: "Work", desc: "Six systems, all still running.", accent: "#C72C48" },
+  { href: "/about", eyebrow: "02", label: "THE NOTEBOOK", title: "About", desc: "Not a bio. A working notebook.", accent: "#B51F52" },
+  { href: "/experience", eyebrow: "03", label: "THE TIMELINE", title: "Experience", desc: "A real timeline, not a résumé line.", accent: "#C9B6E4" },
+  { href: "/workbench", eyebrow: "04", label: "THE WORKBENCH", title: "Workbench", desc: "Not a percentage bar.", accent: "#A9DDF5" },
+  { href: "/lab", eyebrow: "05", label: "THE LAB", title: "Lab", desc: "Notes from the margins.", accent: "#E91E63" },
+  { href: "/resume", eyebrow: "06", label: "THE DOCUMENT", title: "Résumé", desc: "Scented, allegedly.", accent: "#B8D8A8" },
+  { href: "/contact", eyebrow: "07", label: "THE ENVELOPE", title: "Contact", desc: "Let's talk.", accent: "#FF5FA2" },
+] as const;
+
+function HomeHub() {
+  return (
+    <section className="relative bg-buttercream px-6 py-24 md:px-10 md:py-32">
+      <div className="mx-auto max-w-5xl">
+        <p className="label-tech flex items-center gap-2">
+          <span aria-hidden className="size-1.5 rounded-full bg-champagne-gold" />
+          WHERE TO
+        </p>
+        <h2 className="display-lg mt-3 text-espresso">
+          Seven real places. <span className="italic-phrase text-cherry">Pick one.</span>
+        </h2>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {HUB.map((h) => (
+            <Link
+              key={h.href}
+              href={h.href}
+              data-cursor="GO"
+              className="group relative overflow-hidden rounded-xl border border-cherry/10 bg-pearl p-6 shadow-[0_14px_30px_-20px_rgba(50,27,36,0.3)] transition-transform hover:-translate-y-1"
+              style={{ borderTopColor: h.accent, borderTopWidth: 3 }}
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full blur-2xl transition-opacity group-hover:opacity-70"
+                style={{ background: h.accent, opacity: 0.18 }}
+              />
+              <p className="label-tech" style={{ color: h.accent }}>
+                {h.eyebrow} / {h.label}
+              </p>
+              <h3 className="mt-2 flex items-center gap-1.5 font-display text-2xl text-espresso">
+                {h.title}
+                <ArrowUpRight className="size-4 text-espresso/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </h3>
+              <p className="mt-2 text-sm text-espresso/70">{h.desc}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function DesktopExperience() {
   const trackEl = React.useRef<HTMLDivElement>(null);
@@ -51,31 +95,10 @@ function DesktopExperience() {
         <p className="label-tech animate-pulse">scroll to walk in</p>
       </motion.div>
 
-      {/* real, always-scrollable sections — the desk's objects and the
-          nav are a second way into these, not the only way in */}
+      {/* the desk is the hero, not the whole site now — real content
+          lives on its own pages, linked from here and the nav */}
       <div className="relative z-20 bg-buttercream">
-        <SectionShell id="work" eyebrow="01 / THE ARCHIVE" title={<>Six systems. <span className="italic-phrase text-cherry">All of them running.</span></>} tone="buttercream" accent="cherry">
-          <WorkContent />
-        </SectionShell>
-        <SectionShell id="about" eyebrow="02 / THE NOTEBOOK" title={<>Not a bio. <span className="italic-phrase text-raspberry">A working notebook.</span></>} tone="pearl" accent="raspberry">
-          <AboutContent />
-        </SectionShell>
-        <SectionShell id="experience" eyebrow="03 / THE TIMELINE" title={<>Not a résumé line. <span className="italic-phrase text-lavender">A real timeline.</span></>} tone="powder" accent="lavender">
-          <ExperienceContent />
-        </SectionShell>
-        <SectionShell id="skills" eyebrow="04 / THE WORKBENCH" title={<>Not a percentage bar. <span className="italic-phrase text-baby-blue">A real workbench.</span></>} tone="pearl" accent="baby-blue">
-          <SkillsWorkbench />
-        </SectionShell>
-        <SectionShell id="lab" eyebrow="05 / THE LAB" title={<>Notes from the <span className="italic-phrase text-hot-fuchsia">margins.</span></>} tone="powder" accent="hot-fuchsia">
-          <LabContent />
-        </SectionShell>
-        <SectionShell id="resume" eyebrow="06 / THE DOCUMENT" title={<>The résumé. <span className="italic-phrase text-pistachio">Scented, allegedly.</span></>} tone="pearl" accent="pistachio">
-          <ResumeContent />
-        </SectionShell>
-        <SectionShell id="contact" eyebrow="07 / THE ENVELOPE" title={<>Let&rsquo;s <span className="italic-phrase text-bubblegum">talk.</span></>} tone="buttercream" accent="bubblegum">
-          <ContactContent />
-        </SectionShell>
-
+        <HomeHub />
         <SiteFooter />
       </div>
     </>
@@ -93,17 +116,10 @@ const Home = () => {
   }, []);
 
   return (
-    // "user" makes every Framer Motion animation site-wide respect the OS
-    // prefers-reduced-motion setting automatically — the CSS override in
-    // globals.css only catches plain CSS transitions/@keyframes, not the
-    // Web Animations API calls Framer Motion uses under the hood.
-    <MotionConfig reducedMotion="user">
-      <div className="grain" />
+    <>
       <Loader />
-      <CustomCursor />
-      <Nav />
       {isDesktop === null ? null : isDesktop ? <DesktopExperience /> : <MobileHome />}
-    </MotionConfig>
+    </>
   );
 };
 

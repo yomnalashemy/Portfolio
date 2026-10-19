@@ -2,11 +2,10 @@
 
 import { ContactShadows } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode } from "@react-three/fiber";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-
-import { scrollToId } from "@/lib/scrollToId";
 
 import CameraRig from "./CameraRig";
 import DustParticles from "./DustParticles";
@@ -95,6 +94,7 @@ export default function DeskScene({
   paused?: boolean;
 }) {
   const introDone = React.useRef(false);
+  const router = useRouter();
 
   return (
     <div data-desk-canvas className="fixed inset-0 z-0">
@@ -118,15 +118,15 @@ export default function DeskScene({
         <DustParticles count={110} />
 
         {/* hero objects: cast + receive, worth the shadow cost. onOpen
-            scrolls to the real page section below — these are a second
-            way in, not the only way in. */}
-        <Laptop position={[-0.05, 0, -0.15]} onOpen={() => scrollToId("work")} />
-        <Notebook position={[0.42, 0, 0.12]} onOpen={() => scrollToId("about")} />
-        <Folder position={[-0.42, 0, 0.18]} onOpen={() => scrollToId("work")} />
-        <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => scrollToId("resume")} />
-        <Envelope position={[0.5, 0, -0.28]} onOpen={() => scrollToId("contact")} />
-        <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => scrollToId("about")} />
-        <Signet position={[0.7, 0, -0.42]} onOpen={() => scrollToId("about")} />
+            navigates to the real page — these are a second way in to
+            each page, not the only way in. */}
+        <Laptop position={[-0.05, 0, -0.15]} onOpen={() => router.push("/work")} />
+        <Notebook position={[0.42, 0, 0.12]} onOpen={() => router.push("/about")} />
+        <Folder position={[-0.42, 0, 0.18]} onOpen={() => router.push("/work")} />
+        <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => router.push("/resume")} />
+        <Envelope position={[0.5, 0, -0.28]} onOpen={() => router.push("/contact")} />
+        <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => router.push("/about")} />
+        <Signet position={[0.7, 0, -0.42]} onOpen={() => router.push("/about")} />
 
         {/* ambient-only: no shadow casting, kept cheap */}
         <CoffeeCup position={[0.28, 0, 0.38]} />

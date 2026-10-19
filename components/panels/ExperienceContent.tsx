@@ -1,6 +1,6 @@
 "use client";
 
-import { scrollToId } from "@/lib/scrollToId";
+import Link from "next/link";
 
 type Role = {
   title: string;
@@ -57,7 +57,7 @@ export default function ExperienceContent() {
     <div>
       <p className="text-sm text-espresso/70">
         Three roles, in order. The full breakdown — education, certifications, every bullet — is one tab
-        away in <button type="button" onClick={() => scrollToId("resume")} className="underline decoration-cherry/40 underline-offset-2 hover:text-raspberry">the résumé</button>.
+        away in <Link href="/resume" className="underline decoration-cherry/40 underline-offset-2 hover:text-raspberry">the résumé</Link>.
       </p>
 
       <ol className="relative mt-8 flex flex-col gap-10 border-l border-champagne-gold/50 pl-7">
@@ -90,14 +90,13 @@ export default function ExperienceContent() {
             </ul>
 
             {role.seeProject && (
-              <button
-                type="button"
-                onClick={() => scrollToId("work")}
+              <Link
+                href="/work"
                 data-cursor="GO"
-                className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-cherry hover:text-raspberry"
+                className="mt-3 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-cherry hover:text-raspberry"
               >
                 → see {role.seeProject} in The Archive
-              </button>
+              </Link>
             )}
           </li>
         ))}

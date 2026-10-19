@@ -1,9 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import * as React from "react";
-
-import { scrollToId } from "@/lib/scrollToId";
 
 const PAGES = [
   {
@@ -17,13 +16,12 @@ const PAGES = [
           challenges before moving into building the systems I used to try breaking.
         </p>
         <p className="script-note mt-4">still native Arabic, still C1 English, still terrible at Russian.</p>
-        <button
-          type="button"
-          onClick={() => scrollToId("skills")}
-          className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-cherry hover:text-raspberry"
+        <Link
+          href="/workbench"
+          className="mt-4 inline-block font-mono text-[11px] uppercase tracking-[0.18em] text-cherry hover:text-raspberry"
         >
           → the stack itself lives on the workbench
-        </button>
+        </Link>
       </div>
     ),
   },
