@@ -137,8 +137,8 @@ export const projects = [
     des: "A generic miniature of an internal tool suite built at Ziina: the same raw data, rendered live into a real PDF through three completely different brand templates — the engine, not any specific report.",
     img: "/sentinel.svg",
     stack: ["Next.js", "TypeScript", "TailwindCSS"],
-    link: "https://mini-sentinel-1.onrender.com",
-    demo: "/demos/sentinel/index.html",
+    link: "https://unified-sentinel.vercel.app",
+    demo: "https://unified-sentinel.vercel.app",
     repo: "https://github.com/yomnalashemy/mini-sentinel",
     caseStudy: {
       problem:
