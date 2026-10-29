@@ -1,5 +1,7 @@
-# Next.js needs a running server (not a static site) because of the API
-# routes / SSR this template uses — hence "web" + a Node runtime, not "static".
+# Runs as a Node web service (not a static site) so Next.js can serve the
+# redirects in next.config.mjs and optimise the project screenshots.
+# Set NEXT_PUBLIC_SITE_URL if the site moves to a custom domain; otherwise
+# canonical URLs and the sitemap use Render's RENDER_EXTERNAL_URL.
 services:
   - type: web
     name: portfolio

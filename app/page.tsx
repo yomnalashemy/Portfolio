@@ -1,139 +1,218 @@
-"use client";
-
-import { ArrowUpRight } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
-import dynamic from "next/dynamic";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import * as React from "react";
 
-import Loader from "@/components/archive/Loader";
-import MobileHome from "@/components/mobile/MobileHome";
-import SiteFooter from "@/components/sections/SiteFooter";
+import CopyEmail from "@/components/CopyEmail";
+import ProjectVisual from "@/components/ProjectVisual";
+import SignalMap from "@/components/SignalMap";
+import StatementLine from "@/components/StatementLine";
+import StatusTag from "@/components/StatusTag";
+import { KINDS, projects } from "@/data/projects";
+import { site } from "@/data/site";
 
-const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
+export const metadata = { alternates: { canonical: "/" } };
 
-const HUB = [
-  { href: "/work", eyebrow: "01", label: "THE ARCHIVE", title: "Work", desc: "Six systems, all still running.", accent: "#C72C48" },
-  { href: "/about", eyebrow: "02", label: "THE NOTEBOOK", title: "About", desc: "Not a bio. A working notebook.", accent: "#B51F52" },
-  { href: "/experience", eyebrow: "03", label: "THE TIMELINE", title: "Experience", desc: "A real timeline, not a résumé line.", accent: "#C9B6E4" },
-  { href: "/workbench", eyebrow: "04", label: "THE WORKBENCH", title: "Workbench", desc: "Not a percentage bar.", accent: "#A9DDF5" },
-  { href: "/lab", eyebrow: "05", label: "THE LAB", title: "Lab", desc: "Notes from the margins.", accent: "#E91E63" },
-  { href: "/resume", eyebrow: "06", label: "THE DOCUMENT", title: "Résumé", desc: "Scented, allegedly.", accent: "#B8D8A8" },
-  { href: "/contact", eyebrow: "07", label: "THE ENVELOPE", title: "Contact", desc: "Let's talk.", accent: "#FF5FA2" },
-] as const;
+const featured = projects.filter((p) => p.featured);
 
-function HomeHub() {
+const PRINCIPLES = [
+  {
+    title: "Investigate before concluding",
+    body: "The first explanation is usually the convenient one. I follow the data until it stops surprising me.",
+    evidence:
+      "Traced the coordinated card attack behind Ziina's worst fraud month by following IBAN and P2P chains — 60+ accounts mapped for ban.",
+  },
+  {
+    title: "Make systems understandable",
+    body: "A tool only helps if the next person can read it, run it, and trust it. Structure is part of the deliverable.",
+    evidence:
+      "Sentinel keeps templates fully separate from case data, and the chargeback process now has a 5-network reason-code playbook and a 5-document SOP suite.",
+  },
+  {
+    title: "Sweat the details that decide whether it works",
+    body: "Dry runs, resumability, rate limits, contrast ratios — the unglamorous parts are where things actually break.",
+    evidence:
+      "Three dry-run-safe, resumable KYB automations cut field-set failures from 303 to 1. ITQAN's 11 audit scripts caught unstyled buttons before launch.",
+  },
+];
+
+export default function HomePage() {
   return (
-    <section className="relative bg-buttercream px-6 py-24 md:px-10 md:py-32">
-      <div className="mx-auto max-w-5xl">
-        <p className="label-tech flex items-center gap-2">
-          <span aria-hidden className="size-1.5 rounded-full bg-champagne-gold" />
-          WHERE TO
-        </p>
-        <h2 className="display-lg mt-3 text-espresso">
-          Seven real places. <span className="italic-phrase text-cherry">Pick one.</span>
-        </h2>
-
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {HUB.map((h) => (
-            <Link
-              key={h.href}
-              href={h.href}
-              data-cursor="GO"
-              className="group relative overflow-hidden rounded-xl border border-cherry/10 bg-pearl p-6 shadow-[0_14px_30px_-20px_rgba(50,27,36,0.3)] transition-transform hover:-translate-y-1"
-              style={{ borderTopColor: h.accent, borderTopWidth: 3 }}
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full blur-2xl transition-opacity group-hover:opacity-70"
-                style={{ background: h.accent, opacity: 0.18 }}
-              />
-              <p className="label-tech" style={{ color: h.accent }}>
-                {h.eyebrow} / {h.label}
-              </p>
-              <h3 className="mt-2 flex items-center gap-1.5 font-display text-2xl text-espresso">
-                {h.title}
-                <ArrowUpRight className="size-4 text-espresso/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </h3>
-              <p className="mt-2 text-sm text-espresso/70">{h.desc}</p>
+    <>
+      {/* 1 — Hero */}
+      <section className="shell grid items-center gap-12 pb-16 pt-10 md:pt-16 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pb-24">
+        <div>
+          <p className="label text-raspberry-deep">Senior FinCrime Analyst at Ziina · Full-stack engineer</p>
+          <h1 className="display-xl mt-5 text-balance">
+            I find the signal in complex systems,{" "}
+            <span className="font-italic italic text-raspberry-deep">then build the tools</span> that keep it
+            visible.
+          </h1>
+          <p className="prose-body mt-6 max-w-xl text-pretty">
+            By day I investigate fraud, sanctions, and compliance cases. Alongside that, I build the software that
+            makes those problems faster to solve — from a 42-CTE SQL case search running in production to a
+            revision platform with 1,025 automated tests.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href="#work" className="btn-primary">
+              Explore selected work <ArrowRight className="size-4" aria-hidden />
+            </a>
+            <Link href="/resume" className="btn-ghost">
+              Read the résumé
             </Link>
-          ))}
+          </div>
+          <dl className="mt-10 grid max-w-xl grid-cols-1 gap-x-8 gap-y-4 border-t border-rule pt-6 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="label text-mauve">Builds with</dt>
+              <dd className="mt-1">TypeScript, Next.js, NestJS, Python, SQL, PostgreSQL</dd>
+            </div>
+            <div>
+              <dt className="label text-mauve">Investigates</dt>
+              <dd className="mt-1">Fraud, KYB, sanctions &amp; PEP, chargebacks</dd>
+            </div>
+          </dl>
         </div>
-      </div>
-    </section>
-  );
-}
+        <SignalMap />
+      </section>
 
-function DesktopExperience() {
-  const trackEl = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: trackEl, offset: ["start start", "end end"] });
-  // Bottom of the viewport, not the top — pinned near the laptop screen
-  // was the "scroll to walk in" hint overlapping it. Fades out once
-  // scrolling has clearly started instead of lingering the whole intro.
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const heroOpacity = useTransform(scrollYProgress, [0.82, 1], [1, 0]);
+      {/* 2 — Working philosophy */}
+      <StatementLine />
 
-  const [heroPaused, setHeroPaused] = React.useState(false);
-  useMotionValueEvent(scrollYProgress, "change", (v) => setHeroPaused(v >= 0.999));
+      {/* 3 — Selected work */}
+      <section id="work" aria-labelledby="work-title" className="shell py-20 md:py-28">
+        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-rule pb-8">
+          <div>
+            <p className="label text-raspberry-deep">Selected work</p>
+            <h2 id="work-title" className="display-lg mt-3">
+              Three systems, <span className="font-italic italic">three kinds of problem</span>
+            </h2>
+          </div>
+          <Link href="/work" className="link font-mono text-sm uppercase tracking-[0.1em]">
+            All {projects.length} projects
+          </Link>
+        </div>
 
-  return (
-    <>
-      <motion.div style={{ opacity: heroOpacity }}>
-        <DeskScene trackEl={trackEl} paused={heroPaused} />
-      </motion.div>
-      {/* the identity statement, real DOM text now — it used to live
-          only on the laptop's 3D screen via Html-transform, which
-          disappeared along with the laptop object. Fixed in the upper
-          third, clear of where the desk objects sit, fading with the
-          same heroOpacity as the canvas so it leaves with it. */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="pointer-events-none fixed inset-x-0 top-28 z-10 flex flex-col items-center text-center md:top-32"
-      >
-        <h1 className="display-xl text-espresso">YOMNA ALSHEMY</h1>
-        <p className="label-tech mt-3">LIVE SYSTEMS</p>
-        <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
-      </motion.div>
-      {/* scroll distance for the cinematic intro fly-through; the canvas
-          itself is fixed and reads this element's position via
-          ScrollTrigger inside CameraRig */}
-      <div ref={trackEl} className="relative z-10 h-[220vh]" />
-      {/* fixed, not sticky — sticky needs sibling flow content on either
-          side to react against, which this lone hint doesn't have, and
-          it wasn't reliably pinning to the viewport bottom as a result */}
-      <motion.div
-        style={{ opacity: hintOpacity }}
-        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center"
-      >
-        <p className="label-tech animate-pulse">scroll to walk in</p>
-      </motion.div>
+        <ol className="flex flex-col">
+          {featured.map((p, i) => (
+            <li key={p.slug} className="group grid gap-10 border-b border-rule py-14 last:border-0 md:py-20 lg:grid-cols-12 lg:items-center lg:gap-14">
+              <div className={`reveal lg:col-span-6 ${i % 2 === 1 ? "lg:order-2" : ""}`}>
+                <ProjectVisual project={p} priority={i === 0} />
+              </div>
+              <article className={`flex flex-col lg:col-span-6 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <span className="label text-mauve">
+                    {String(i + 1).padStart(2, "0")} / {String(featured.length).padStart(2, "0")}
+                  </span>
+                  <span className="label text-mauve">{KINDS[p.kind]}</span>
+                </div>
+                <h3 className="display-lg mt-4">{p.name}</h3>
+                <p className="mt-2 font-italic text-2xl italic leading-snug text-ink/80">{p.tagline}</p>
 
-      {/* the desk is the hero, not the whole site now — real content
-          lives on its own pages, linked from here and the nav */}
-      <div className="relative z-20 bg-buttercream">
-        <HomeHub />
-        <SiteFooter />
-      </div>
+                <dl className="mt-7 grid gap-5 text-[0.98rem] leading-relaxed">
+                  <div>
+                    <dt className="label text-mauve">The problem</dt>
+                    <dd className="mt-1.5">{p.summary}</dd>
+                  </div>
+                  <div>
+                    <dt className="label text-mauve">My part</dt>
+                    <dd className="mt-1.5">{p.caseStudy.role}</dd>
+                  </div>
+                  <div>
+                    <dt className="label text-mauve">Status</dt>
+                    <dd className="mt-1.5">
+                      <StatusTag status={p.status} />
+                      {p.statusNote && <p className="mt-1.5 text-sm text-mauve">{p.statusNote}</p>}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="sr-only">Stack</dt>
+                    <dd>
+                      <ul className="flex flex-wrap gap-2" aria-label="Stack">
+                        {p.stack.map((s) => (
+                          <li key={s} className="rounded-full border border-rule px-3 py-1 font-mono text-xs">
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link href={`/work/${p.slug}`} className="btn-primary">
+                    Read the case study<span className="sr-only">: {p.name}</span>
+                    <ArrowRight className="size-4" aria-hidden />
+                  </Link>
+                  {p.links.live && (
+                    <a href={p.links.live.href} className="btn-ghost" target="_blank" rel="noopener noreferrer">
+                      {p.links.live.label}
+                      <ArrowUpRight className="size-4" aria-hidden />
+                      <span className="sr-only">(opens in a new tab)</span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* 4 — Engineering approach */}
+      <section aria-labelledby="approach-title" className="border-y border-rule bg-[#efe6dc]">
+        <div className="shell py-20 md:py-28">
+          <div className="grid gap-6 lg:grid-cols-12">
+            <p className="label text-raspberry-deep lg:col-span-3">How I work</p>
+            <h2 id="approach-title" className="display-lg lg:col-span-9">
+              Three habits, <span className="font-italic italic">each with a receipt.</span>
+            </h2>
+          </div>
+          <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
+            {PRINCIPLES.map((pr, i) => (
+              <li key={pr.title} className="reveal flex flex-col border-t-2 border-ink pt-6">
+                <span aria-hidden className="font-display text-6xl leading-none text-raspberry">
+                  {i + 1}
+                </span>
+                <h3 className="mt-5 font-display text-2xl leading-tight">{pr.title}</h3>
+                <p className="mt-3 leading-relaxed text-ink/85">{pr.body}</p>
+                <p className="mt-5 border-l-2 border-raspberry-deep pl-4 text-sm leading-relaxed text-mauve">
+                  <span className="label mb-1 block text-raspberry-deep">In practice</span>
+                  {pr.evidence}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 5 — Contact */}
+      <section aria-labelledby="contact-title" className="bg-lime">
+        <div className="shell grid gap-10 py-20 md:py-28 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="label">Contact</p>
+            <h2 id="contact-title" className="display-lg mt-3">
+              Have a messy system, a suspicious pattern, or a role in mind?
+            </h2>
+          </div>
+          <div className="flex flex-col justify-end gap-6 lg:col-span-5">
+            <a
+              href={`mailto:${site.email}`}
+              className="break-all font-display text-[clamp(1.4rem,2.6vw,2rem)] leading-tight underline decoration-ink/30 decoration-2 underline-offset-[6px] hover:decoration-ink"
+            >
+              {site.email}
+            </a>
+            <CopyEmail email={site.email} />
+            <p className="text-sm">
+              Or see the{" "}
+              <Link href="/resume" className="underline underline-offset-4">
+                résumé
+              </Link>{" "}
+              and{" "}
+              <a href={site.github} className="underline underline-offset-4">
+                GitHub
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
-
-const Home = () => {
-  const [isDesktop, setIsDesktop] = React.useState<boolean | null>(null);
-
-  React.useEffect(() => {
-    const check = () => setIsDesktop(window.innerWidth >= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  return (
-    <>
-      <Loader />
-      {isDesktop === null ? null : isDesktop ? <DesktopExperience /> : <MobileHome />}
-    </>
-  );
-};
-
-export default Home;
