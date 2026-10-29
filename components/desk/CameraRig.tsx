@@ -6,10 +6,9 @@ import * as React from "react";
 import * as THREE from "three";
 
 const LOOK = new THREE.Vector3(0, 0.1, -0.1);
-const CAMERA_POSITION = new THREE.Vector3(0.4, 1.5, 4.2);
+const CAMERA_POSITION = new THREE.Vector3(0.35, 1.7, 5.4);
 
 interface Props {
-  trackEl: React.RefObject<HTMLDivElement>;
   introDone: React.MutableRefObject<boolean>;
 }
 
