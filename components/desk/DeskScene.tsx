@@ -62,6 +62,11 @@ function DeskSurface() {
   );
 }
 
+function AdaptiveQuality() {
+  const { performance } = useThree();
+  return <PerformanceMonitor onDecline={() => performance.regress()} />;
+}
+
 function Lighting() {
   // ambient light was nearly as strong as the key light (0.45 vs 1.1) —
   // ambient has no direction, so it washes a flat, equal amount of light
@@ -115,7 +120,7 @@ export default function DeskScene({
         <ContactShadows position={[0, 0.001, 0.05]} opacity={0.45} scale={2.4} blur={2.2} far={0.6} resolution={512} color="#321B24" />
         <DustParticles count={110} />
         {/* Keep high-density displays crisp while allowing R3F to lower pixel ratio under load. */}
-        <PerformanceMonitor onDecline={() => performance.regress()} />
+        <AdaptiveQuality />
         <AdaptiveDpr />
         <Preload all />
 
