@@ -25,7 +25,7 @@ const HUB = [
 export default function MobileHome() {
   return (
     <>
-      <main className="min-h-screen bg-buttercream px-5 pb-16 pt-28">
+      <main id="main-content" tabIndex={-1} className="min-h-screen bg-buttercream px-5 pb-16 pt-28">
         <p className="script-note text-3xl">Yomna Alshemy</p>
         <h1 className="display-lg mt-2 text-espresso">
           Live systems, <span className="italic-phrase text-cherry">on a real desk.</span>
