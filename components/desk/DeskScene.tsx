@@ -75,10 +75,21 @@ function Artifact({ position, rotation = [0, 0, 0], title, eyebrow, href, accent
   );
 }
 
-function CoreSculpture() {
+function CoreSculpture({ onOpen }: { onOpen: (href: string) => void }) {
+  const core = React.useRef<THREE.Group>(null);
   const orb = React.useRef<THREE.Mesh>(null);
   const orbit = React.useRef<THREE.Mesh>(null);
+  const [hovered, setHovered] = React.useState(false);
+
+  React.useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "";
+    return () => { document.body.style.cursor = ""; };
+  }, [hovered]);
   useFrame((state, delta) => {
+    if (core.current) {
+      const scale = hovered ? 1.055 : 1;
+      core.current.scale.lerp(new THREE.Vector3(scale, scale, scale), 1 - Math.exp(-delta * 7));
+    }
     if (orb.current) {
       orb.current.rotation.y += delta * 0.16;
       orb.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.08;
@@ -89,10 +100,13 @@ function CoreSculpture() {
     }
   });
   return (
-    <group position={[0, 0.88, -0.38]}>
+    <group ref={core} position={[0, 0.88, -0.38]}
+      onPointerOver={(event) => { event.stopPropagation(); setHovered(true); }}
+      onPointerOut={() => setHovered(false)}
+      onClick={(event) => { event.stopPropagation(); onOpen("/workbench"); }}>
       <mesh ref={orb} castShadow>
         <icosahedronGeometry args={[0.46, 4]} />
-        <meshPhysicalMaterial color="#F58AB8" roughness={0.18} metalness={0.34} clearcoat={1} clearcoatRoughness={0.08} envMapIntensity={1.6} />
+        <meshPhysicalMaterial color={hovered ? "#FFB6D4" : "#F58AB8"} roughness={0.18} metalness={0.34} clearcoat={1} clearcoatRoughness={0.08} envMapIntensity={1.6} emissive="#F0448A" emissiveIntensity={hovered ? 0.22 : 0.07} />
       </mesh>
       <mesh scale={1.025}>
         <icosahedronGeometry args={[0.46, 2]} />
@@ -114,11 +128,11 @@ function CoreSculpture() {
 function Architecture() {
   return (
     <>
-      <mesh position={[0, 1.32, -1.08]} castShadow>
+      <mesh position={[0, 1.32, -1.08]} rotation={[Math.PI / 2, 0, 0]} castShadow>
         <torusGeometry args={[1.32, 0.045, 18, 144]} />
         <meshPhysicalMaterial color="#B51F52" roughness={0.22} metalness={0.5} clearcoat={1} envMapIntensity={1.4} />
       </mesh>
-      <mesh position={[0, 1.32, -1.12]}>
+      <mesh position={[0, 1.32, -1.12]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[1.19, 0.009, 8, 144]} />
         <meshStandardMaterial color="#D9B66F" metalness={0.85} roughness={0.18} />
       </mesh>
@@ -179,7 +193,7 @@ export default function DeskScene({ trackEl, paused = false }: { trackEl: React.
         <Lighting />
         <Architecture />
         <ContactShadows position={[0, 0.015, -0.38]} opacity={0.38} scale={3.6} blur={2.1} far={1.8} resolution={512} color="#321B24" />
-        <CoreSculpture />
+        <CoreSculpture onOpen={open} />
         <Sparkles count={80} scale={[5.5, 3.2, 4.5]} size={1.5} speed={0.18} color="#D9B66F" opacity={0.5} />
         <AdaptiveQuality />
         <AdaptiveDpr />
