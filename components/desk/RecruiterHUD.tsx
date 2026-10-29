@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, BriefcaseBusiness, Cpu, Fingerprint, Sparkles } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Briefcase, Cpu, Fingerprint, Sparkles } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
@@ -97,7 +97,7 @@ export default function RecruiterHUD() {
                         role="tab"
                         aria-selected={selected}
                         aria-controls="recruiter-mode-panel"
-                        className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2.5 font-mono text-[8px] tracking-[0.13em] transition-all sm:text-[9px] ${selected ? "bg-[#321b24] text-[#fffaf1] shadow-md" : "text-[#321b24]/55 hover:bg-[#c72c48]/8 hover:text-[#c72c48]"}`}
+                        className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2.5 font-mono text-[8px] tracking-[0.13em] transition-all sm:text-[9px] ${selected ? "bg-[#321b24] text-[#fffaf1] shadow-md" : "text-[#321b24]/55 hover:bg-[#c72c48]/[0.08] hover:text-[#c72c48]"}`}
                       >
                         <Icon className="size-3.5 shrink-0" aria-hidden />
                         <span>{item.label}</span>
@@ -119,7 +119,7 @@ export default function RecruiterHUD() {
                     className="px-4 pb-4 pt-4 sm:px-5 sm:pb-5"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#c72c48]/15 bg-[#c72c48]/8 text-[#c72c48]">
+                      <div className="grid size-9 shrink-0 place-items-center rounded-xl border border-[#c72c48]/[0.15] bg-[#c72c48]/[0.08] text-[#c72c48]">
                         <ActiveIcon className="size-4" aria-hidden />
                       </div>
                       <div className="min-w-0">
