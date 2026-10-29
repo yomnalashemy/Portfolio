@@ -177,20 +177,21 @@ function AdaptiveQuality() {
   return <PerformanceMonitor onDecline={() => performance.regress()} />;
 }
 
-export default function DeskScene({ trackEl, paused = false }: { trackEl: React.RefObject<HTMLDivElement>; paused?: boolean }) {
+export default function DeskScene() {
   const introDone = React.useRef(false);
   const router = useRouter();
   const open = React.useCallback((href: string) => router.push(href), [router]);
 
   return (
-    <div data-desk-canvas className="fixed inset-0 z-0">
-      <Canvas shadows dpr={[1, 1.75]} frameloop={paused ? "never" : "always"}
+    <div data-desk-canvas aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
+      <Canvas shadows dpr={[1, 1.5]} frameloop="always"
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}>
         <color attach="background" args={["#F1F0EC"]} />
         <fog attach="fog" args={["#F1F0EC", 5.5, 12]} />
-        <CameraRig trackEl={trackEl} introDone={introDone} />
+        <CameraRig introDone={introDone} />
         <EnvironmentSetup />
         <Lighting />
+        <group position={[0.92, -0.02, 0]} scale={0.76}>
         <Architecture />
         <ContactShadows position={[0, 0.015, -0.38]} opacity={0.38} scale={3.6} blur={2.1} far={1.8} resolution={512} color="#292832" />
         <CoreSculpture onOpen={open} />
@@ -202,6 +203,7 @@ export default function DeskScene({ trackEl, paused = false }: { trackEl: React.
         <Artifact position={[0.83, 0.98, 0.05]} rotation={[0, -0.1, 0]} eyebrow="02 / THE WORK" title="PROJECTS" href="/work" accent="#D93C78" onOpen={open} />
         <Artifact position={[-0.88, 0.96, -0.78]} rotation={[0, 0.22, 0]} eyebrow="03 / THE METHOD" title="SYSTEMS" href="/workbench" accent="#292832" onOpen={open} />
         <Artifact position={[0.88, 0.96, -0.78]} rotation={[0, -0.22, 0]} eyebrow="04 / THE STORY" title="EXPERIENCE" href="/experience" accent="#A8A9B0" onOpen={open} />
+        </group>
       </Canvas>
     </div>
   );
