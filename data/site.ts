@@ -9,10 +9,13 @@ export const site = {
   email: "yomnaalshemy11@gmail.com",
   github: "https://github.com/yomnalashemy",
   resumePdf: "/resume.pdf",
-  // Render exposes the service's public URL at build time; a custom domain
-  // can be set explicitly with NEXT_PUBLIC_SITE_URL.
+  // A custom domain can be set explicitly with NEXT_PUBLIC_SITE_URL;
+  // otherwise use the host's own public URL (Vercel gives a bare hostname).
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : undefined) ??
     process.env.RENDER_EXTERNAL_URL ??
     "http://localhost:3000",
 };

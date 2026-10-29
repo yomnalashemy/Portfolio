@@ -30,5 +30,11 @@ npm run build   # production build (also type-checks and lints)
 
 ## Deployment
 
-`render.yaml` deploys to Render as a Node web service. Canonical URLs and the
-sitemap use `NEXT_PUBLIC_SITE_URL` if set, otherwise Render's `RENDER_EXTERNAL_URL`.
+**Vercel (recommended):** import the GitHub repo at vercel.com/new — the
+framework is detected as Next.js and no settings are needed. Canonical URLs
+and the sitemap use `VERCEL_PROJECT_PRODUCTION_URL` automatically.
+
+**Render:** `render.yaml` deploys as a Node web service and uses `RENDER_EXTERNAL_URL`.
+
+On either host, set `NEXT_PUBLIC_SITE_URL` (e.g. `https://example.com`) once a
+custom domain is attached.
