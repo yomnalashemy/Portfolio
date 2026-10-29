@@ -4,7 +4,7 @@ import { nav, site } from "@/data/site";
 
 export default function SiteFooter() {
   return (
-    <footer className="on-ink bg-ink text-paper">
+    <footer className="on-ink bg-gradient-to-br from-ink via-ink to-plum text-paper">
       <div className="shell grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <p className="font-display text-3xl">{site.name}</p>

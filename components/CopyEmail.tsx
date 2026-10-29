@@ -28,7 +28,7 @@ export default function CopyEmail({ email, className = "" }: { email: string; cl
         {state === "copied" ? "Copied" : "Copy email"}
       </button>
       {/* announced to screen readers; the visible button text changes too */}
-      <span role="status" aria-live="polite" className="text-sm text-mauve">
+      <span role="status" aria-live="polite" className="text-sm text-ink">
         {state === "copied" && <span className="sr-only">Email address copied to clipboard.</span>}
         {state === "failed" && "Couldn’t copy — select the address instead."}
       </span>

@@ -50,8 +50,13 @@ export default function WorkIndex() {
             <li key={p.slug} className="border-b border-rule">
               <Link
                 href={`/work/${p.slug}`}
-                className="group grid gap-x-8 gap-y-3 py-8 transition-colors hover:bg-ink/[0.03] focus-visible:bg-ink/[0.03] md:grid-cols-[4rem_1.3fr_1fr_auto] md:items-center md:py-10"
+                className="group relative isolate grid gap-x-8 gap-y-3 py-8 md:grid-cols-[4rem_1.3fr_1fr_auto] md:items-center md:px-4 md:py-10"
               >
+                {/* a lime wash that sweeps across the row on hover and focus */}
+                <span
+                  aria-hidden
+                  className="absolute inset-0 -z-10 origin-left scale-x-0 rounded-2xl bg-gradient-to-r from-lime/70 via-lime/30 to-transparent transition-transform duration-500 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                />
                 <span className="label text-mauve">{String(index).padStart(2, "0")}</span>
                 <span>
                   <span className="block font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-none transition-colors group-hover:text-raspberry-deep">

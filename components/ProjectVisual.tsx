@@ -3,10 +3,10 @@ import Image from "next/image";
 import type { Project } from "@/data/projects";
 
 const SURFACE: Record<Project["surface"], string> = {
-  rose: "bg-rose",
-  sage: "bg-sage",
-  lime: "bg-lime",
-  paper: "bg-[#efe6dc]",
+  rose: "bg-gradient-to-br from-rose via-rose to-lilac",
+  sage: "bg-gradient-to-br from-sage via-sage to-lime/70",
+  lime: "bg-gradient-to-br from-lime via-lime to-sage",
+  paper: "bg-gradient-to-br from-[#efe6dc] to-rose/60",
 };
 
 function Step({ n, children, strong }: { n: string; children: React.ReactNode; strong?: boolean }) {
@@ -130,7 +130,7 @@ export default function ProjectVisual({ project, priority }: { project: Project;
 
   return (
     <div
-      className={`rounded-[28px] p-5 transition-transform duration-500 ease-out sm:p-8 motion-safe:group-hover:-translate-y-1 motion-safe:group-focus-within:-translate-y-1 ${
+      className={`rounded-[28px] p-5 shadow-[0_30px_60px_-36px_rgba(42,21,40,0.55)] sm:p-8 ${
         SURFACE[project.surface]
       }`}
     >

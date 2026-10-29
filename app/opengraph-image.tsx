@@ -22,7 +22,7 @@ export default function OpengraphImage() {
           fontFamily: "Georgia, serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 26, color: "#b92758", letterSpacing: 3 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 26, color: "#a61f4f", letterSpacing: 3 }}>
           <div style={{ width: 18, height: 18, borderRadius: 9, background: "#d9f49b", border: "3px solid #2a1528" }} />
           SENIOR FINCRIME ANALYST · FULL-STACK ENGINEER
         </div>

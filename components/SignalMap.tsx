@@ -42,7 +42,7 @@ const PATH = NODES.map((n, i) => `${i === 0 ? "M" : "L"}${n.x} ${n.y}`).join(" "
 export default function SignalMap() {
   return (
     <figure className="relative">
-      <div className="relative overflow-hidden rounded-[28px] bg-ink">
+      <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-ink via-ink to-plum shadow-[0_28px_50px_-34px_rgba(42,21,40,0.6)]">
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" aria-hidden focusable="false">
           <g stroke="#a9969f" strokeOpacity="0.22" strokeWidth="1">
             {LINKS.map(([a, b]) => (
@@ -52,6 +52,21 @@ export default function SignalMap() {
           <g fill="#a9969f" fillOpacity="0.45">
             {NOISE.map((p, i) => (
               <circle key={i} cx={p.x} cy={p.y} r={p.r} />
+            ))}
+          </g>
+          {/* a few points flicker in colour: candidate signals among the noise */}
+          <g>
+            {NOISE.filter((_, i) => i % 6 === 0).map((p, i) => (
+              <circle
+                key={i}
+                cx={p.x}
+                cy={p.y}
+                r={p.r + 0.6}
+                fill={i % 3 === 0 ? "#d9f49b" : i % 3 === 1 ? "#f05a85" : "#c9b6f2"}
+                className="twinkle"
+                opacity="0.35"
+                style={{ "--tw": `${2.6 + (i % 5) * 0.7}s`, animationDelay: `${(i * 0.37) % 3}s` } as React.CSSProperties}
+              />
             ))}
           </g>
 
@@ -142,7 +157,7 @@ export default function SignalMap() {
           </li>
         ))}
       </ol>
-      <figcaption className="mt-3 flex gap-3 text-sm leading-snug text-mauve">
+      <figcaption className="mt-5 flex gap-3 text-sm leading-snug text-mauve">
         <span className="label shrink-0 pt-0.5 text-raspberry-deep">Fig. 1</span>
         <span>
           One path through the noise of daily case work: a slow, repeated step, traced across 13 tables and

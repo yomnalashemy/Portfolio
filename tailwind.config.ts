@@ -23,6 +23,8 @@ const config = {
         "mauve-light": "rgb(var(--mauve-light) / <alpha-value>)",
         rose: "rgb(var(--rose) / <alpha-value>)",
         sage: "rgb(var(--sage) / <alpha-value>)",
+        lilac: "rgb(var(--lilac) / <alpha-value>)",
+        plum: "rgb(var(--plum) / <alpha-value>)",
         rule: "rgb(var(--rule))",
       },
       maxWidth: {
