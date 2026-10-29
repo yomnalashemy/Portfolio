@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRight, ArrowUpRight, ArrowUpRight as NorthEast, Github, Linkedin, MoveUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ArrowUpRight as NorthEast, Github, MoveUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { projects } from "@/data";
@@ -116,7 +116,7 @@ export default function Home() {
       <section className="closing-section">
         <div className="closing-orbit" aria-hidden><span/><span/><span/><b>YA</b></div>
         <div className="closing-copy"><p className="section-index">03 / YOUR TURN</p><h2>Have a good<br/><em>problem?</em></h2><p>I’m always interested in the kind that needs curiosity, care, and a little stubbornness to solve.</p><div className="closing-actions"><Link href="/contact" className="button-primary button-primary--light">Let’s talk <ArrowUpRight size={16}/></Link><Link href="/resume" className="closing-resume">Or take the concise version <ArrowUpRight size={14}/></Link></div></div>
-        <div className="closing-footer"><span>YOMNA ALSHEMY © 2026</span><span>MADE WITH INTENTION, NOT DECORATION.</span><a href="https://github.com/yomnalashemy" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={16}/></a><a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={16}/></a></div>
+        <div className="closing-footer"><span>YOMNA ALSHEMY © 2026</span><span>MADE WITH INTENTION, NOT DECORATION.</span><a href="https://github.com/yomnalashemy" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={16}/></a></div>
       </section>
     </main>
   );
