@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import * as React from "react";
@@ -67,53 +67,23 @@ function HomeHub() {
 
 function DesktopExperience() {
   const trackEl = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: trackEl, offset: ["start start", "end end"] });
-  // Bottom of the viewport, not the top — pinned near the laptop screen
-  // was the "scroll to walk in" hint overlapping it. Fades out once
-  // scrolling has clearly started instead of lingering the whole intro.
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const heroOpacity = useTransform(scrollYProgress, [0.82, 1], [1, 0]);
-
-  const [heroPaused, setHeroPaused] = React.useState(false);
-  useMotionValueEvent(scrollYProgress, "change", (v) => setHeroPaused(v >= 0.999));
 
   return (
     <>
-      <motion.div style={{ opacity: heroOpacity }}>
-        <DeskScene trackEl={trackEl} paused={heroPaused} />
-      </motion.div>
-      {/* the identity statement, real DOM text now — it used to live
-          only on the laptop's 3D screen via Html-transform, which
-          disappeared along with the laptop object. Fixed in the upper
-          third, clear of where the desk objects sit, fading with the
-          same heroOpacity as the canvas so it leaves with it. */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="pointer-events-none fixed inset-x-0 top-20 z-10 flex flex-col items-center text-center md:top-24"
-      >
-        <h1 className="font-display text-[clamp(2.5rem,6.3vw,6.25rem)] leading-[0.9] tracking-[-0.055em] text-espresso">YOMNA ALSHEMY</h1>
-        <p className="label-tech mt-3">LIVE SYSTEMS</p>
-        <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
-      </motion.div>
-      {/* scroll distance for the cinematic intro fly-through; the canvas
-          itself is fixed and reads this element's position via
-          ScrollTrigger inside CameraRig */}
-      <div ref={trackEl} className="relative z-10 h-[220vh]" />
-      {/* fixed, not sticky — sticky needs sibling flow content on either
-          side to react against, which this lone hint doesn't have, and
-          it wasn't reliably pinning to the viewport bottom as a result */}
-      <motion.div
-        style={{ opacity: hintOpacity }}
-        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center md:bottom-[235px]"
-      >
-        <p className="label-tech animate-pulse rounded-full border border-white/60 bg-[#fffaf1]/65 px-4 py-2 backdrop-blur-md">scroll to walk in</p>
-      </motion.div>
-      <motion.div style={{ opacity: heroOpacity, pointerEvents: heroPaused ? "none" : "auto" }}>
-        <RecruiterHUD />
-      </motion.div>
-
-      {/* the desk is the hero, not the whole site now — real content
-          lives on its own pages, linked from here and the nav */}
+      <section aria-labelledby="home-title" className="relative z-10 flex min-h-[100svh] flex-col">
+        <DeskScene trackEl={trackEl} />
+        <div className="pointer-events-none absolute inset-x-4 top-20 z-10 flex flex-col items-center text-center md:top-24">
+          <h1 id="home-title" className="font-display text-[clamp(2.5rem,6.3vw,6.25rem)] leading-[0.9] tracking-[-0.055em] text-espresso">YOMNA ALSHEMY</h1>
+          <p className="label-tech mt-3">LIVE SYSTEMS</p>
+          <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-4 md:bottom-8">
+          <p className="label-tech rounded-full border border-espresso/10 bg-[#F7F5F0]/90 px-4 py-2 backdrop-blur-md">Explore the work below ↓</p>
+        </div>
+        <div className="absolute inset-x-0 bottom-16 z-30 md:bottom-20">
+          <RecruiterHUD />
+        </div>
+      </section>
       <div className="relative z-20 bg-buttercream">
         <HomeHub />
         <SiteFooter />
