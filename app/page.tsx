@@ -80,9 +80,7 @@ function DesktopExperience() {
         <div className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-4 md:bottom-8">
           <p className="label-tech rounded-full border border-espresso/10 bg-[#F7F5F0]/90 px-4 py-2 backdrop-blur-md">Explore the work below ↓</p>
         </div>
-        <div className="absolute inset-x-0 bottom-16 z-30 md:bottom-20">
-          <RecruiterHUD />
-        </div>
+        <RecruiterHUD />
       </section>
       <div className="relative z-20 bg-buttercream">
         <HomeHub />
