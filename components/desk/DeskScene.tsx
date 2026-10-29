@@ -1,6 +1,6 @@
 "use client";
 
-import { ContactShadows } from "@react-three/drei";
+import { AdaptiveDpr, ContactShadows, Preload } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode } from "@react-three/fiber";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -98,7 +98,7 @@ export default function DeskScene({
     <div data-desk-canvas className="fixed inset-0 z-0">
       <Canvas
         shadows
-        dpr={[1, 1.5]}
+        dpr={[1, 1.75]}
         frameloop={paused ? "never" : "always"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
       >
@@ -114,6 +114,9 @@ export default function DeskScene({
             it doesn't depend on tuning a shadow camera frustum blind. */}
         <ContactShadows position={[0, 0.001, 0.05]} opacity={0.45} scale={2.4} blur={2.2} far={0.6} resolution={512} color="#321B24" />
         <DustParticles count={110} />
+        {/* Keep high-density displays crisp while allowing R3F to lower pixel ratio under load. */}
+        <AdaptiveDpr />
+        <Preload all />
 
         {/* hero objects: cast + receive, worth the shadow cost. onOpen
             navigates to the real page — these are a second way in to
