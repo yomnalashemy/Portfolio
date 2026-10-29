@@ -1,13 +1,13 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import * as React from "react";
 
 import Loader from "@/components/archive/Loader";
 import MobileHome from "@/components/mobile/MobileHome";
+import RecruiterHUD from "@/components/desk/RecruiterHUD";
 import SiteFooter from "@/components/sections/SiteFooter";
 
 const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
@@ -65,51 +65,17 @@ function HomeHub() {
 }
 
 function DesktopExperience() {
-  const trackEl = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: trackEl, offset: ["start start", "end end"] });
-  // Bottom of the viewport, not the top — pinned near the laptop screen
-  // was the "scroll to walk in" hint overlapping it. Fades out once
-  // scrolling has clearly started instead of lingering the whole intro.
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const heroOpacity = useTransform(scrollYProgress, [0.82, 1], [1, 0]);
-
-  const [heroPaused, setHeroPaused] = React.useState(false);
-  useMotionValueEvent(scrollYProgress, "change", (v) => setHeroPaused(v >= 0.999));
-
   return (
     <>
-      <motion.div style={{ opacity: heroOpacity }}>
-        <DeskScene trackEl={trackEl} paused={heroPaused} />
-      </motion.div>
-      {/* the identity statement, real DOM text now — it used to live
-          only on the laptop's 3D screen via Html-transform, which
-          disappeared along with the laptop object. Fixed in the upper
-          third, clear of where the desk objects sit, fading with the
-          same heroOpacity as the canvas so it leaves with it. */}
-      <motion.div
-        style={{ opacity: heroOpacity }}
-        className="pointer-events-none fixed inset-x-0 top-28 z-10 flex flex-col items-center text-center md:top-32"
-      >
-        <h1 className="display-xl text-espresso">YOMNA ALSHEMY</h1>
-        <p className="label-tech mt-3">LIVE SYSTEMS</p>
-        <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
-      </motion.div>
-      {/* scroll distance for the cinematic intro fly-through; the canvas
-          itself is fixed and reads this element's position via
-          ScrollTrigger inside CameraRig */}
-      <div ref={trackEl} className="relative z-10 h-[220vh]" />
-      {/* fixed, not sticky — sticky needs sibling flow content on either
-          side to react against, which this lone hint doesn't have, and
-          it wasn't reliably pinning to the viewport bottom as a result */}
-      <motion.div
-        style={{ opacity: hintOpacity }}
-        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center"
-      >
-        <p className="label-tech animate-pulse">scroll to walk in</p>
-      </motion.div>
-
-      {/* the desk is the hero, not the whole site now — real content
-          lives on its own pages, linked from here and the nav */}
+      <section aria-labelledby="home-title" className="relative z-10 flex min-h-[100svh] flex-col">
+        <DeskScene />
+        <div className="pointer-events-none absolute left-6 right-6 top-24 z-10 flex flex-col items-start text-left md:left-[7vw] md:right-auto md:top-[22vh] md:max-w-[43vw]">
+          <h1 id="home-title" className="font-display text-[clamp(2.4rem,5.6vw,5.7rem)] leading-[0.88] tracking-[-0.06em] text-espresso">YOMNA ALSHEMY</h1>
+          <p className="label-tech mt-3">LIVE SYSTEMS</p>
+          <p className="label-tech mt-2 max-w-[28rem] text-left text-espresso/55">software · systems · infrastructure · curiosity</p>
+        </div>
+        <RecruiterHUD />
+      </section>
       <div className="relative z-20 bg-buttercream">
         <HomeHub />
         <SiteFooter />

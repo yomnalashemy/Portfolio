@@ -35,6 +35,15 @@ export default function MobileHome() {
           here&rsquo;s everywhere it leads.
         </p>
 
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <Link href="/work" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cherry px-4 py-3 font-mono text-[10px] tracking-wide text-pearl transition-transform hover:-translate-y-0.5">
+            EXPLORE WORK <ArrowUpRight className="size-3.5" aria-hidden />
+          </Link>
+          <Link href="/resume" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-cherry/25 bg-pearl px-4 py-3 font-mono text-[10px] tracking-wide text-espresso transition-colors hover:bg-powder-pink">
+            OPEN RÉSUMÉ <ArrowUpRight className="size-3.5" aria-hidden />
+          </Link>
+        </div>
+
         <div className="mt-10 flex flex-col gap-3">
           {HUB.map((h) => (
             <Link
