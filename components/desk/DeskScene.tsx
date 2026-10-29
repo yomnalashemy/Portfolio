@@ -1,6 +1,6 @@
 "use client";
 
-import { Float, Preload, Sparkles, Text } from "@react-three/drei";
+import { AdaptiveDpr, ContactShadows, Float, Preload, Sparkles, Text } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode, useFrame, useThree } from "@react-three/fiber";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -178,9 +178,11 @@ export default function DeskScene({ trackEl, paused = false }: { trackEl: React.
         <EnvironmentSetup />
         <Lighting />
         <Architecture />
+        <ContactShadows position={[0, 0.015, -0.38]} opacity={0.38} scale={3.6} blur={2.1} far={1.8} resolution={512} color="#321B24" />
         <CoreSculpture />
         <Sparkles count={80} scale={[5.5, 3.2, 4.5]} size={1.5} speed={0.18} color="#D9B66F" opacity={0.5} />
         <AdaptiveQuality />
+        <AdaptiveDpr />
         <Preload all />
         <Artifact position={[-0.83, 0.98, 0.05]} rotation={[0, 0.1, 0]} eyebrow="01 / THE PERSON" title="ABOUT" href="/about" accent="#B51F52" onOpen={open} />
         <Artifact position={[0.83, 0.98, 0.05]} rotation={[0, -0.1, 0]} eyebrow="02 / THE WORK" title="PROJECTS" href="/work" accent="#E91E63" onOpen={open} />
