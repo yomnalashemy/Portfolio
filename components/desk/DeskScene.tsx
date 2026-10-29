@@ -183,7 +183,7 @@ export default function DeskScene() {
   const open = React.useCallback((href: string) => router.push(href), [router]);
 
   return (
-    <div data-desk-canvas aria-hidden="true" className="pointer-events-none fixed inset-0 z-0">
+    <div data-desk-canvas aria-hidden="true" className="fixed inset-0 z-0">
       <Canvas shadows dpr={[1, 1.5]} frameloop="always"
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}>
         <color attach="background" args={["#F1F0EC"]} />
