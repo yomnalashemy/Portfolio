@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import * as React from "react";
