@@ -24,7 +24,7 @@ const HUB = [
 
 function HomeHub() {
   return (
-    <section className="relative bg-buttercream px-6 py-24 md:px-10 md:py-32">
+    <section id="main-content" tabIndex={-1} className="relative bg-buttercream px-6 py-24 md:px-10 md:py-32">
       <div className="mx-auto max-w-5xl">
         <p className="label-tech flex items-center gap-2">
           <span aria-hidden className="size-1.5 rounded-full bg-champagne-gold" />
