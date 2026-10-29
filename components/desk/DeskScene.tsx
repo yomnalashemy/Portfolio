@@ -1,27 +1,16 @@
 "use client";
 
-import { AdaptiveDpr, ContactShadows, PerformanceMonitor, Preload } from "@react-three/drei";
-import { Canvas, extend, type Object3DNode } from "@react-three/fiber";
+import { Float, Preload, Sparkles, Text } from "@react-three/drei";
+import { Canvas, extend, type Object3DNode, useFrame, useThree } from "@react-three/fiber";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 import CameraRig from "./CameraRig";
-import DustParticles from "./DustParticles";
 import EnvironmentSetup from "./EnvironmentSetup";
-import { CoffeeCup, DeskLamp, Flowers, Pen } from "./objects/Ambient";
-import Envelope from "./objects/Envelope";
-import Folder from "./objects/Folder";
-import LabVessels from "./objects/LabVessels";
-import Notebook from "./objects/Notebook";
-import ResumeNote from "./objects/ResumeNote";
-import Signet from "./objects/Signet";
 
-// registers <roundedBoxGeometry> as a usable JSX intrinsic — sharp box
-// corners on every desk object were a big part of the "cheap CG" read
 extend({ RoundedBoxGeometry });
-
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -30,34 +19,141 @@ declare global {
   }
 }
 
-function DeskSurface() {
+type ArtifactProps = {
+  position: [number, number, number];
+  rotation?: [number, number, number];
+  title: string;
+  eyebrow: string;
+  href: string;
+  accent: string;
+  onOpen: (href: string) => void;
+};
+
+function Artifact({ position, rotation = [0, 0, 0], title, eyebrow, href, accent, onOpen }: ArtifactProps) {
+  const ref = React.useRef<THREE.Group>(null);
+  const [hovered, setHovered] = React.useState(false);
+
+  React.useEffect(() => {
+    if (hovered) document.body.style.cursor = "pointer";
+    else document.body.style.cursor = "";
+    return () => { document.body.style.cursor = ""; };
+  }, [hovered]);
+
+  useFrame((state, delta) => {
+    if (!ref.current) return;
+    const s = hovered ? 1.055 : 1;
+    ref.current.scale.lerp(new THREE.Vector3(s, s, s), 1 - Math.exp(-delta * 9));
+    ref.current.rotation.y = rotation[1] + Math.sin(state.clock.elapsedTime * 0.55 + position[0] * 4) * 0.025;
+  });
+
+  return (
+    <Float speed={1.1} rotationIntensity={0.035} floatIntensity={0.11}>
+      <group ref={ref} position={position} rotation={rotation}
+        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
+        onPointerOut={() => setHovered(false)}
+        onClick={(e) => { e.stopPropagation(); onOpen(href); }}>
+        <mesh castShadow receiveShadow>
+          <roundedBoxGeometry args={[0.72, 0.94, 0.12, 6, 0.045]} />
+          <meshPhysicalMaterial color={hovered ? "#FFFFFF" : "#FFF9F2"} roughness={0.24} metalness={0.12} clearcoat={1} clearcoatRoughness={0.12} envMapIntensity={1.25} />
+        </mesh>
+        <mesh position={[0, 0.37, 0.066]}>
+          <roundedBoxGeometry args={[0.56, 0.025, 0.012, 3, 0.01]} />
+          <meshStandardMaterial color={accent} metalness={0.45} roughness={0.28} emissive={accent} emissiveIntensity={hovered ? 0.3 : 0.06} />
+        </mesh>
+        <Text position={[0, 0.22, 0.068]} fontSize={0.06} color="#8B6D76" anchorX="center" anchorY="middle" letterSpacing={0.1}>{eyebrow}</Text>
+        <Text position={[0, 0.015, 0.069]} fontSize={0.105} maxWidth={0.64} textAlign="center" color="#321B24" anchorX="center" anchorY="middle" fontWeight={600}>{title}</Text>
+        <mesh position={[0, -0.27, 0.068]}>
+          <circleGeometry args={[0.075, 32]} />
+          <meshStandardMaterial color={accent} metalness={0.45} roughness={0.2} emissive={accent} emissiveIntensity={hovered ? 0.65 : 0.18} />
+        </mesh>
+        <mesh position={[0, -0.27, 0.077]}>
+          <ringGeometry args={[0.09, 0.095, 48]} />
+          <meshBasicMaterial color={accent} transparent opacity={hovered ? 0.9 : 0.42} />
+        </mesh>
+      </group>
+    </Float>
+  );
+}
+
+function CoreSculpture() {
+  const orb = React.useRef<THREE.Mesh>(null);
+  const orbit = React.useRef<THREE.Mesh>(null);
+  useFrame((state, delta) => {
+    if (orb.current) {
+      orb.current.rotation.y += delta * 0.16;
+      orb.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.08;
+    }
+    if (orbit.current) {
+      orbit.current.rotation.z += delta * 0.12;
+      orbit.current.rotation.x = Math.PI / 2.8 + Math.sin(state.clock.elapsedTime * 0.18) * 0.08;
+    }
+  });
+  return (
+    <group position={[0, 0.88, -0.38]}>
+      <mesh ref={orb} castShadow>
+        <icosahedronGeometry args={[0.46, 4]} />
+        <meshPhysicalMaterial color="#F58AB8" roughness={0.18} metalness={0.34} clearcoat={1} clearcoatRoughness={0.08} envMapIntensity={1.6} />
+      </mesh>
+      <mesh scale={1.025}>
+        <icosahedronGeometry args={[0.46, 2]} />
+        <meshBasicMaterial color="#FFF7F8" wireframe transparent opacity={0.22} />
+      </mesh>
+      <mesh ref={orbit} rotation={[Math.PI / 2.8, 0, 0]}>
+        <torusGeometry args={[0.66, 0.012, 10, 128]} />
+        <meshStandardMaterial color="#D9B66F" metalness={0.88} roughness={0.16} emissive="#D9B66F" emissiveIntensity={0.14} />
+      </mesh>
+      <mesh rotation={[0.3, 0.2, 0.8]}>
+        <torusGeometry args={[0.79, 0.006, 8, 128]} />
+        <meshStandardMaterial color="#FFF8F1" metalness={0.7} roughness={0.22} />
+      </mesh>
+      <pointLight position={[0, 0, 0.4]} intensity={0.5} color="#FF7FAF" distance={2.8} />
+    </group>
+  );
+}
+
+function Architecture() {
   return (
     <>
-      {/* was a 6x6 plane — its physical edge sat inside the camera's
-          frustum and read as a hard horizontal "end of the world" line
-          across the frame instead of fading into the background via
-          fog. 60x60 puts that edge well past the fog's far=9 falloff,
-          so only the fog gradient is ever visible, never the geometry. */}
-      {/* was #F3EEE7 — a hair off the #FFF4D8 background color, so the
-          floor had almost no value contrast against the sky and read as
-          one undifferentiated blur instead of a distinct ground plane */}
-      <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <mesh position={[0, 1.32, -1.08]} castShadow>
+        <torusGeometry args={[1.32, 0.045, 18, 144]} />
+        <meshPhysicalMaterial color="#B51F52" roughness={0.22} metalness={0.5} clearcoat={1} envMapIntensity={1.4} />
+      </mesh>
+      <mesh position={[0, 1.32, -1.12]}>
+        <torusGeometry args={[1.19, 0.009, 8, 144]} />
+        <meshStandardMaterial color="#D9B66F" metalness={0.85} roughness={0.18} />
+      </mesh>
+      <mesh position={[-1.18, 0.62, -0.84]} rotation={[0, 0, -0.08]} castShadow>
+        <roundedBoxGeometry args={[0.16, 1.25, 0.18, 5, 0.04]} />
+        <meshPhysicalMaterial color="#E8B9CB" roughness={0.27} metalness={0.22} clearcoat={0.85} />
+      </mesh>
+      <mesh position={[1.18, 0.62, -0.84]} rotation={[0, 0, 0.08]} castShadow>
+        <roundedBoxGeometry args={[0.16, 1.25, 0.18, 5, 0.04]} />
+        <meshPhysicalMaterial color="#E8B9CB" roughness={0.27} metalness={0.22} clearcoat={0.85} />
+      </mesh>
+      <mesh position={[0, 0.16, -0.38]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.35, 1.48, 0.24, 96]} />
+        <meshPhysicalMaterial color="#7D2447" roughness={0.27} metalness={0.32} clearcoat={0.9} />
+      </mesh>
+      <mesh position={[0, 0.29, -0.38]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.28, 1.28, 0.035, 96]} />
+        <meshPhysicalMaterial color="#F8DCE5" roughness={0.22} metalness={0.22} clearcoat={1} />
+      </mesh>
+      <mesh position={[0, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[60, 60]} />
-        <meshStandardMaterial color="#CFC5B4" roughness={0.65} envMapIntensity={0.5} />
+        <meshStandardMaterial color="#E9D9D4" roughness={0.72} envMapIntensity={0.45} />
       </mesh>
-      {/* a desk mat, not just a bare surface — grounds the whole object
-          cluster instead of everything floating loose on plain cream,
-          and the thin gold reveal at the edge is the one recurring
-          "luxury stationery" detail (matches the notebook's gold corner,
-          the pen's gold tip, the lamp's gold arm) rather than a one-off */}
-      <mesh position={[0, 0.0015, 0.05]} receiveShadow>
-        <roundedBoxGeometry args={[1.82, 0.004, 1.42, 4, 0.07]} />
-        <meshStandardMaterial color="#D9B66F" roughness={0.3} metalness={0.55} envMapIntensity={1.3} />
-      </mesh>
-      <mesh position={[0, 0.003, 0.05]} receiveShadow>
-        <roundedBoxGeometry args={[1.7, 0.004, 1.3, 4, 0.06]} />
-        <meshStandardMaterial color="#FFD6E7" roughness={0.65} envMapIntensity={0.4} />
-      </mesh>
+    </>
+  );
+}
+
+function Lighting() {
+  return (
+    <>
+      <ambientLight intensity={0.42} color="#FFF4F1" />
+      <directionalLight position={[3, 5, 3]} intensity={2.25} color="#FFF0E5" castShadow shadow-mapSize={[2048, 2048]} />
+      <directionalLight position={[-3, 2, -1]} intensity={1.15} color="#ECA7D2" />
+      <pointLight position={[0, 2.4, 1.8]} intensity={0.8} color="#FFF8E8" distance={6} />
+      <pointLight position={[-2, 1.5, 0]} intensity={0.45} color="#B7DDF5" distance={5} />
     </>
   );
 }
@@ -67,78 +163,29 @@ function AdaptiveQuality() {
   return <PerformanceMonitor onDecline={() => performance.regress()} />;
 }
 
-function Lighting() {
-  // ambient light was nearly as strong as the key light (0.45 vs 1.1) —
-  // ambient has no direction, so it washes a flat, equal amount of light
-  // over every surface regardless of its normal, which is exactly what
-  // erases the light/shadow gradient that makes an edge read as an edge.
-  // Dropping it and letting the directional key dominate restores that
-  // gradient; the two point lights are dialed back to match so they
-  // still add color without flattening the new contrast back out.
-  return (
-    <>
-      <ambientLight intensity={0.22} color="#FFF4D8" />
-      <directionalLight position={[2, 3, 2]} intensity={1.6} color="#FFD6E7" castShadow shadow-mapSize={[1024, 1024]} />
-      <pointLight position={[-1.5, 1, -1]} intensity={0.2} color="#C9B6E4" />
-      {/* a second, cooler fill so surfaces show two distinct highlights
-          instead of one flat wash — cheap and reads as far less "flat CG" */}
-      <pointLight position={[1.2, 0.8, 1.5]} intensity={0.15} color="#A9DDF5" />
-    </>
-  );
-}
-
-export default function DeskScene({
-  trackEl,
-  paused = false,
-}: {
-  trackEl: React.RefObject<HTMLDivElement>;
-  /** stop the render loop once the hero has scrolled out of view —
-      no point spending frames on a canvas nothing can see */
-  paused?: boolean;
-}) {
+export default function DeskScene({ trackEl, paused = false }: { trackEl: React.RefObject<HTMLDivElement>; paused?: boolean }) {
   const introDone = React.useRef(false);
   const router = useRouter();
+  const open = React.useCallback((href: string) => router.push(href), [router]);
 
   return (
     <div data-desk-canvas className="fixed inset-0 z-0">
-      <Canvas
-        shadows
-        dpr={[1, 1.75]}
-        frameloop={paused ? "never" : "always"}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}
-      >
-        <color attach="background" args={["#FFF4D8"]} />
-        <fog attach="fog" args={["#FFF4D8", 4, 9]} />
+      <Canvas shadows dpr={[1, 1.75]} frameloop={paused ? "never" : "always"}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance", toneMapping: THREE.ACESFilmicToneMapping }}>
+        <color attach="background" args={["#F8ECE8"]} />
+        <fog attach="fog" args={["#F8ECE8", 5.5, 12]} />
         <CameraRig trackEl={trackEl} introDone={introDone} />
         <EnvironmentSetup />
         <Lighting />
-        <DeskSurface />
-        {/* the directional light's own shadow map was there, but barely
-            visible — every object read as floating with no contact
-            point. A blurred contact-shadow catcher is the reliable fix:
-            it doesn't depend on tuning a shadow camera frustum blind. */}
-        <ContactShadows position={[0, 0.001, 0.05]} opacity={0.45} scale={2.4} blur={2.2} far={0.6} resolution={512} color="#321B24" />
-        <DustParticles count={110} />
-        {/* Keep high-density displays crisp while allowing R3F to lower pixel ratio under load. */}
+        <Architecture />
+        <CoreSculpture />
+        <Sparkles count={80} scale={[5.5, 3.2, 4.5]} size={1.5} speed={0.18} color="#D9B66F" opacity={0.5} />
         <AdaptiveQuality />
-        <AdaptiveDpr />
         <Preload all />
-
-        {/* hero objects: cast + receive, worth the shadow cost. onOpen
-            navigates to the real page — these are a second way in to
-            each page, not the only way in. */}
-        <Notebook position={[0.42, 0, 0.12]} onOpen={() => router.push("/about")} />
-        <Folder position={[-0.42, 0, 0.18]} onOpen={() => router.push("/work")} />
-        <ResumeNote position={[0.02, 0, 0.42]} onOpen={() => router.push("/resume")} />
-        <Envelope position={[0.5, 0, -0.28]} onOpen={() => router.push("/contact")} />
-        <LabVessels position={[-0.5, 0, -0.32]} onOpen={() => router.push("/about")} />
-        <Signet position={[0.7, 0, -0.42]} onOpen={() => router.push("/about")} />
-
-        {/* ambient-only: no shadow casting, kept cheap */}
-        <CoffeeCup position={[0.28, 0, 0.38]} />
-        <DeskLamp position={[-0.55, 0, 0.42]} />
-        <Pen position={[0.1, 0, 0.28]} />
-        <Flowers position={[0.55, 0, 0.1]} />
+        <Artifact position={[-0.83, 0.98, 0.05]} rotation={[0, 0.1, 0]} eyebrow="01 / THE PERSON" title="ABOUT" href="/about" accent="#B51F52" onOpen={open} />
+        <Artifact position={[0.83, 0.98, 0.05]} rotation={[0, -0.1, 0]} eyebrow="02 / THE WORK" title="PROJECTS" href="/work" accent="#E91E63" onOpen={open} />
+        <Artifact position={[-0.88, 0.96, -0.78]} rotation={[0, 0.22, 0]} eyebrow="03 / THE METHOD" title="SYSTEMS" href="/workbench" accent="#7D2447" onOpen={open} />
+        <Artifact position={[0.88, 0.96, -0.78]} rotation={[0, -0.22, 0]} eyebrow="04 / THE STORY" title="EXPERIENCE" href="/experience" accent="#D9B66F" onOpen={open} />
       </Canvas>
     </div>
   );
