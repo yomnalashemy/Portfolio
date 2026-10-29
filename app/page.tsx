@@ -8,6 +8,7 @@ import * as React from "react";
 
 import Loader from "@/components/archive/Loader";
 import MobileHome from "@/components/mobile/MobileHome";
+import RecruiterHUD from "@/components/desk/RecruiterHUD";
 import SiteFooter from "@/components/sections/SiteFooter";
 
 const DeskScene = dynamic(() => import("@/components/desk/DeskScene"), { ssr: false });
@@ -103,10 +104,11 @@ function DesktopExperience() {
           it wasn't reliably pinning to the viewport bottom as a result */}
       <motion.div
         style={{ opacity: hintOpacity }}
-        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center"
+        className="pointer-events-none fixed inset-x-0 bottom-10 z-10 flex justify-center md:bottom-[235px]"
       >
-        <p className="label-tech animate-pulse">scroll to walk in</p>
+        <p className="label-tech animate-pulse rounded-full border border-white/60 bg-[#fffaf1]/65 px-4 py-2 backdrop-blur-md">scroll to walk in</p>
       </motion.div>
+      <RecruiterHUD />
 
       {/* the desk is the hero, not the whole site now — real content
           lives on its own pages, linked from here and the nav */}
