@@ -162,7 +162,7 @@ export default function RecruiterHUD() {
             href="/resume"
             className="group inline-flex items-center gap-3 rounded-full border border-white/70 bg-[#fffaf1]/85 px-4 py-3 font-mono text-[10px] tracking-widest text-[#321b24] shadow-lg backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:bg-white"
           >
-            <BriefcaseBusiness className="size-4 text-[#c72c48]" aria-hidden />
+            <Briefcase className="size-4 text-[#c72c48]" aria-hidden />
             OPEN RÉSUMÉ
             <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
           </Link>
