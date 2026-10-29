@@ -66,19 +66,14 @@ function HomeHub() {
 }
 
 function DesktopExperience() {
-  const trackEl = React.useRef<HTMLDivElement>(null);
-
   return (
     <>
       <section aria-labelledby="home-title" className="relative z-10 flex min-h-[100svh] flex-col">
-        <DeskScene trackEl={trackEl} />
-        <div className="pointer-events-none absolute inset-x-4 top-20 z-10 flex flex-col items-center text-center md:top-24">
-          <h1 id="home-title" className="font-display text-[clamp(2.5rem,6.3vw,6.25rem)] leading-[0.9] tracking-[-0.055em] text-espresso">YOMNA ALSHEMY</h1>
+        <DeskScene />
+        <div className="pointer-events-none absolute left-6 right-6 top-24 z-10 flex flex-col items-start text-left md:left-[7vw] md:right-auto md:top-[22vh] md:max-w-[43vw]">
+          <h1 id="home-title" className="font-display text-[clamp(2.4rem,5.6vw,5.7rem)] leading-[0.88] tracking-[-0.06em] text-espresso">YOMNA ALSHEMY</h1>
           <p className="label-tech mt-3">LIVE SYSTEMS</p>
-          <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
-        </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-4 md:bottom-8">
-          <p className="label-tech rounded-full border border-espresso/10 bg-[#F7F5F0]/90 px-4 py-2 backdrop-blur-md">Explore the work below ↓</p>
+          <p className="label-tech mt-2 max-w-[28rem] text-left text-espresso/55">software · systems · infrastructure · curiosity</p>
         </div>
         <RecruiterHUD />
       </section>
