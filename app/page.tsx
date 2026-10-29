@@ -89,9 +89,9 @@ function DesktopExperience() {
           same heroOpacity as the canvas so it leaves with it. */}
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="pointer-events-none fixed inset-x-0 top-28 z-10 flex flex-col items-center text-center md:top-32"
+        className="pointer-events-none fixed inset-x-0 top-20 z-10 flex flex-col items-center text-center md:top-24"
       >
-        <h1 className="display-xl text-espresso">YOMNA ALSHEMY</h1>
+        <h1 className="font-display text-[clamp(2.5rem,6.3vw,6.25rem)] leading-[0.9] tracking-[-0.055em] text-espresso">YOMNA ALSHEMY</h1>
         <p className="label-tech mt-3">LIVE SYSTEMS</p>
         <p className="label-tech mt-1.5 text-espresso/50">software · systems · infrastructure · curiosity</p>
       </motion.div>
