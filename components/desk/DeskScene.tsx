@@ -1,6 +1,6 @@
 "use client";
 
-import { AdaptiveDpr, ContactShadows, Preload } from "@react-three/drei";
+import { AdaptiveDpr, ContactShadows, PerformanceMonitor, Preload } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode } from "@react-three/fiber";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -115,6 +115,7 @@ export default function DeskScene({
         <ContactShadows position={[0, 0.001, 0.05]} opacity={0.45} scale={2.4} blur={2.2} far={0.6} resolution={512} color="#321B24" />
         <DustParticles count={110} />
         {/* Keep high-density displays crisp while allowing R3F to lower pixel ratio under load. */}
+        <PerformanceMonitor onDecline={() => performance.regress()} />
         <AdaptiveDpr />
         <Preload all />
 
