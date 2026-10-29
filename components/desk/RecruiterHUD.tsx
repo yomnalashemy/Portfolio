@@ -45,7 +45,7 @@ export default function RecruiterHUD() {
   const ActiveIcon = active.icon;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-5 z-30 px-4 sm:bottom-7 sm:px-7 lg:px-10">
+    <div className="pointer-events-none absolute inset-x-0 bottom-16 z-30 px-4 sm:bottom-16 sm:px-7 lg:px-10">
       <div className="mx-auto flex max-w-[1440px] items-end justify-between gap-4">
         <motion.section
           layout
