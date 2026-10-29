@@ -108,7 +108,9 @@ function DesktopExperience() {
       >
         <p className="label-tech animate-pulse rounded-full border border-white/60 bg-[#fffaf1]/65 px-4 py-2 backdrop-blur-md">scroll to walk in</p>
       </motion.div>
-      <RecruiterHUD />
+      <motion.div style={{ opacity: heroOpacity, pointerEvents: heroPaused ? "none" : "auto" }}>
+        <RecruiterHUD />
+      </motion.div>
 
       {/* the desk is the hero, not the whole site now — real content
           lives on its own pages, linked from here and the nav */}
