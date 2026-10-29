@@ -1,6 +1,6 @@
 "use client";
 
-import { AdaptiveDpr, ContactShadows, Float, Preload, Sparkles, Text } from "@react-three/drei";
+import { AdaptiveDpr, ContactShadows, Float, PerformanceMonitor, Preload, Sparkles, Text } from "@react-three/drei";
 import { Canvas, extend, type Object3DNode, useFrame, useThree } from "@react-three/fiber";
 import { useRouter } from "next/navigation";
 import * as React from "react";
