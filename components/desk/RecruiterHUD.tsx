@@ -85,7 +85,7 @@ export default function RecruiterHUD() {
                 transition={{ duration: 0.25 }}
                 className="overflow-hidden"
               >
-                <div className="grid grid-cols-3 gap-1 px-3 pt-3 sm:px-4">
+                <div role="tablist" aria-label="Choose a portfolio focus" className="grid grid-cols-3 gap-1 px-3 pt-3 sm:px-4">
                   {MODES.map((item, index) => {
                     const Icon = item.icon;
                     const selected = item.id === mode;
