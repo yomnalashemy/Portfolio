@@ -33,14 +33,18 @@ const script = Caveat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-veug.onrender.com"),
   title: "Yomna Alshemy — Live Systems",
   description:
     "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+  applicationName: "Yomna Alshemy — Live Systems",
   icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "Yomna Alshemy — Live Systems",
     description:
       "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+    siteName: "Yomna Alshemy — Live Systems",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
@@ -48,6 +52,17 @@ export const metadata: Metadata = {
     title: "Yomna Alshemy — Live Systems",
     description:
       "FinCrime analyst and full-stack engineer. Six real, running systems, on a desk worth exploring.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -63,7 +78,7 @@ export default function RootLayout({
     >
       <body className="bg-buttercream font-sans text-espresso">
         <MotionConfig reducedMotion="user">
-          <div className="grain" />
+          <div className="grain" aria-hidden="true" />
           <CustomCursor />
           <Nav />
           <PageTransition>{children}</PageTransition>
