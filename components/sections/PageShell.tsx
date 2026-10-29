@@ -33,7 +33,7 @@ interface Props {
 export default function PageShell({ eyebrow, title, accent, children }: Props) {
   const accentHex = ACCENTS[accent];
   return (
-    <main className="relative min-h-screen overflow-hidden bg-buttercream pb-24 pt-28 md:pt-32">
+    <main id="main-content" tabIndex={-1} className="relative min-h-screen overflow-hidden bg-buttercream pb-24 pt-28 md:pt-32">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-24 -top-24 size-[420px] rounded-full blur-3xl"

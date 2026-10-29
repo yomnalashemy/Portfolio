@@ -31,7 +31,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   const { caseStudy: cs } = project;
 
   return (
-    <main className="min-h-screen bg-buttercream px-5 pb-24 pt-14 md:px-10 md:pt-20">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-buttercream px-5 pb-24 pt-14 md:px-10 md:pt-20">
       <div className="mx-auto max-w-3xl">
         <Link
           href="/#work"
