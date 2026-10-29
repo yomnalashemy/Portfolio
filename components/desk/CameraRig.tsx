@@ -28,8 +28,8 @@ const dolly = (t: number): readonly [number, number, number] => [
 ];
 
 const KEYFRAMES = {
-  start: { pos: dolly(0.68), look: LOOK },
-  mid: { pos: dolly(0.85), look: LOOK },
+  start: { pos: dolly(0.88), look: LOOK },
+  mid: { pos: dolly(0.95), look: LOOK },
   end: { pos: END_POS, look: LOOK },
 };
 
