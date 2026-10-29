@@ -15,6 +15,10 @@ const LINKS = [
   { label: "CONTACT", href: "/contact" },
 ];
 
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Nav() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -27,6 +31,21 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  React.useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  React.useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   return (
     <>
       <header
@@ -34,38 +53,52 @@ export default function Nav() {
           scrolled || pathname !== "/" ? "bg-buttercream/85 backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <Link href="/" className="font-display text-lg text-cherry">
+        <Link href="/" className="font-display text-lg text-cherry" aria-label="Yomna Alshemy — home">
           YOMNA
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
-          {LINKS.map((l) => (
-            <Link
-              key={l.label}
-              href={l.href}
-              data-cursor="GO"
-              className="tracking-[0.18em] transition-colors hover:text-raspberry"
-              style={{ color: pathname === l.href ? "#B51F52" : "rgba(50,27,36,0.6)" }}
-            >
-              {l.label}
-            </Link>
-          ))}
+        <nav aria-label="Main navigation" className="hidden items-center gap-7 md:flex">
+          {LINKS.map((l) => {
+            const active = isActivePath(pathname, l.href);
+            return (
+              <Link
+                key={l.label}
+                href={l.href}
+                data-cursor="GO"
+                aria-current={active ? "page" : undefined}
+                className="tracking-[0.18em] transition-colors hover:text-raspberry"
+                style={{ color: active ? "#B51F52" : "rgba(50,27,36,0.6)" }}
+              >
+                {l.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <button
           type="button"
-          onClick={() => setMenuOpen((v) => !v)}
-          className="flex flex-col gap-1.5 md:hidden"
-          aria-label="Toggle menu"
+          onClick={() => setMenuOpen((open) => !open)}
+          className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
         >
-          <span className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "translate-y-[3px] rotate-45" : ""}`} />
-          <span className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
+          <span
+            aria-hidden="true"
+            className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "translate-y-[4px] rotate-45" : ""}`}
+          />
+          <span
+            aria-hidden="true"
+            className={`h-px w-6 bg-espresso transition-transform ${menuOpen ? "-translate-y-[4px] -rotate-45" : ""}`}
+          />
         </button>
       </header>
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <motion.nav
+            id="mobile-navigation"
+            aria-label="Mobile navigation"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -78,12 +111,19 @@ export default function Nav() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
               >
-                <Link href={l.href} onClick={() => setMenuOpen(false)} className="font-display text-3xl text-espresso">
+                <Link
+                  href={l.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActivePath(pathname, l.href) ? "page" : undefined}
+                  className={`font-display text-3xl transition-colors hover:text-cherry ${
+                    isActivePath(pathname, l.href) ? "text-cherry" : "text-espresso"
+                  }`}
+                >
                   {l.label}
                 </Link>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.nav>
         )}
       </AnimatePresence>
     </>
