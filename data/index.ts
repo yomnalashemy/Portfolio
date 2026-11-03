@@ -16,7 +16,7 @@ export const projects = [
     caseStudy: {
       problem:
         "Cambridge IGCSE students, tutors, and parents needed one real system for assignments, marking, and progress tracking — not a patchwork of spreadsheets and PDFs passed around by email.",
-      role: "Full-stack, end to end — product, backend, frontend, and the verification tooling that caught defects before they shipped.",
+      role: "Freelance — built from a client-provided specification (assignments, marking, and progress tracking for three role-based portals), then taken well past that brief: full-stack, end to end — product, backend, frontend, and self-initiated additions the spec never asked for, like the cipher-decoding pipeline and the verification tooling that caught defects before they shipped.",
       decisions: [
         "A from-scratch cipher-decoding pipeline to recover text from PDFs with corrupted font maps — known-plaintext cribs, a syllabus-trained trigram model, coordinate-ascent solving — reaching 98.1% character accuracy and 100% question-anchoring across 20 real exam papers, with zero external services.",
         "Privacy-preserving analytics for a product used by minors: daily-rotating salted visitor hashes, server-verified attribution, no IP address ever stored.",
